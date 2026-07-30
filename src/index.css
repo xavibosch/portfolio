@@ -1,0 +1,66 @@
+/* Google Fonts for the redesign: display, body and mono */
+@import url('https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@400;700;900&family=Jost:ital,wght@0,300;0,400;0,500;1,300&family=DM+Mono:wght@300;400&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    /* Design tokens (HANDOFF §2) */
+    --background: #0C0B09;   /* near black */
+    --foreground: #F5F4EF;   /* off white  */
+    --accent:     #D63022;   /* swiss red  */
+    --hairline:   rgba(245, 244, 239, 0.12);
+    --radius:     0rem;      /* hard corners everywhere */
+
+    --font-display: 'Big Shoulders Display', sans-serif;
+    --font-sans:    'Jost', sans-serif;
+    --font-mono:    'DM Mono', monospace;
+  }
+
+  *, *::before, *::after {
+    box-sizing: border-box;
+  }
+
+  html {
+    color-scheme: dark;
+    font-size: 16px;
+    scrollbar-width: none;          /* the deck is horizontal, no scrollbars */
+  }
+  html::-webkit-scrollbar { display: none; }
+
+  body {
+    background-color: var(--background);
+    color: var(--foreground);
+    font-family: var(--font-sans);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    margin: 0;
+    overflow: hidden;               /* deck panels handle their own overflow */
+  }
+
+  h1, h2, h3 {
+    font-family: var(--font-display);
+    margin: 0;
+  }
+  h1 { font-weight: 900; line-height: 0.9; }
+  h2, h3 { font-weight: 700; line-height: 1.2; }
+
+  ::selection {
+    background: var(--accent);
+    color: var(--foreground);
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 3px;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after {
+      animation-duration: 0.01ms !important;
+      transition-duration: 0.01ms !important;
+    }
+  }
+}

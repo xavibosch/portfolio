@@ -1,0 +1,50 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 900" preserveAspectRatio="xMidYMid slice">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#0a0a0f"/>
+      <stop offset="1" stop-color="#14121c"/>
+    </linearGradient>
+    <radialGradient id="pulse" cx="0.5" cy="0.5" r="0.5">
+      <stop offset="0" stop-color="#a78bfa" stop-opacity="0.55"/>
+      <stop offset="1" stop-color="#a78bfa" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+  <rect width="1600" height="900" fill="url(#bg)"/>
+  <g opacity="0.05" stroke="#fff" stroke-width="1">
+    <path d="M0 225 H1600 M0 450 H1600 M0 675 H1600"/>
+    <path d="M400 0 V900 M800 0 V900 M1200 0 V900"/>
+  </g>
+
+  <!-- radiating wake pulse -->
+  <circle cx="800" cy="430" r="330" fill="url(#pulse)"/>
+  <g fill="none" stroke="#a78bfa">
+    <circle cx="800" cy="430" r="90"  stroke-opacity="0.9" stroke-width="2"/>
+    <circle cx="800" cy="430" r="160" stroke-opacity="0.45" stroke-width="1.5"/>
+    <circle cx="800" cy="430" r="235" stroke-opacity="0.22" stroke-width="1.2"/>
+    <circle cx="800" cy="430" r="315" stroke-opacity="0.10" stroke-width="1"/>
+  </g>
+
+  <!-- power glyph -->
+  <g stroke="#ffffff" stroke-width="10" stroke-linecap="round" fill="none">
+    <path d="M800 375 V430"/>
+    <path d="M765 405 a48 48 0 1 0 70 0"/>
+  </g>
+
+  <text x="800" y="640" text-anchor="middle"
+        font-family="-apple-system, Helvetica, Arial, sans-serif"
+        font-weight="800" font-size="64" letter-spacing="-1" fill="#fff">
+    Wake Station
+  </text>
+  <text x="800" y="690" text-anchor="middle"
+        font-family="ui-monospace, Menlo, monospace"
+        font-size="18" letter-spacing="8" fill="#8b85a0">
+    WAKE-ON-LAN · JEFFREY ECOSYSTEM
+  </text>
+
+  <text x="80" y="840" font-family="ui-monospace, Menlo, monospace" font-size="13" letter-spacing="4" fill="#555">
+    MAGIC PACKET → NIC → MACOS
+  </text>
+  <text x="1520" y="840" text-anchor="end" font-family="ui-monospace, Menlo, monospace" font-size="13" letter-spacing="4" fill="#555">
+    24/7 REACHABLE
+  </text>
+</svg>
