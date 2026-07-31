@@ -10,8 +10,8 @@ const LINES = [
   { en: "all systems nominal", es: "todos los sistemas operativos", ca: "tots els sistemes operatius" },
 ];
 
-const OS_LABEL = { en: "XB — Portfolio OS", es: "XB — Portfolio OS", ca: "XB — Portfolio OS" };
-const FOOTER_LABEL = { en: "Xavi Bosch — Interactive Product Design", es: "Xavi Bosch — Diseño de Producto Interactivo", ca: "Xavi Bosch — Disseny de Producte Interactiu" };
+const OS_LABEL = { en: "XB · Portfolio OS", es: "XB · Portfolio OS", ca: "XB · Portfolio OS" };
+const FOOTER_LABEL = { en: "Xavi Bosch · Interactive Product Design", es: "Xavi Bosch · Diseño de Producto Interactivo", ca: "Xavi Bosch · Disseny de Producte Interactiu" };
 
 /**
  * Terminal-style boot overlay that plays once on first load, echoing the

@@ -306,7 +306,7 @@ function AppInner() {
       <div className="fixed bottom-5 right-7 md:right-12 z-[120] hidden md:block pointer-events-none">
         <AssemblePiece index={2} delay={2.25} stagger={0} distance={38} spin={10} active={booted}>
           <span style={{ fontFamily: "'DM Mono', monospace", fontSize: "0.6rem", letterSpacing: "0.12em", color: "rgba(245,244,239,0.5)" }}>
-            {t(FROM_BCN, lang)} — {clock}
+            {t(FROM_BCN, lang)} · {clock}
           </span>
         </AssemblePiece>
       </div>

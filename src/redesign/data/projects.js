@@ -13,18 +13,18 @@ export const projects = [
       "Un assistent que actua, no contesta."
     ),
     description: l(
-      "A personal AI system that doesn't stop at an answer. Jeffrey listens, chooses a route, calls the right tool, executes on macOS and responds in the user's language. The experience is one sentence — underneath, five systems coordinate every request.",
-      "Un sistema de IA personal que no se detiene en una respuesta. Jeffrey escucha, elige una ruta, llama a la herramienta adecuada, ejecuta en macOS y responde en el idioma del usuario. La experiencia es una frase — por debajo, cinco sistemas coordinan cada petición.",
-      "Un sistema d'IA personal que no s'atura en una resposta. Jeffrey escolta, tria una ruta, crida l'eina adequada, executa a macOS i respon en l'idioma de l'usuari. L'experiència és una frase — per sota, cinc sistemes coordinen cada petició."
+      "A personal AI system that doesn't stop at an answer. Jeffrey listens, chooses a route, calls the right tool, executes on macOS and responds in the user's language. The experience is one sentence. Underneath, five systems coordinate every request.",
+      "Un sistema de IA personal que no se detiene en una respuesta. Jeffrey escucha, elige una ruta, llama a la herramienta adecuada, ejecuta en macOS y responde en el idioma del usuario. La experiencia es una frase. Por debajo, cinco sistemas coordinan cada petición.",
+      "Un sistema d'IA personal que no s'atura en una resposta. Jeffrey escolta, tria una ruta, crida l'eina adequada, executa a macOS i respon en l'idioma de l'usuari. L'experiència és una frase. Per sota, cinc sistemes coordinen cada petició."
     ),
     role: l("Design + Systems + Engineering", "Diseño + Sistemas + Ingeniería", "Disseny + Sistemes + Enginyeria"),
     context: l("Personal AI agent for macOS", "Agente de IA personal para macOS", "Agent d'IA personal per a macOS"),
     tags: [l("AI Agent", "Agente IA", "Agent IA"), l("Systems", "Sistemas", "Sistemes")],
     tech: ["Python", "Ollama", "macOS", "Agent loop"],
     learning: l(
-      "The quality of tool design matters far more than model quality when AI is doing the acting, not just the answering. Ollama is not a demo mode — it is the continuity layer when cloud inference is unavailable.",
-      "La calidad del diseño de las herramientas importa mucho más que la calidad del modelo cuando la IA actúa, no solo responde. Ollama no es un modo demo — es la capa de continuidad cuando la inferencia en la nube no está disponible.",
-      "La qualitat del disseny de les eines importa molt més que la qualitat del model quan la IA actua, no només respon. Ollama no és un mode demo — és la capa de continuïtat quan la inferència al núvol no està disponible."
+      "The quality of tool design matters far more than model quality when AI is doing the acting, not just the answering. Ollama is not a demo mode, it is the continuity layer when cloud inference is unavailable.",
+      "La calidad del diseño de las herramientas importa mucho más que la calidad del modelo cuando la IA actúa, no solo responde. Ollama no es un modo demo, es la capa de continuidad cuando la inferencia en la nube no está disponible.",
+      "La qualitat del disseny de les eines importa molt més que la qualitat del model quan la IA actua, no només respon. Ollama no és un mode demo, és la capa de continuïtat quan la inferència al núvol no està disponible."
     ),
     repo: "https://github.com/xavibosch/jeffrey-ai-assistant",
     images: [IMG + "jeffrey.png"],
@@ -43,9 +43,9 @@ export const projects = [
     tags: ["iOS", l("Product", "Producto", "Producte")],
     tech: ["Swift", "SwiftUI", "macOS bridge"],
     learning: l(
-      "Jeffrey worked well on a Mac — but the most useful moments of the agent are when you're not in front of it. Designing the redundant-channel core first made every later feature accessible for free.",
-      "Jeffrey funcionaba bien en un Mac — pero los momentos más útiles del agente son cuando no estás delante. Diseñar primero el núcleo de canales redundantes hizo que cada función posterior fuera accesible sin coste.",
-      "Jeffrey funcionava bé en un Mac — però els moments més útils de l'agent són quan no ets davant. Dissenyar primer el nucli de canals redundants va fer que cada funció posterior fos accessible sense cost."
+      "Jeffrey worked well on a Mac, but the most useful moments of the agent are when you're not in front of it. Designing the redundant channel core first made every later feature accessible for free.",
+      "Jeffrey funcionaba bien en un Mac, pero los momentos más útiles del agente son cuando no estás delante. Diseñar primero el núcleo de canales redundantes hizo que cada función posterior fuera accesible sin coste.",
+      "Jeffrey funcionava bé en un Mac, però els moments més útils de l'agent són quan no ets davant. Dissenyar primer el nucli de canals redundants va fer que cada funció posterior fos accessible sense cost."
     ),
     repo: "https://github.com/xavibosch/jeffrey-remote",
     images: [IMG + "jeffrey-remote.png", IMG + "jeffrey-remote-apps.webp", IMG + "jeffrey-remote-controls.webp"],
@@ -80,12 +80,12 @@ export const projects = [
       "Tota la tensió d'apostar, zero diners reals."
     ),
     description: l(
-      "Betsy turns a group of friends into a private league: real fixtures, virtual points, live rankings and 1v1 duels. The product is the tension between friends — every system exists to feed it.",
-      "Betsy convierte un grupo de amigos en una liga privada: partidos reales, puntos virtuales, rankings en vivo y duelos 1v1. El producto es la tensión entre amigos — cada sistema existe para alimentarla.",
-      "Betsy converteix un grup d'amics en una lliga privada: partits reals, punts virtuals, rànquings en directe i duels 1v1. El producte és la tensió entre amics — cada sistema existeix per alimentar-la."
+      "Betsy turns a group of friends into a private league: real fixtures, virtual points, live rankings and 1v1 duels. The product is the tension between friends. Every system exists to feed it.",
+      "Betsy convierte un grupo de amigos en una liga privada: partidos reales, puntos virtuales, rankings en vivo y duelos 1v1. El producto es la tensión entre amigos. Cada sistema existe para alimentarla.",
+      "Betsy converteix un grup d'amics en una lliga privada: partits reals, punts virtuals, rànquings en directe i duels 1v1. El producte és la tensió entre amics. Cada sistema existeix per alimentar-la."
     ),
     role: l("Product Design + iOS", "Diseño de Producto + iOS", "Disseny de Producte + iOS"),
-    context: l("Social betting-league app", "App social de ligas de apuestas", "App social de lligues d'apostes"),
+    context: l("Social betting league app", "App social de ligas de apuestas", "App social de lligues d'apostes"),
     tags: ["iOS", l("Product", "Producto", "Producte")],
     tech: ["Swift", "SwiftUI", "Firestore"],
     learning: l(
@@ -101,18 +101,18 @@ export const projects = [
     name: "Nevera Bosch",
     tagline: l("The fridge is the app.", "La nevera es la app.", "La nevera és l'app."),
     description: l(
-      "A shared shopping list that lives on the fridge: tap your phone against an NFC sticker and the family list opens instantly — no app store, no accounts, no friction. A sticker on the fridge door is the entire onboarding.",
-      "Una lista de la compra compartida que vive en la nevera: acercas el móvil a una pegatina NFC y la lista familiar se abre al instante — sin app store, sin cuentas, sin fricción. Una pegatina en la puerta de la nevera es todo el onboarding.",
-      "Una llista de la compra compartida que viu a la nevera: acostes el mòbil a un adhesiu NFC i la llista familiar s'obre a l'instant — sense app store, sense comptes, sense fricció. Un adhesiu a la porta de la nevera és tot l'onboarding."
+      "A shared shopping list that lives on the fridge: tap your phone against an NFC sticker and the family list opens instantly, with no app store, no accounts, no friction. A sticker on the fridge door is the entire onboarding.",
+      "Una lista de la compra compartida que vive en la nevera: acercas el móvil a una pegatina NFC y la lista familiar se abre al instante, sin app store, sin cuentas, sin fricción. Una pegatina en la puerta de la nevera es todo el onboarding.",
+      "Una llista de la compra compartida que viu a la nevera: acostes el mòbil a un adhesiu NFC i la llista familiar s'obre a l'instant, sense app store, sense comptes, sense fricció. Un adhesiu a la porta de la nevera és tot l'onboarding."
     ),
     role: l("UX + Web", "UX + Web", "UX + Web"),
     context: l("NFC-anchored family utility", "Utilidad familiar anclada a NFC", "Utilitat familiar ancorada a NFC"),
     tags: ["NFC", "UX"], // universal abbreviations, no translation needed
     tech: ["NFC", "Web", "Realtime DB"],
     learning: l(
-      "People forget apps but never forget the fridge. Anchoring software to a physical object made usage automatic — and family is the hardest usability test there is: if a parent with shopping bags can't use it in three seconds, the design is wrong.",
-      "La gente olvida las apps pero nunca olvida la nevera. Anclar el software a un objeto físico hizo el uso automático — y la familia es el test de usabilidad más duro que existe: si un padre con bolsas de la compra no puede usarla en tres segundos, el diseño está mal.",
-      "La gent oblida les apps però mai oblida la nevera. Ancorar el software a un objecte físic va fer l'ús automàtic — i la família és el test d'usabilitat més dur que existeix: si un pare amb bosses de la compra no pot usar-la en tres segons, el disseny està malament."
+      "People forget apps but never forget the fridge. Anchoring software to a physical object made usage automatic, and family is the hardest usability test there is: if a parent with shopping bags can't use it in three seconds, the design is wrong.",
+      "La gente olvida las apps pero nunca olvida la nevera. Anclar el software a un objeto físico hizo el uso automático, y la familia es el test de usabilidad más duro que existe: si un padre con bolsas de la compra no puede usarla en tres segundos, el diseño está mal.",
+      "La gent oblida les apps però mai oblida la nevera. Ancorar el software a un objecte físic va fer l'ús automàtic, i la família és el test d'usabilitat més dur que existeix: si un pare amb bosses de la compra no pot usar-la en tres segons, el disseny està malament."
     ),
     repo: "https://github.com/xavibosch/nevera-bosch",
     images: [IMG + "nevera-real-hero.jpg", IMG + "nevera-real.png"],
@@ -126,16 +126,16 @@ export const projects = [
       "Un joc que pots jugar amb els ulls tancats."
     ),
     description: l(
-      "An accessible mobile game for everyone — including blind, deaf, and low-vision players. You hunt invisible signals using haptic feedback, dynamic sound, and minimal visuals. Designed so the same game works on any combination of senses.",
-      "Un juego móvil accesible para todos — incluyendo jugadores ciegos, sordos y con baja visión. Cazas señales invisibles usando respuesta háptica, sonido dinámico y visuales mínimos. Diseñado para que el mismo juego funcione con cualquier combinación de sentidos.",
-      "Un joc mòbil accessible per a tothom — incloent jugadors cecs, sords i amb baixa visió. Caces senyals invisibles fent servir resposta hàptica, so dinàmic i visuals mínims. Dissenyat perquè el mateix joc funcioni amb qualsevol combinació de sentits."
+      "An accessible mobile game for everyone, including blind, deaf and low vision players. You hunt invisible signals using haptic feedback, dynamic sound, and minimal visuals. Designed so the same game works on any combination of senses.",
+      "Un juego móvil accesible para todos, incluyendo jugadores ciegos, sordos y con baja visión. Cazas señales invisibles usando respuesta háptica, sonido dinámico y visuales mínimos. Diseñado para que el mismo juego funcione con cualquier combinación de sentidos.",
+      "Un joc mòbil accessible per a tothom, incloent jugadors cecs, sords i amb baixa visió. Caces senyals invisibles fent servir resposta hàptica, so dinàmic i visuals mínims. Dissenyat perquè el mateix joc funcioni amb qualsevol combinació de sentits."
     ),
     role: l("Interaction + Accessibility", "Interacción + Accesibilidad", "Interacció + Accessibilitat"),
-    context: l("Multi-sensory accessible game", "Juego accesible multisensorial", "Joc accessible multisensorial"),
+    context: l("Multisensory accessible game", "Juego accesible multisensorial", "Joc accessible multisensorial"),
     tags: [l("Accessibility", "Accesibilidad", "Accessibilitat"), l("Haptics", "Háptica", "Hàptica")],
     tech: ["Core Haptics", "Spatial Audio", "Swift"],
     learning: l(
-      "No simulator can tell you how a haptic feels. Physical playtesting was the only honest signal. Designing the redundant-channel core first made accessibility a property of the system, not a feature bolted on.",
+      "No simulator can tell you how a haptic feels. Physical playtesting was the only honest signal. Designing the redundant channel core first made accessibility a property of the system, not a feature bolted on.",
       "Ningún simulador puede decirte cómo se siente una vibración. Probar en físico era la única señal honesta. Diseñar primero el núcleo de canales redundantes hizo de la accesibilidad una propiedad del sistema, no una función añadida.",
       "Cap simulador pot dir-te com se sent una vibració. Provar en físic era l'únic senyal honest. Dissenyar primer el nucli de canals redundants va fer de l'accessibilitat una propietat del sistema, no una funció afegida."
     ),
@@ -156,7 +156,7 @@ export const projects = [
       "Un cotxe robot de 4 rodes amb ESP32 conduït des de qualsevol mòbil a través d'un broker MQTT públic, amb una capa autònoma que frena, retrocedeix i pita quan el món s'acosta massa. Broker públic, robot privat."
     ),
     role: l("Hardware + Systems", "Hardware + Sistemas", "Hardware + Sistemes"),
-    context: l("La Salle — Electronics course", "La Salle — Asignatura de Electrónica", "La Salle — Assignatura d'Electrònica"),
+    context: l("La Salle · Electronics course", "La Salle · Asignatura de Electrónica", "La Salle · Assignatura d'Electrònica"),
     tags: [l("Robotics", "Robótica", "Robòtica"), l("Systems", "Sistemas", "Sistemes")],
     tech: ["ESP32", "MQTT", "Ultrasonic"],
     learning: l(
@@ -178,13 +178,13 @@ export const projects = [
       "Un reproductor de música sense fitxers d'àudio: cada cançó és una seqüència de freqüències sintetitzada en temps real per quatre motors d'ona propis, dins d'una arquitectura per capes estricta. Un AlbumGenerator crea àlbums aleatoris filtrats per mood i durada objectiu."
     ),
     role: l("Architecture + Engineering", "Arquitectura + Ingeniería", "Arquitectura + Enginyeria"),
-    context: l("La Salle — OOP course (pair)", "La Salle — Asignatura de POO (en pareja)", "La Salle — Assignatura de POO (en parella)"),
+    context: l("La Salle · OOP course (pair)", "La Salle · Asignatura de POO (en pareja)", "La Salle · Assignatura de POO (en parella)"),
     tags: [l("Systems", "Sistemas", "Sistemes"), "Java"],
     tech: ["Java", "OOP", "DSP"],
     learning: l(
-      "Built in pair for La Salle's OOP course — strict layers made parallel work possible. Synthesizing sound from scratch forced a cleaner architecture than any file-based player would have.",
-      "Hecho en pareja para la asignatura de POO en La Salle — las capas estrictas permitieron trabajar en paralelo. Sintetizar sonido desde cero obligó a una arquitectura más limpia de la que tendría cualquier reproductor basado en archivos.",
-      "Fet en parella per a l'assignatura de POO a La Salle — les capes estrictes van permetre treballar en paral·lel. Sintetitzar so des de zero va obligar a una arquitectura més neta de la que tindria qualsevol reproductor basat en fitxers."
+      "Built in pair for La Salle's OOP course. Strict layers made parallel work possible. Synthesizing sound from scratch forced a cleaner architecture than any file based player would have.",
+      "Hecho en pareja para la asignatura de POO en La Salle. Las capas estrictas permitieron trabajar en paralelo. Sintetizar sonido desde cero obligó a una arquitectura más limpia de la que tendría cualquier reproductor basado en archivos.",
+      "Fet en parella per a l'assignatura de POO a La Salle. Les capes estrictes van permetre treballar en paral·lel. Sintetitzar so des de zero va obligar a una arquitectura més neta de la que tindria qualsevol reproductor basat en fitxers."
     ),
     repo: "https://github.com/xavibosch/lasallefy-java",
     images: [IMG + "sallefy-hero.svg"],

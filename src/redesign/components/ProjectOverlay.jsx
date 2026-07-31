@@ -49,7 +49,7 @@ function Gallery({ project, onClose }) {
     >
       <div className="flex items-center justify-between px-6 md:px-10 h-16 flex-shrink-0" style={{ borderBottom: "1px solid rgba(245,244,239,0.1)" }}>
         <span style={{ fontFamily: "'DM Mono', monospace", fontSize: "0.68rem", color: "#D63022" }}>
-          {project.name.toUpperCase()} — {t(UI.gallery, lang)}
+          {project.name.toUpperCase()} · {t(UI.gallery, lang)}
         </span>
         <button onClick={onClose} data-cursor="Close" className="flex items-center gap-1.5 px-3 py-2 group" style={{ background: "#D63022", fontFamily: "'DM Mono', monospace", fontSize: "0.6rem", letterSpacing: "0.1em", textTransform: "uppercase", color: "#F5F4EF" }}>
           {t(UI.close, lang)} <X className="w-3.5 h-3.5 group-hover:rotate-90 transition-transform duration-300" />
@@ -135,7 +135,7 @@ export function ProjectOverlay({
           {/* top bar */}
           <div className="flex items-center justify-between px-6 md:px-10 h-16 flex-shrink-0" style={{ borderBottom: "1px solid rgba(245,244,239,0.1)" }}>
             <span style={{ fontFamily: "'DM Mono', monospace", fontSize: "0.68rem", color: "#D63022" }}>
-              {project.id} — {t(UI.caseStudy, lang)}
+              {project.id} · {t(UI.caseStudy, lang)}
             </span>
             <div className="flex items-center gap-2">
               <button onClick={onPrev} data-cursor="Prev" className="flex items-center gap-1.5 px-3 py-2 hover:opacity-70 transition-opacity" style={{ border: "1px solid rgba(245,244,239,0.2)", fontFamily: "'DM Mono', monospace", fontSize: "0.6rem", letterSpacing: "0.1em", textTransform: "uppercase", color: "rgba(245,244,239,0.8)" }}>

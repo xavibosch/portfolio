@@ -13,18 +13,18 @@ import { ImageWithFallback } from "./figma/ImageWithFallback";
    that render it. Keys map straight to the strings below. */
 const UI = {
   heroKicker: { en: "Interactive Product Design", es: "Diseño de Producto Interactivo", ca: "Disseny de Producte Interactiu" },
-  heroPlace: { en: "Barcelona — La Salle", es: "Barcelona — La Salle", ca: "Barcelona — La Salle" },
+  heroPlace: { en: "Barcelona · La Salle", es: "Barcelona · La Salle", ca: "Barcelona · La Salle" },
   heroBody: {
-    en: "A student exploring the intersection of design, technology, and the future — building small systems, experiments and prototypes where hardware, software and interaction meet.",
-    es: "Un estudiante explorando la intersección entre diseño, tecnología y futuro — construyendo pequeños sistemas, experimentos y prototipos donde se encuentran el hardware, el software y la interacción.",
-    ca: "Un estudiant explorant la intersecció entre disseny, tecnologia i futur — construint petits sistemes, experiments i prototips on es troben el hardware, el software i la interacció.",
+    en: "A student exploring the intersection of design, technology, and the future. Building small systems, experiments and prototypes where hardware, software and interaction meet.",
+    es: "Un estudiante explorando la intersección entre diseño, tecnología y futuro. Construyendo pequeños sistemas, experimentos y prototipos donde se encuentran el hardware, el software y la interacción.",
+    ca: "Un estudiant explorant la intersecció entre disseny, tecnologia i futur. Construint petits sistemes, experiments i prototips on es troben el hardware, el software i la interacció.",
   },
   heroCta: { en: "View the work", es: "Ver el trabajo", ca: "Veure el treball" },
 
   workLabel: { en: "My Projects", es: "Mis Proyectos", ca: "Els Meus Projectes" },
   workCount: { en: "projects", es: "proyectos", ca: "projectes" },
 
-  aboutScramble: { en: "About — Xavi Bosch", es: "Sobre mí — Xavi Bosch", ca: "Sobre mi — Xavi Bosch" },
+  aboutScramble: { en: "About · Xavi Bosch", es: "Sobre mí · Xavi Bosch", ca: "Sobre mi · Xavi Bosch" },
   aboutDegree: { en: "Interactive Product Design and Creation", es: "Diseño y Creación de Productos Interactivos", ca: "Disseny i Creació de Productes Interactius" },
   aboutP1a: { en: "I'm currently studying", es: "Actualmente estudio", ca: "Actualment estudio" },
   aboutP1b: {
@@ -38,9 +38,9 @@ const UI = {
     ca: "El que més em motiva és explorar l'espai on el pensament tècnic es troba amb les necessitats humanes. Gaudeixo entenent com funcionen els productes per dins, però m'interessa igual com hi interactua la gent i què fa que una experiència se senti intuïtiva.",
   },
   aboutP3: {
-    en: "Recently, much of that curiosity has been focused on artificial intelligence — how it's changing the way digital products are imagined, designed, and built, and the opportunities it creates for the future.",
-    es: "Últimamente, buena parte de esa curiosidad se ha centrado en la inteligencia artificial — cómo está cambiando la forma en que se imaginan, diseñan y construyen los productos digitales, y las oportunidades que crea para el futuro.",
-    ca: "Últimament, bona part d'aquesta curiositat s'ha centrat en la intel·ligència artificial — com està canviant la manera com s'imaginen, es dissenyen i es construeixen els productes digitals, i les oportunitats que crea per al futur.",
+    en: "Recently, much of that curiosity has been focused on artificial intelligence, and how it is changing the way digital products are imagined, designed, and built, and the opportunities it creates for the future.",
+    es: "Últimamente, buena parte de esa curiosidad se ha centrado en la inteligencia artificial, y cómo está cambiando la forma en que se imaginan, diseñan y construyen los productos digitales, y las oportunidades que crea para el futuro.",
+    ca: "Últimament, bona part d'aquesta curiositat s'ha centrat en la intel·ligència artificial, i com està canviant la manera com s'imaginen, es dissenyen i es construeixen els productes digitals, i les oportunitats que crea per al futur.",
   },
   aboutP4: {
     en: "This portfolio is a reflection of that journey: a collection of projects, experiments, and ideas that represent what I'm learning and the kind of products I hope to build.",
@@ -54,9 +54,9 @@ const UI = {
   contactHeading2: { en: "work", es: "de tu", ca: "del teu" },
   contactHeading3: { en: "together.", es: "proyecto.", ca: "projecte." },
   contactBody: {
-    en: "I'm looking for internships and junior roles in product design and development where I can keep building real, thoughtful digital products. Feel free to reach out — I'd love to talk.",
-    es: "Estoy buscando prácticas y puestos junior en diseño y desarrollo de producto donde pueda seguir construyendo productos digitales reales y con criterio. Escríbeme sin problema — me encantaría hablar.",
-    ca: "Estic buscant pràctiques i llocs júnior en disseny i desenvolupament de producte on pugui seguir construint productes digitals reals i amb criteri. Escriu-me sense problema — m'encantaria parlar.",
+    en: "I'm looking for internships and junior roles in product design and development where I can keep building real, thoughtful digital products. Feel free to reach out. I would love to talk.",
+    es: "Estoy buscando prácticas y puestos junior en diseño y desarrollo de producto donde pueda seguir construyendo productos digitales reales y con criterio. Escríbeme sin problema. Me encantaría hablar.",
+    ca: "Estic buscant pràctiques i llocs júnior en disseny i desenvolupament de producte on pugui seguir construint productes digitals reals i amb criteri. Escriu-me sense problema. M'encantaria parlar.",
   },
   labelEmail: { en: "Email", es: "Email", ca: "Email" },
   labelBasedIn: { en: "Based in", es: "Ubicado en", ca: "Ubicat a" },
@@ -359,7 +359,13 @@ export function ProjectRow({
           transition: "transform 0.5s cubic-bezier(0.76,0,0.24,1)",
         }}
       />
-      <div className={`relative flex items-center gap-5 md:gap-10 px-1 ${compact ? "py-3.5 md:py-4" : "py-6 md:py-8"}`}>
+      <div
+        className={`relative flex items-center gap-5 md:gap-10 px-1 ${compact ? "" : "py-6 md:py-8"}`}
+        /* Compact rows live in a fixed 100vh panel, so their padding has to be
+           height-driven. A width-driven size overflowed the panel on short
+           windows and pushed the eighth project under the progress dots. */
+        style={compact ? { paddingTop: "clamp(0.28rem, 0.95vh, 1rem)", paddingBottom: "clamp(0.28rem, 0.95vh, 1rem)" } : undefined}
+      >
         <span
           style={{ fontFamily: "'DM Mono', monospace", fontSize: "0.7rem", width: "2rem", flexShrink: 0, color: hover ? "#D63022" : "rgba(245,244,239,0.4)", transition: "color 0.3s" }}
         >
@@ -370,7 +376,7 @@ export function ProjectRow({
           style={{
             fontFamily: "'Big Shoulders Display', sans-serif",
             fontWeight: 900,
-            fontSize: compact ? "clamp(1.5rem, 3.5vw, 2.6rem)" : "clamp(2rem, 6vw, 5rem)",
+            fontSize: compact ? "clamp(0.95rem, min(3.5vw, 4.6vh), 2.6rem)" : "clamp(2rem, 6vw, 5rem)",
             lineHeight: 0.95,
             textTransform: "uppercase",
             letterSpacing: "-0.02em",
@@ -436,7 +442,10 @@ export function WorkContent({ onOpen, compact, entry }) {
       </div>
 
       {/* pt gives the first row air so it never touches the header rule */}
-      <div className="flex-1 min-h-0 flex flex-col justify-center pt-6 md:pt-9">
+      <div
+        className="flex-1 min-h-0 flex flex-col justify-center"
+        style={{ paddingTop: "clamp(0.4rem, 1.4vh, 1.6rem)" }}
+      >
         {projects.map((p) => (
           <ProjectRow
             key={p.id}
