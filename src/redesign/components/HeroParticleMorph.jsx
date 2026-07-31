@@ -522,6 +522,44 @@ export function HeroParticleMorph({
       canvas.height = Math.round(height * pixelRatio);
     };
 
+    /**
+     * Where a deck-panel element will sit once the panel finishes sliding in.
+     *
+     * The deck translates its whole track on X, so during a panel change
+     * getBoundingClientRect() reports the target mid-slide — often far off
+     * screen. Aiming at that moving value made the particles chase the element
+     * out of the viewport and only "reappear" once the slide caught up.
+     *
+     * Measuring the element against its own panel cancels the shared
+     * translation out, and an active panel always occupies the viewport at
+     * (0, 0), so the offset inside the panel IS the final on-screen position.
+     * The particles now fly straight to where the element is going to be and
+     * stay visible for the whole trip.
+     */
+    const resolveRestingRect = (element) => {
+      if (!element) return null;
+      const elementRect = element.getBoundingClientRect();
+      if (!elementRect.width) return null;
+
+      const panel = element.closest("[data-deck-panel]");
+      if (!panel) {
+        return {
+          x: elementRect.left,
+          y: elementRect.top,
+          width: elementRect.width,
+          height: elementRect.height,
+        };
+      }
+
+      const panelRect = panel.getBoundingClientRect();
+      return {
+        x: elementRect.left - panelRect.left,
+        y: elementRect.top - panelRect.top,
+        width: elementRect.width,
+        height: elementRect.height,
+      };
+    };
+
     const getSceneRect = (activeScene) => {
       if (activeScene === 0) {
         return fitShapeToRect(
@@ -551,28 +589,14 @@ export function HeroParticleMorph({
         aboutTarget ??= document.querySelector(
           "[data-particle-about-target]"
         );
-        const rect = aboutTarget?.getBoundingClientRect();
-        if (rect?.width) {
-          return {
-            x: rect.left,
-            y: rect.top,
-            width: rect.width,
-            height: rect.height,
-          };
-        }
+        const rect = resolveRestingRect(aboutTarget);
+        if (rect) return rect;
       }
 
       if (activeScene === 3) {
         endTarget ??= document.querySelector("[data-particle-end-target]");
-        const rect = endTarget?.getBoundingClientRect();
-        if (rect?.width) {
-          return {
-            x: rect.left,
-            y: rect.top,
-            width: rect.width,
-            height: rect.height,
-          };
-        }
+        const rect = resolveRestingRect(endTarget);
+        if (rect) return rect;
       }
 
       return {

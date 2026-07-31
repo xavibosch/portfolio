@@ -175,13 +175,31 @@ should live:
 |---:|---|---|---:|---|
 | 0 | Intro | Right 62% of viewport | `1.0` | Fills the space beside the name |
 | 1 | Work | Near-full-bleed | `0.18` | Drops to `z-index: 0` — behind the project list, becomes texture |
-| 2 | About | `[data-particle-about-target]` | `0.94` | Queries the actual photo element's `getBoundingClientRect()` |
+| 2 | About | `[data-particle-about-target]` | `0.94` | Queries the actual photo element's box |
 | 3 | Contact | `[data-particle-end-target]` | `0.94` | Morphs to *"The End"* rendered in Snell Roundhand script |
 
 Scenes 2 and 3 are the interesting ones: rather than hardcoding coordinates, the
-engine does a live DOM lookup and reads the target element's bounding box each
+engine does a live DOM lookup and reads the target element's geometry each
 frame. Resize the window, change the layout, swap the language — the particles
 still land exactly on the photo, because they are following the real element.
+
+That live lookup needs one correction. The deck translates its entire track on
+X, so mid-slide a raw `getBoundingClientRect()` reports the About photo while it
+is still off-screen to the right. Aiming at that moving value made the particles
+chase the element out of the viewport and only reappear once the slide caught
+up — they looked like they vanished and teleported. Measuring the element
+against its own panel instead cancels the shared translation out, and an active
+panel always occupies the viewport at `(0, 0)`:
+
+```js
+const panelRect = element.closest("[data-deck-panel]").getBoundingClientRect();
+const elementRect = element.getBoundingClientRect();
+return { x: elementRect.left - panelRect.left,      // final resting position
+         y: elementRect.top  - panelRect.top, … };
+```
+
+The particles now fly straight to where the element is *going to be* and stay
+visible for the whole trip.
 
 Scene changes snapshot current positions into `transitionFrom` and interpolate
 over 1650ms with a smoothstep, so switching panels mid-morph never snaps.
@@ -239,6 +257,19 @@ globally (`cursor: none`), and the whole thing early-returns on
 there is a `setTimeout` failsafe at `duration + 1200ms` that force-completes the
 boot. Without it, opening the site in a background tab (cmd-click, restored
 session) would leave a visitor staring at a frozen overlay forever.
+
+**Puzzle assembly** (`Assemble.jsx`) — when the boot overlay clears, the whole
+interface builds itself over ~3s. Every piece — each letter of the name, each
+word of the body copy, each nav item — starts pushed out along its own angle,
+rotated and blurred, then converges into place on a long `easeOut` curve. The
+slow lock at the end is what reads as *snapping into a slot* rather than
+*sliding in*.
+
+Offsets come from a hash of the piece index rather than `Math.random()`, so a
+letter always flies in from the same place; with `random()` any re-render
+mid-flight would teleport it onto a fresh trajectory. The staggered choreography
+runs logo → hairline labels → name (55ms per letter) → paragraph → nav → CTA →
+progress dots → status rail. `useReducedMotion()` skips the whole thing.
 
 **Magnetic name** (`HeroName`) — `XAVI` and `BOSCH` counter-drift against the
 pointer. Deliberately **not** React state: storing pointer position in state

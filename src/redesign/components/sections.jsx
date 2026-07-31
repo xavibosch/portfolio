@@ -5,6 +5,7 @@ import { motion } from "motion/react";
 import { projects, techMarquee } from "../data/projects";
 import { useLang, t } from "../i18n";
 import { Scramble } from "./Scramble";
+import { AssemblePiece, AssembleWords } from "./Assemble";
 import { AsciiPhoto } from "./AsciiPhoto";
 import { ImageWithFallback } from "./figma/ImageWithFallback";
 
@@ -66,7 +67,7 @@ const FROM_BCN = { en: "From BCN", es: "Desde BCN", ca: "Des de BCN" };
 const SCROLL_HINT = { en: "Scroll / drag / arrows", es: "Scroll / arrastra / flechas", ca: "Scroll / arrossega / fletxes" };
 
 /* ─────────────────────────  HERO NAME (kinetic)  ───────────────────────── */
-export function HeroName() {
+export function HeroName({ booted = true }) {
   const ref = useRef(null);
   const rowRefs = useRef([]);
 
@@ -113,33 +114,50 @@ export function HeroName() {
   }, []);
 
   const rows = ["XAVI", "BOSCH"];
+  // Letters keep assembling across both rows, so BOSCH continues the count
+  // rather than restarting the stagger halfway through the name.
+  let charIndex = 0;
+
   return (
     <div ref={ref} className="select-none">
-      {rows.map((word, ri) => (
-        <div
-          key={word}
-          ref={(el) => (rowRefs.current[ri] = el)}
-          className="overflow-hidden"
-          style={{ willChange: "transform" }}
-        >
-          <motion.h1
-            initial={{ y: "110%" }}
-            animate={{ y: 0 }}
-            transition={{ delay: 0.15 + ri * 0.1, duration: 1, ease: [0.16, 1, 0.3, 1] }}
-            style={{
-              fontFamily: "'Big Shoulders Display', sans-serif",
-              fontWeight: 900,
-              fontSize: "clamp(4rem, 16vw, 17rem)",
-              lineHeight: 0.82,
-              letterSpacing: "-0.03em",
-              color: "#F5F4EF",
-              margin: 0,
-            }}
+      {rows.map((word, ri) => {
+        const startIndex = charIndex;
+        charIndex += word.length;
+        return (
+          <div
+            key={word}
+            ref={(el) => (rowRefs.current[ri] = el)}
+            style={{ willChange: "transform" }}
           >
-            {word}
-          </motion.h1>
-        </div>
-      ))}
+            <h1
+              style={{
+                fontFamily: "'Big Shoulders Display', sans-serif",
+                fontWeight: 900,
+                fontSize: "clamp(4rem, 16vw, 17rem)",
+                lineHeight: 0.82,
+                letterSpacing: "-0.03em",
+                color: "#F5F4EF",
+                margin: 0,
+              }}
+            >
+              {word.split("").map((char, ci) => (
+                <AssemblePiece
+                  key={`${word}-${ci}`}
+                  index={startIndex + ci}
+                  delay={0.2}
+                  stagger={0.055}
+                  distance={150}
+                  spin={52}
+                  duration={1.3}
+                  active={booted}
+                >
+                  {char}
+                </AssemblePiece>
+              ))}
+            </h1>
+          </div>
+        );
+      })}
     </div>
   );
 }
@@ -175,40 +193,44 @@ export function HeroContent({ booted, onGoWork }) {
     <div className="relative w-full flex flex-col justify-between h-full overflow-hidden">
       <div className="relative z-10 flex items-start justify-between flex-shrink-0" style={{ borderBottom: "1px solid rgba(245,244,239,0.12)", paddingBottom: "1.1rem" }}>
         <p style={{ fontFamily: "'DM Mono', monospace", fontSize: "0.62rem", letterSpacing: "0.16em", textTransform: "uppercase", color: "rgba(245,244,239,0.55)" }}>
-          {t(UI.heroKicker, lang)}
+          <AssembleWords text={t(UI.heroKicker, lang)} active={booted} delay={0.1} stagger={0.05} distance={46} spin={18} />
         </p>
         <p style={{ fontFamily: "'DM Mono', monospace", fontSize: "0.62rem", letterSpacing: "0.16em", textTransform: "uppercase", color: "rgba(245,244,239,0.55)" }}>
-          {t(UI.heroPlace, lang)}
+          <AssembleWords text={t(UI.heroPlace, lang)} active={booted} delay={0.18} stagger={0.05} distance={46} spin={18} />
         </p>
       </div>
 
       <div className="relative z-10 flex-1 flex flex-col justify-center py-10">
-        <HeroName />
+        <HeroName booted={booted} />
       </div>
 
       <div className="relative z-10 flex flex-col md:flex-row items-start md:items-end justify-between gap-8">
-        <motion.p
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: booted ? 1 : 0, y: booted ? 0 : 20 }}
-          transition={{ delay: 0.5, duration: 0.7 }}
+        <p
           className="max-w-md"
           style={{ fontSize: "1rem", lineHeight: 1.6, color: "rgba(245,244,239,0.7)" }}
         >
-          {t(UI.heroBody, lang)}
-        </motion.p>
-        <motion.a
-          href="#work"
-          data-cursor="Enter"
-          onClick={(e) => { if (onGoWork) { e.preventDefault(); onGoWork(); } }}
-          initial={{ opacity: 0 }}
-          animate={{ opacity: booted ? 1 : 0 }}
-          transition={{ delay: 0.7, duration: 0.6 }}
-          className="inline-flex items-center gap-3 px-6 py-4 group"
-          style={{ border: "1px solid rgba(245,244,239,0.4)", color: "#F5F4EF", fontFamily: "'DM Mono', monospace", fontSize: "0.68rem", letterSpacing: "0.14em", textTransform: "uppercase" }}
-        >
-          {t(UI.heroCta, lang)}
-          <ArrowUpRight className="w-4 h-4 group-hover:rotate-45 transition-transform duration-300" />
-        </motion.a>
+          <AssembleWords
+            text={t(UI.heroBody, lang)}
+            active={booted}
+            delay={0.95}
+            stagger={0.022}
+            distance={52}
+            spin={22}
+            duration={0.95}
+          />
+        </p>
+        <AssemblePiece index={3} delay={1.75} stagger={0} distance={80} spin={16} duration={1.1} active={booted}>
+          <a
+            href="#work"
+            data-cursor="Enter"
+            onClick={(e) => { if (onGoWork) { e.preventDefault(); onGoWork(); } }}
+            className="inline-flex items-center gap-3 px-6 py-4 group"
+            style={{ border: "1px solid rgba(245,244,239,0.4)", color: "#F5F4EF", fontFamily: "'DM Mono', monospace", fontSize: "0.68rem", letterSpacing: "0.14em", textTransform: "uppercase" }}
+          >
+            {t(UI.heroCta, lang)}
+            <ArrowUpRight className="w-4 h-4 group-hover:rotate-45 transition-transform duration-300" />
+          </a>
+        </AssemblePiece>
       </div>
     </div>
   );

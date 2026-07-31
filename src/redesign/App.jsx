@@ -7,6 +7,7 @@ import { BootSequence } from "./components/BootSequence";
 import { ProjectOverlay } from "./components/ProjectOverlay";
 import { HeroContent, WorkContent, AboutContent, ContactContent } from "./components/sections";
 import { HeroParticleMorph } from "./components/HeroParticleMorph";
+import { AssemblePiece } from "./components/Assemble";
 import { LanguageProvider, useLang, t, LANGS } from "./i18n";
 
 const PANELS = [
@@ -26,11 +27,24 @@ function Deck({
   onNavigate,
   panels,
   count,
+  locked = false,
 }) {
   const lock = useRef(false);
   const acc = useRef(0);
 
   useEffect(() => {
+    /**
+     * While a case study is open the deck must not listen at all. Its handlers
+     * sit on window, so scrolling inside the overlay used to advance the deck
+     * behind it — closing the overlay then dropped you on About or Contact
+     * instead of back on Work. Bailing before the listeners are attached also
+     * stops the arrow keys from driving the deck and the overlay at once.
+     */
+    if (locked) {
+      acc.current = 0;
+      return undefined;
+    }
+
     const advance = (dir) => {
       if (lock.current) return;
       lock.current = true;
@@ -69,7 +83,7 @@ function Deck({
       window.removeEventListener("touchstart", onTS);
       window.removeEventListener("touchend", onTE);
     };
-  }, [count, index, onNavigate]);
+  }, [count, index, onNavigate, locked]);
 
   return (
     <div className="fixed inset-0 z-10 overflow-hidden">
@@ -84,6 +98,7 @@ function Deck({
         {panels.map((node, i) => (
           <div
             key={i}
+            data-deck-panel={i}
             className="relative flex flex-col justify-center px-7 md:px-12"
             style={{ width: "100vw", height: "100vh", flexShrink: 0, paddingTop: "5.5rem", paddingBottom: "4.5rem" }}
           >
@@ -248,41 +263,52 @@ function AppInner() {
         className="fixed top-0 left-0 right-0 z-[150]"
       >
         <nav className="flex items-center justify-between px-7 md:px-12 py-5">
-          <button
-            onClick={() => goTo(0)}
-            data-cursor="Home"
-            style={{ fontFamily: "'Big Shoulders Display', sans-serif", fontWeight: 900, letterSpacing: "0.06em", fontSize: "0.85rem", textTransform: "uppercase", color: "#F5F4EF" }}
-          >
-            XAVI BOSCH<span style={{ color: "#D63022" }}>.</span>
-          </button>
+          <AssemblePiece index={0} delay={0.05} stagger={0} distance={44} spin={12} active={booted}>
+            <button
+              onClick={() => goTo(0)}
+              data-cursor="Home"
+              style={{ fontFamily: "'Big Shoulders Display', sans-serif", fontWeight: 900, letterSpacing: "0.06em", fontSize: "0.85rem", textTransform: "uppercase", color: "#F5F4EF" }}
+            >
+              XAVI BOSCH<span style={{ color: "#D63022" }}>.</span>
+            </button>
+          </AssemblePiece>
           <div className="flex items-center gap-5 md:gap-8">
             {PANELS.map((p, i) => (
-              <button
-                key={p.id}
-                data-cursor="Go"
-                onClick={() => goTo(i)}
-                className="hover:text-white transition-colors"
-                style={{ fontFamily: "'DM Mono', monospace", fontSize: "0.64rem", letterSpacing: "0.14em", textTransform: "uppercase", color: index === i ? "#D63022" : "rgba(245,244,239,0.6)" }}
-              >
-                {String(i + 1).padStart(2, "0")} {t(p.label, lang)}
-              </button>
+              <AssemblePiece key={p.id} index={i} delay={1.35} stagger={0.07} distance={40} spin={14} active={booted}>
+                <button
+                  data-cursor="Go"
+                  onClick={() => goTo(i)}
+                  className="hover:text-white transition-colors"
+                  style={{ fontFamily: "'DM Mono', monospace", fontSize: "0.64rem", letterSpacing: "0.14em", textTransform: "uppercase", color: index === i ? "#D63022" : "rgba(245,244,239,0.6)" }}
+                >
+                  {String(i + 1).padStart(2, "0")} {t(p.label, lang)}
+                </button>
+              </AssemblePiece>
             ))}
-            <LangToggle />
+            <AssemblePiece index={4} delay={1.35} stagger={0.07} distance={40} spin={14} active={booted}>
+              <LangToggle />
+            </AssemblePiece>
           </div>
         </nav>
       </motion.header>
 
       {/* STATUS RAIL */}
       <div className="fixed bottom-5 left-7 md:left-12 z-[120] hidden md:flex items-center gap-2.5 pointer-events-none">
-        <span className="w-2 h-2 rounded-full" style={{ background: "#22c55e", animation: "xb-blink 2.5s infinite" }} />
-        <span style={{ fontFamily: "'DM Mono', monospace", fontSize: "0.6rem", letterSpacing: "0.12em", color: "rgba(245,244,239,0.5)", textTransform: "uppercase" }}>
-          {t(OPEN_STATUS_YEAR, lang)}
-        </span>
+        <AssemblePiece index={1} delay={2.15} stagger={0} distance={38} spin={10} active={booted}>
+          <span className="flex items-center gap-2.5">
+            <span className="w-2 h-2 rounded-full" style={{ background: "#22c55e", animation: "xb-blink 2.5s infinite" }} />
+            <span style={{ fontFamily: "'DM Mono', monospace", fontSize: "0.6rem", letterSpacing: "0.12em", color: "rgba(245,244,239,0.5)", textTransform: "uppercase" }}>
+              {t(OPEN_STATUS_YEAR, lang)}
+            </span>
+          </span>
+        </AssemblePiece>
       </div>
       <div className="fixed bottom-5 right-7 md:right-12 z-[120] hidden md:block pointer-events-none">
-        <span style={{ fontFamily: "'DM Mono', monospace", fontSize: "0.6rem", letterSpacing: "0.12em", color: "rgba(245,244,239,0.5)" }}>
-          {t(FROM_BCN, lang)} — {clock}
-        </span>
+        <AssemblePiece index={2} delay={2.25} stagger={0} distance={38} spin={10} active={booted}>
+          <span style={{ fontFamily: "'DM Mono', monospace", fontSize: "0.6rem", letterSpacing: "0.12em", color: "rgba(245,244,239,0.5)" }}>
+            {t(FROM_BCN, lang)} — {clock}
+          </span>
+        </AssemblePiece>
       </div>
 
       {/* DECK */}
@@ -291,22 +317,25 @@ function AppInner() {
         onNavigate={goTo}
         panels={panelNodes}
         count={PANELS.length}
+        locked={openId !== null}
       />
 
       {/* PROGRESS DOTS (bottom center) */}
       <div className="fixed bottom-16 left-1/2 -translate-x-1/2 z-[120] flex flex-row gap-3">
         {PANELS.map((p, i) => (
-          <button key={p.id} data-cursor={p.label} onClick={() => goTo(i)}>
-            <span
-              style={{
-                width: index === i ? 28 : 10,
-                height: 2,
-                background: index === i ? "#D63022" : "rgba(245,244,239,0.3)",
-                transition: "all 0.4s cubic-bezier(0.76,0,0.24,1)",
-                display: "block",
-              }}
-            />
-          </button>
+          <AssemblePiece key={p.id} index={i} delay={1.95} stagger={0.06} distance={30} spin={0} active={booted}>
+            <button data-cursor={t(p.label, lang)} onClick={() => goTo(i)}>
+              <span
+                style={{
+                  width: index === i ? 28 : 10,
+                  height: 2,
+                  background: index === i ? "#D63022" : "rgba(245,244,239,0.3)",
+                  transition: "all 0.4s cubic-bezier(0.76,0,0.24,1)",
+                  display: "block",
+                }}
+              />
+            </button>
+          </AssemblePiece>
         ))}
       </div>
 
