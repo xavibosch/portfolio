@@ -442,9 +442,12 @@ export function WorkContent({ onOpen, compact, entry }) {
       </div>
 
       {/* pt gives the first row air so it never touches the header rule */}
+      {/* Top-aligned, not centred: the list should sit tight under the header
+          rule. Leftover room collects at the bottom, which fills up as more
+          projects are added. */}
       <div
-        className="flex-1 min-h-0 flex flex-col justify-center"
-        style={{ paddingTop: "clamp(0.4rem, 1.4vh, 1.6rem)" }}
+        className="flex-1 min-h-0 flex flex-col justify-start"
+        style={{ paddingTop: "clamp(0.15rem, 0.5vh, 0.5rem)" }}
       >
         {projects.map((p) => (
           <ProjectRow
