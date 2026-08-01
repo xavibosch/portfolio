@@ -102,6 +102,7 @@ export function ProjectOverlay({
 }) {
   const { lang } = useLang();
   const [gallery, setGallery] = useState(false);
+  const hasImages = (project?.images?.length ?? 0) > 0;
 
   useEffect(() => setGallery(false), [project?.id]);
 
@@ -159,7 +160,7 @@ export function ProjectOverlay({
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: -20 }}
               transition={{ duration: 0.4, ease: [0.16, 1, 0.3, 1] }}
-              className="grid md:grid-cols-[1.2fr_0.8fr] h-[calc(100vh-4rem)] overflow-y-auto md:overflow-hidden"
+              className={`grid ${hasImages ? "md:grid-cols-[1.2fr_0.8fr]" : "md:grid-cols-1"} h-[calc(100vh-4rem)] overflow-y-auto md:overflow-hidden`}
             >
               {/* LEFT — text */}
               <div className="flex flex-col justify-center px-6 md:px-12 py-8 overflow-y-auto">
@@ -214,9 +215,13 @@ export function ProjectOverlay({
                 </div>
 
                 <div className="mt-7 flex flex-wrap gap-3">
-                  <a href={project.repo} target="_blank" rel="noreferrer" data-cursor="Open" className="inline-flex items-center gap-2.5 px-5 py-3.5" style={{ background: "#F5F4EF", color: "#0C0B09", fontFamily: "'DM Mono', monospace", fontSize: "0.66rem", letterSpacing: "0.1em", textTransform: "uppercase" }}>
-                    <Github className="w-4 h-4" /> {t(UI.viewCode, lang)}
-                  </a>
+                  {/* Not every project has a public repo, and a dead link is
+                      worse than no link. */}
+                  {project.repo && (
+                    <a href={project.repo} target="_blank" rel="noreferrer" data-cursor="Open" className="inline-flex items-center gap-2.5 px-5 py-3.5" style={{ background: "#F5F4EF", color: "#0C0B09", fontFamily: "'DM Mono', monospace", fontSize: "0.66rem", letterSpacing: "0.1em", textTransform: "uppercase" }}>
+                      <Github className="w-4 h-4" /> {t(UI.viewCode, lang)}
+                    </a>
+                  )}
                   {project.video && (
                     <a href={project.video} target="_blank" rel="noreferrer" data-cursor="Watch" className="inline-flex items-center gap-2.5 px-5 py-3.5" style={{ border: "1px solid rgba(245,244,239,0.3)", color: "#F5F4EF", fontFamily: "'DM Mono', monospace", fontSize: "0.66rem", letterSpacing: "0.1em", textTransform: "uppercase" }}>
                       <Play className="w-3.5 h-3.5" /> {t(UI.watchDemo, lang)}
@@ -225,7 +230,8 @@ export function ProjectOverlay({
                 </div>
               </div>
 
-              {/* RIGHT — gallery entry button */}
+              {/* RIGHT: gallery entry button, only when there is art to show */}
+              {hasImages && (
               <div className="relative flex items-center justify-center p-6 md:p-10" style={{ borderLeft: "1px solid rgba(245,244,239,0.1)", background: "#141310" }}>
                 <button
                   onClick={() => setGallery(true)}
@@ -252,6 +258,7 @@ export function ProjectOverlay({
                   </div>
                 </button>
               </div>
+              )}
             </motion.div>
           </AnimatePresence>
 

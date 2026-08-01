@@ -197,6 +197,31 @@ export const projects = [
     repo: "https://github.com/xavibosch/lasallefy-java",
     images: [IMG + "sallefy-hero.svg"],
   },
+  {
+    id: "09",
+    name: "Gesture TV",
+    tagline: l(
+      "The remote was the barrier, so I removed it.",
+      "El mando era la barrera, así que lo quité.",
+      "El comandament era la barrera, així que el vaig treure."
+    ),
+    description: l(
+      "I know someone who cannot use a television remote. The buttons are small, the presses are precise, and none of it was designed for their hands. Gesture TV replaces the remote entirely: a clap turns the television on, a hand held inside a screen zone opens Netflix or YouTube or moves through the menu, and local voice commands cover the rest. No remote, no phone, and no need to ask anyone for help.",
+      "Conozco a una persona que no puede usar el mando de la televisión. Los botones son pequeños, las pulsaciones precisas, y nada de eso estaba pensado para sus manos. Gesture TV sustituye el mando por completo: una palmada enciende la televisión, la mano dentro de una zona de la pantalla abre Netflix o YouTube o se mueve por el menú, y los comandos de voz locales cubren el resto. Sin mando, sin móvil y sin tener que pedir ayuda a nadie.",
+      "Conec una persona que no pot fer servir el comandament de la televisió. Els botons són petits, les pulsacions precises, i res d'això estava pensat per a les seves mans. Gesture TV substitueix el comandament del tot: una palmada encén la televisió, la mà dins d'una zona de la pantalla obre Netflix o YouTube o es mou pel menú, i les ordres de veu locals cobreixen la resta. Sense comandament, sense mòbil i sense haver de demanar ajuda a ningú."
+    ),
+    role: l("Interaction Design + Computer Vision", "Diseño de Interacción + Visión por Computador", "Disseny d'Interacció + Visió per Computador"),
+    context: l("Hands free TV control", "Control de TV sin manos", "Control de TV sense mans"),
+    age: 18,
+    tags: [l("Accessibility", "Accesibilidad", "Accessibilitat"), l("Vision", "Visión", "Visió")],
+    tech: ["Python", "OpenCV", "MediaPipe", "Vosk", "Wake on LAN"],
+    learning: l(
+      "Designing for one real person cuts every abstract debate short. The camera never writes a single frame to disk, because a system that watches someone's living room to give them independence cannot charge them their privacy for it. Refusing shell access to the television was the same decision: the safest version was also the easiest one to trust.",
+      "Diseñar para una persona concreta corta de raíz cualquier debate abstracto. La cámara no guarda ni un solo fotograma, porque un sistema que mira el salón de alguien para darle independencia no puede cobrársela en privacidad. Renunciar al acceso de shell en la televisión fue la misma decisión: la versión más segura era también la más fácil de confiar.",
+      "Dissenyar per a una persona concreta talla de rel qualsevol debat abstracte. La càmera no desa ni un sol fotograma, perquè un sistema que mira el menjador d'algú per donar-li independència no li pot cobrar la privacitat a canvi. Renunciar a l'accés de shell a la televisió va ser la mateixa decisió: la versió més segura era també la més fàcil de confiar."
+    ),
+    images: [],
+  },
 ];
 
 export const techMarquee = [

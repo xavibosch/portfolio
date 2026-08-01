@@ -368,7 +368,7 @@ export function ProjectRow({
         /* Compact rows live in a fixed 100vh panel, so their padding has to be
            height-driven. A width-driven size overflowed the panel on short
            windows and pushed the eighth project under the progress dots. */
-        style={compact ? { paddingTop: "clamp(0.28rem, 0.95vh, 1rem)", paddingBottom: "clamp(0.28rem, 0.95vh, 1rem)" } : undefined}
+        style={compact ? { paddingTop: "clamp(0.2rem, calc(var(--row-h) * 0.13), 1rem)", paddingBottom: "clamp(0.2rem, calc(var(--row-h) * 0.13), 1rem)" } : undefined}
       >
         <span
           style={{ fontFamily: "'DM Mono', monospace", fontSize: "0.7rem", width: "2rem", flexShrink: 0, color: hover ? "#D63022" : "rgba(245,244,239,0.4)", transition: "color 0.3s" }}
@@ -380,7 +380,7 @@ export function ProjectRow({
           style={{
             fontFamily: "'Big Shoulders Display', sans-serif",
             fontWeight: 900,
-            fontSize: compact ? "clamp(0.95rem, min(3.5vw, 4.6vh), 2.6rem)" : "clamp(2rem, 6vw, 5rem)",
+            fontSize: compact ? "clamp(0.8rem, min(3.5vw, calc(var(--row-h) * 0.62)), 2.6rem)" : "clamp(2rem, 6vw, 5rem)",
             lineHeight: 0.95,
             textTransform: "uppercase",
             letterSpacing: "-0.02em",
@@ -456,12 +456,20 @@ export function WorkContent({ onOpen, compact, entry }) {
       </div>
 
       {/* pt gives the first row air so it never touches the header rule */}
-      {/* Top-aligned, not centred: the list should sit tight under the header
-          rule. Leftover room collects at the bottom, which fills up as more
-          projects are added. */}
+      {/* Top-aligned, not centred: the list sits tight under the header rule
+          and leftover room collects at the bottom.
+
+          --row-h is the height budget each row gets: the panel height minus
+          its chrome (padding, header rule, bottom nav), divided by how many
+          projects there actually are. Rows size themselves off it, so adding
+          a tenth or twelfth project shrinks the list to fit instead of
+          pushing the last one under the progress dots. */}
       <div
         className="flex-1 min-h-0 flex flex-col justify-start"
-        style={{ paddingTop: "clamp(0.15rem, 0.5vh, 0.5rem)" }}
+        style={{
+          paddingTop: "clamp(0.15rem, 0.5vh, 0.5rem)",
+          "--row-h": `calc((100vh - 14rem) / ${projects.length})`,
+        }}
       >
         {projects.map((p) => (
           <ProjectRow
@@ -482,14 +490,16 @@ export function WorkContent({ onOpen, compact, entry }) {
       >
         {active && (
           <div style={{ width: 280, background: "#0C0B09", border: "1px solid rgba(245,244,239,0.15)", boxShadow: "0 20px 60px rgba(0,0,0,0.6)" }}>
-            <div style={{ height: 160, overflow: "hidden" }}>
-              <ImageWithFallback
-                src={active.images[0]}
-                alt={active.name}
-                className="w-full h-full"
-                style={{ objectFit: "cover" }}
-              />
-            </div>
+            {active.images?.length > 0 && (
+              <div style={{ height: 160, overflow: "hidden" }}>
+                <ImageWithFallback
+                  src={active.images[0]}
+                  alt={active.name}
+                  className="w-full h-full"
+                  style={{ objectFit: "cover" }}
+                />
+              </div>
+            )}
             <div style={{ padding: "14px 16px", borderTop: "2px solid #D63022" }}>
               <p style={{ fontFamily: "'DM Mono', monospace", fontSize: "0.55rem", letterSpacing: "0.14em", textTransform: "uppercase", color: "rgba(245,244,239,0.5)", marginBottom: 5 }}>
                 {t(active.context, lang)}
