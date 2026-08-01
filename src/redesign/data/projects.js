@@ -220,6 +220,7 @@ export const projects = [
       "Diseñar para una persona concreta corta de raíz cualquier debate abstracto. La cámara no guarda ni un solo fotograma, porque un sistema que mira el salón de alguien para darle independencia no puede cobrársela en privacidad. Renunciar al acceso de shell en la televisión fue la misma decisión: la versión más segura era también la más fácil de confiar.",
       "Dissenyar per a una persona concreta talla de rel qualsevol debat abstracte. La càmera no desa ni un sol fotograma, perquè un sistema que mira el menjador d'algú per donar-li independència no li pot cobrar la privacitat a canvi. Renunciar a l'accés de shell a la televisió va ser la mateixa decisió: la versió més segura era també la més fàcil de confiar."
     ),
+    repo: "https://github.com/xavibosch/gesture-tv",
     images: [],
   },
 ];
