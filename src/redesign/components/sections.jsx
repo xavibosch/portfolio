@@ -21,6 +21,10 @@ const UI = {
   },
   heroCta: { en: "View the work", es: "Ver el trabajo", ca: "Veure el treball" },
 
+  // A bare "18" is ambiguous, so the badge carries its meaning in the cursor
+  // label and the title/aria text rather than leaving the number to guess at.
+  builtAtAge: { en: "Built at 18", es: "Hecho a los 18", ca: "Fet als 18" },
+
   workLabel: { en: "My Projects", es: "Mis Proyectos", ca: "Els Meus Projectes" },
   workCount: { en: "projects", es: "proyectos", ca: "projectes" },
 
@@ -395,6 +399,16 @@ export function ProjectRow({
               {t(tag, lang)}
             </span>
           ))}
+          {p.age && (
+            <span
+              title={t(UI.builtAtAge, lang)}
+              aria-label={t(UI.builtAtAge, lang)}
+              data-cursor={t(UI.builtAtAge, lang)}
+              style={{ fontFamily: "'DM Mono', monospace", fontSize: "0.62rem", letterSpacing: "0.08em", padding: "5px 9px", border: "1px solid rgba(214,48,34,0.55)", color: "#D63022", transition: "all 0.3s" }}
+            >
+              {p.age}
+            </span>
+          )}
         </div>
         <ArrowUpRight
           className={`${compact ? "w-5 h-5" : "w-6 h-6 md:w-8 md:h-8"} flex-shrink-0`}

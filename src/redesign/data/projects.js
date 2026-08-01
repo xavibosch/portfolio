@@ -19,6 +19,7 @@ export const projects = [
     ),
     role: l("Design + Systems + Engineering", "Diseño + Sistemas + Ingeniería", "Disseny + Sistemes + Enginyeria"),
     context: l("Personal AI agent for macOS", "Agente de IA personal para macOS", "Agent d'IA personal per a macOS"),
+    age: 18,
     tags: [l("AI Agent", "Agente IA", "Agent IA"), l("Systems", "Sistemas", "Sistemes")],
     tech: ["Python", "Ollama", "macOS", "Agent loop"],
     learning: l(
@@ -40,6 +41,7 @@ export const projects = [
     ),
     role: l("Product Design + iOS", "Diseño de Producto + iOS", "Disseny de Producte + iOS"),
     context: l("Native companion app", "App nativa complementaria", "App nativa complementària"),
+    age: 18,
     tags: ["iOS", l("Product", "Producto", "Producte")],
     tech: ["Swift", "SwiftUI", "macOS bridge"],
     learning: l(
@@ -61,6 +63,7 @@ export const projects = [
     ),
     role: l("Hardware + Interaction", "Hardware + Interacción", "Hardware + Interacció"),
     context: l("Physical trigger for Jeffrey", "Disparador físico para Jeffrey", "Disparador físic per a Jeffrey"),
+    age: 18,
     tags: ["Hardware", l("Interaction", "Interacción", "Interacció")],
     tech: ["Arduino MEGA", "Serial", "macOS"],
     learning: l(
@@ -86,6 +89,7 @@ export const projects = [
     ),
     role: l("Product Design + iOS", "Diseño de Producto + iOS", "Disseny de Producte + iOS"),
     context: l("Social betting league app", "App social de ligas de apuestas", "App social de lligues d'apostes"),
+    age: 18,
     tags: ["iOS", l("Product", "Producto", "Producte")],
     tech: ["Swift", "SwiftUI", "Firestore"],
     learning: l(
@@ -107,6 +111,7 @@ export const projects = [
     ),
     role: l("UX + Web", "UX + Web", "UX + Web"),
     context: l("NFC-anchored family utility", "Utilidad familiar anclada a NFC", "Utilitat familiar ancorada a NFC"),
+    age: 18,
     tags: ["NFC", "UX"], // universal abbreviations, no translation needed
     tech: ["NFC", "Web", "Realtime DB"],
     learning: l(
@@ -132,6 +137,7 @@ export const projects = [
     ),
     role: l("Interaction + Accessibility", "Interacción + Accesibilidad", "Interacció + Accessibilitat"),
     context: l("Multisensory accessible game", "Juego accesible multisensorial", "Joc accessible multisensorial"),
+    age: 18,
     tags: [l("Accessibility", "Accesibilidad", "Accessibilitat"), l("Haptics", "Háptica", "Hàptica")],
     tech: ["Core Haptics", "Spatial Audio", "Swift"],
     learning: l(
@@ -157,6 +163,7 @@ export const projects = [
     ),
     role: l("Hardware + Systems", "Hardware + Sistemas", "Hardware + Sistemes"),
     context: l("La Salle · Electronics course", "La Salle · Asignatura de Electrónica", "La Salle · Assignatura d'Electrònica"),
+    age: 18,
     tags: [l("Robotics", "Robótica", "Robòtica"), l("Systems", "Sistemas", "Sistemes")],
     tech: ["ESP32", "MQTT", "Ultrasonic"],
     learning: l(
@@ -179,6 +186,7 @@ export const projects = [
     ),
     role: l("Architecture + Engineering", "Arquitectura + Ingeniería", "Arquitectura + Enginyeria"),
     context: l("La Salle · OOP course (pair)", "La Salle · Asignatura de POO (en pareja)", "La Salle · Assignatura de POO (en parella)"),
+    age: 18,
     tags: [l("Systems", "Sistemas", "Sistemes"), "Java"],
     tech: ["Java", "OOP", "DSP"],
     learning: l(

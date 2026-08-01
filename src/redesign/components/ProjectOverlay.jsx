@@ -18,6 +18,7 @@ const UI = {
   viewGallery: { en: "View gallery", es: "Ver galería", ca: "Veure galeria" },
   image: { en: "image", es: "imagen", ca: "imatge" },
   images: { en: "images", es: "imágenes", ca: "imatges" },
+  builtAtAge: { en: "Built at 18", es: "Hecho a los 18", ca: "Fet als 18" },
 };
 
 /* ─────────────────────────  FULLSCREEN GALLERY  ───────────────────────── */
@@ -168,6 +169,16 @@ export function ProjectOverlay({
                       {t(tag, lang)}
                     </span>
                   ))}
+                  {project.age && (
+                    <span
+                      title={t(UI.builtAtAge, lang)}
+                      aria-label={t(UI.builtAtAge, lang)}
+                      data-cursor={t(UI.builtAtAge, lang)}
+                      style={{ fontFamily: "'DM Mono', monospace", fontSize: "0.58rem", letterSpacing: "0.1em", padding: "4px 9px", border: "1px solid rgba(214,48,34,0.55)", color: "#D63022" }}
+                    >
+                      {project.age}
+                    </span>
+                  )}
                 </div>
 
                 <h2 style={{ fontFamily: "'Big Shoulders Display', sans-serif", fontWeight: 900, fontSize: "clamp(2.8rem, 6vw, 6.5rem)", lineHeight: 0.85, letterSpacing: "-0.03em", textTransform: "uppercase", color: "#F5F4EF" }}>
