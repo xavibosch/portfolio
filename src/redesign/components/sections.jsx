@@ -3,6 +3,7 @@ import { ArrowUpRight, Mail, MapPin } from "lucide-react";
 import { Github, Linkedin } from "./BrandIcons";
 import { motion } from "motion/react";
 import { projects, techMarquee } from "../data/projects";
+import { degree, intro, disciplines, skillTracks } from "../data/skills";
 import { useLang, t } from "../i18n";
 import { Scramble } from "./Scramble";
 import { AssemblePiece, AssembleWords } from "./Assemble";
@@ -24,6 +25,8 @@ const UI = {
   // A bare "18" is ambiguous, so the badge carries its meaning in the cursor
   // label and the title/aria text rather than leaving the number to guess at.
   builtAtAge: { en: "Built at 18", es: "Hecho a los 18", ca: "Fet als 18" },
+
+  skillsLabel: { en: "What I've learned", es: "Lo que he aprendido", ca: "El que he après" },
 
   workLabel: { en: "My Projects", es: "Mis Proyectos", ca: "Els Meus Projectes" },
   workCount: { en: "projects", es: "proyectos", ca: "projectes" },
@@ -641,6 +644,117 @@ export function ContactContent({ onReturnHome }) {
               The End
             </span>
           </button>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+/* ───────────────────────────  SKILLS CONTENT  ─────────────────────────── */
+
+/**
+ * One scrolling row of the carousel. The track holds the items twice and
+ * travels exactly -50%, so the second copy lands where the first started and
+ * the loop is seamless. Direction and speed differ per row so the three
+ * bands never lock into a pattern.
+ */
+function SkillTrack({ items, lang, reverse = false, duration = 42 }) {
+  const doubled = [...items, ...items];
+  return (
+    <div
+      className="xb-marquee-row overflow-hidden select-none"
+      style={{
+        // fade the ends instead of cutting them hard against the panel edge
+        maskImage: "linear-gradient(90deg, transparent, #000 6%, #000 94%, transparent)",
+        WebkitMaskImage: "linear-gradient(90deg, transparent, #000 6%, #000 94%, transparent)",
+      }}
+    >
+      <div
+        className="xb-track flex items-center"
+        style={{
+          width: "max-content",
+          animation: `xb-marquee ${duration}s linear infinite${reverse ? " reverse" : ""}`,
+        }}
+      >
+        {doubled.map((item, i) => (
+          <span
+            key={i}
+            className="flex items-center flex-shrink-0"
+            style={{
+              fontFamily: "'DM Mono', monospace",
+              fontSize: "clamp(0.58rem, 1.35vh, 0.72rem)",
+              letterSpacing: "0.1em",
+              textTransform: "uppercase",
+              color: "rgba(245,244,239,0.72)",
+              padding: "clamp(4px, 0.8vh, 8px) clamp(10px, 1.4vw, 16px)",
+              border: "1px solid rgba(245,244,239,0.18)",
+              marginRight: "clamp(6px, 0.7vw, 12px)",
+              whiteSpace: "nowrap",
+            }}
+          >
+            {t(item, lang)}
+          </span>
+        ))}
+      </div>
+    </div>
+  );
+}
+
+export function SkillsContent() {
+  const { lang } = useLang();
+  return (
+    <div className="w-full h-full flex flex-col">
+      <div className="flex items-baseline justify-between flex-shrink-0" style={{ borderBottom: "1px solid rgba(245,244,239,0.12)", paddingBottom: "1.1rem" }}>
+        <span style={{ fontFamily: "'Big Shoulders Display', sans-serif", fontWeight: 700, fontSize: "0.72rem", letterSpacing: "0.2em", textTransform: "uppercase", color: "rgba(245,244,239,0.55)" }}>
+          {t(UI.skillsLabel, lang)}
+        </span>
+        <span style={{ fontFamily: "'DM Mono', monospace", fontSize: "0.65rem", color: "rgba(245,244,239,0.4)" }}>
+          {t(degree, lang)}
+        </span>
+      </div>
+
+      <div className="flex-1 min-h-0 flex flex-col justify-between" style={{ paddingTop: "clamp(0.6rem, 2vh, 1.6rem)" }}>
+        <p
+          className="max-w-3xl flex-shrink-0"
+          style={{ fontSize: "clamp(0.85rem, 1.6vh, 1.05rem)", lineHeight: 1.55, color: "rgba(245,244,239,0.7)" }}
+        >
+          {t(intro, lang)}
+        </p>
+
+        {/* discipline · what I actually did */}
+        <div
+          className="grid md:grid-cols-2 min-h-0"
+          style={{ gap: "clamp(0.5rem, 1.6vh, 1.4rem) clamp(1.5rem, 4vw, 4rem)", marginBlock: "clamp(0.6rem, 2vh, 1.6rem)" }}
+        >
+          {disciplines.map((d, i) => (
+            <div key={i} className="flex gap-3 md:gap-4">
+              <span
+                className="flex-shrink-0"
+                style={{ fontFamily: "'DM Mono', monospace", fontSize: "clamp(0.55rem, 1.2vh, 0.68rem)", color: "#D63022", paddingTop: "0.15em" }}
+              >
+                {String(i + 1).padStart(2, "0")}
+              </span>
+              <div className="min-w-0">
+                <p style={{ fontFamily: "'Big Shoulders Display', sans-serif", fontWeight: 700, fontSize: "clamp(0.95rem, 2vh, 1.3rem)", lineHeight: 1.1, textTransform: "uppercase", letterSpacing: "0.01em", color: "#F5F4EF" }}>
+                  {t(d.field, lang)}
+                </p>
+                <p style={{ fontSize: "clamp(0.72rem, 1.4vh, 0.88rem)", lineHeight: 1.45, color: "rgba(245,244,239,0.6)", marginTop: "0.15rem" }}>
+                  {t(d.did, lang)}
+                </p>
+              </div>
+            </div>
+          ))}
+        </div>
+
+        {/* the carousel. Bottom pad keeps the last row clear of the progress
+            dots, which sit inside the panel's bottom padding. */}
+        <div
+          className="flex-shrink-0 flex flex-col"
+          style={{ gap: "clamp(5px, 0.9vh, 10px)", paddingBottom: "clamp(1.5rem, 4vh, 2.5rem)" }}
+        >
+          <SkillTrack items={skillTracks[0]} lang={lang} duration={46} />
+          <SkillTrack items={skillTracks[1]} lang={lang} duration={34} reverse />
+          <SkillTrack items={skillTracks[2]} lang={lang} duration={54} />
         </div>
       </div>
     </div>

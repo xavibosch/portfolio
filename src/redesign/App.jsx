@@ -5,7 +5,7 @@ import { projects } from "./data/projects";
 import { Cursor } from "./components/Cursor";
 import { BootSequence } from "./components/BootSequence";
 import { ProjectOverlay } from "./components/ProjectOverlay";
-import { HeroContent, WorkContent, AboutContent, ContactContent } from "./components/sections";
+import { HeroContent, WorkContent, SkillsContent, AboutContent, ContactContent } from "./components/sections";
 import { HeroParticleMorph } from "./components/HeroParticleMorph";
 import { AssemblePiece } from "./components/Assemble";
 import { LanguageProvider, useLang, t, LANGS } from "./i18n";
@@ -13,9 +13,15 @@ import { LanguageProvider, useLang, t, LANGS } from "./i18n";
 const PANELS = [
   { id: "intro", label: { en: "Intro", es: "Inicio", ca: "Inici" } },
   { id: "work", label: { en: "Work", es: "Trabajo", ca: "Treball" } },
+  { id: "skills", label: { en: "Skills", es: "Skills", ca: "Skills" } },
   { id: "about", label: { en: "About", es: "Sobre mí", ca: "Sobre mi" } },
   { id: "contact", label: { en: "Contact", es: "Contacto", ca: "Contacte" } },
 ];
+
+/* Particle scene per panel. Keyed by id so adding a panel never shifts the
+   engine's targets: Skills reuses Work's dimmed full bleed texture. */
+const SCENE_BY_ID = { intro: 0, work: 1, skills: 1, about: 2, contact: 3 };
+const ABOUT_INDEX = PANELS.findIndex((p) => p.id === "about");
 
 const OPEN_STATUS_YEAR = { en: "Open to opportunities · 2026", es: "Abierto a oportunidades · 2026", ca: "Obert a oportunitats · 2026" };
 const FROM_BCN = { en: "From BCN", es: "Desde BCN", ca: "Des de BCN" };
@@ -170,7 +176,7 @@ function AppInner() {
 
   useEffect(() => {
     setAboutPhotoVisible(false);
-    if (index !== 2) return undefined;
+    if (index !== ABOUT_INDEX) return undefined;
 
     const interval = setInterval(
       () => setAboutPhotoVisible((visible) => !visible),
@@ -213,6 +219,7 @@ function AppInner() {
       entry={workEntry}
       compact
     />,
+    <SkillsContent key="skills" />,
     <AboutContent
       key="about"
       photoVisible={aboutPhotoVisible}
@@ -239,6 +246,16 @@ function AppInner() {
         }
         ::selection { background:#D63022; color:#F5F4EF; }
         a, button { cursor: none; }
+
+        /* Skills carousel: hold a row still to read it. */
+        .xb-marquee-row:hover .xb-track { animation-play-state: paused; }
+
+        /* The global reduced-motion rule collapses durations to 0.01ms, which
+           would make an infinite marquee strobe. Stop it outright instead. */
+        @media (prefers-reduced-motion: reduce) {
+          .xb-track { animation: none !important; }
+          .xb-marquee-row { overflow-x: auto; }
+        }
       `}</style>
 
       <Cursor />
@@ -250,7 +267,7 @@ function AppInner() {
         onNext={() => openProjectAt(1)}
       />
       <HeroParticleMorph
-        scene={index}
+        scene={SCENE_BY_ID[PANELS[index].id] ?? 0}
         restartToken={particleRestart}
         aboutPhotoVisible={aboutPhotoVisible}
       />
