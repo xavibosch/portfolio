@@ -46,6 +46,11 @@ export const projects = [
       "Jeffrey escucha, elige una ruta, llama a la herramienta adecuada, la ejecuta en macOS y responde en el idioma en que se le habló. Entra una frase, sale una acción. Cinco sistemas se coordinan detrás, y sigue funcionando sin red porque el modelo local no es un modo demo.",
       "Jeffrey escolta, tria una ruta, crida l'eina adequada, l'executa a macOS i respon en l'idioma en què se li ha parlat. Entra una frase, surt una acció. Cinc sistemes es coordinen a sota, i segueix funcionant sense xarxa perquè el model local no és un mode demo."
     ),
+    changed: l(
+      "My first instinct when Jeffrey picked the wrong action was that the model was not good enough. It was not the model. The tools I had handed it were vaguely described, so it was choosing between options that overlapped, and no amount of model quality fixes an ambiguous menu. Rewriting the tool definitions to be narrow and unambiguous fixed more than swapping models ever did.",
+      "Mi primer instinto cuando Jeffrey elegía la acción equivocada era que el modelo no daba para más. No era el modelo. Las herramientas que le había pasado estaban descritas de forma vaga, así que elegía entre opciones que se solapaban, y ninguna calidad de modelo arregla un menú ambiguo. Reescribir las definiciones de las herramientas para que fueran estrechas y sin ambigüedad arregló más que cambiar de modelo.",
+      "El meu primer instint quan en Jeffrey triava l'acció equivocada era que el model no donava per a més. No era el model. Les eines que li havia passat estaven descrites de manera vaga, així que triava entre opcions que se superposaven, i cap qualitat de model arregla un menú ambigu. Reescriure les definicions de les eines perquè fossin estretes i sense ambigüitat va arreglar més que canviar de model."
+    ),
     role: l("Design + Systems + Engineering", "Diseño + Sistemas + Ingeniería", "Disseny + Sistemes + Enginyeria"),
     context: l("Personal AI agent for macOS", "Agente de IA personal para macOS", "Agent d'IA personal per a macOS"),
     age: 18,
@@ -78,6 +83,11 @@ export const projects = [
       "Una superficie nativa en iOS para Jeffrey y el Mac: vista en vivo, cursor, comandos, multimedia, apps y voz, sobre una conexión hecha para sobrevivir a un corte. Cada pestaña se organiza alrededor de una tarea remota concreta en vez de ser una lista de todos los comandos que existen.",
       "Una superfície nativa a iOS per a Jeffrey i el Mac: vista en directe, cursor, ordres, multimèdia, apps i veu, sobre una connexió feta per sobreviure a un tall. Cada pestanya s'organitza al voltant d'una tasca remota concreta en comptes de ser una llista de totes les ordres que existeixen."
     ),
+    changed: l(
+      "I built features first and the connection underneath them second, which meant each new one had to be taught how to survive a dropped link on its own. They did not survive it consistently, and every fix was the same fix written again. I stopped and rebuilt the channel layer as the foundation, and everything added after that was remote and resilient without asking.",
+      "Construí primero las funciones y después la conexión de debajo, lo que significaba que a cada nueva había que enseñarle por su cuenta a sobrevivir a un corte. No sobrevivían de forma consistente, y cada arreglo era el mismo arreglo escrito otra vez. Paré y rehice la capa de canales como cimiento, y todo lo añadido después fue remoto y resiliente sin pedirlo.",
+      "Vaig construir primer les funcions i després la connexió de sota, cosa que volia dir que a cada nova se li havia d'ensenyar pel seu compte a sobreviure a un tall. No hi sobrevivien de manera consistent, i cada arreglo era el mateix arreglo escrit un altre cop. Vaig parar i vaig refer la capa de canals com a fonament, i tot el que hi vaig afegir després va ser remot i resilient sense demanar-ho."
+    ),
     role: l("Product Design + iOS", "Diseño de Producto + iOS", "Disseny de Producte + iOS"),
     context: l("Native companion app", "App nativa complementaria", "App nativa complementària"),
     age: 18,
@@ -109,6 +119,11 @@ export const projects = [
       "A desk that works as an input device. Motion, sound and a physical button travel from an Arduino MEGA to macOS and fire whole routines in under 200 milliseconds. Built for a hallway, not a keynote.",
       "Un escritorio que funciona como dispositivo de entrada. El movimiento, el sonido y un botón físico viajan de un Arduino MEGA a macOS y lanzan rutinas enteras en menos de 200 milisegundos. Hecho para un pasillo, no para una keynote.",
       "Un escriptori que funciona com a dispositiu d'entrada. El moviment, el so i un botó físic viatgen d'un Arduino MEGA a macOS i llancen rutines senceres en menys de 200 mil·lisegons. Fet per a un passadís, no per a una keynote."
+    ),
+    changed: l(
+      "The first build worked and still felt broken. The routine fired every time, just late enough that you had already started wondering whether it had heard you, and once you are wondering you press the button again. Chasing that delay through the serial path is what turned latency from a number I was optimising afterwards into the thing the whole design was actually about.",
+      "La primera versión funcionaba y aun así se sentía rota. La rutina se disparaba siempre, solo que lo bastante tarde como para que ya te hubieras preguntado si te había oído, y en cuanto te lo preguntas vuelves a pulsar el botón. Perseguir ese retraso por el camino serie es lo que convirtió la latencia de un número que optimizaba después en aquello de lo que iba el diseño entero.",
+      "La primera versió funcionava i tot i així se sentia trencada. La rutina es disparava sempre, només que prou tard perquè ja t'haguessis preguntat si t'havia sentit, i quan t'ho preguntes tornes a prémer el botó. Perseguir aquell retard pel camí sèrie és el que va convertir la latència d'un número que optimitzava després en allò de què anava el disseny sencer."
     ),
     role: l("Hardware + Interaction", "Hardware + Interacción", "Hardware + Interacció"),
     context: l("Physical trigger for Jeffrey", "Disparador físico para Jeffrey", "Disparador físic per a Jeffrey"),
@@ -151,6 +166,11 @@ export const projects = [
       "El único proyecto de aquí con investigación real detrás. Hice tests de usuario con las personas a las que iba dirigido, mapeé el customer journey y definí los usuarios objetivo antes de construir las pantallas. La interfaz empezó como trabajo de Diseño de Interfaz y Gráfico y se rehízo según lo que decían los tests, no según lo que me gustaba a mí.",
       "L'únic projecte d'aquí amb recerca real al darrere. Vaig fer tests d'usuari amb les persones a qui anava dirigit, vaig mapar el customer journey i vaig definir els usuaris objectiu abans de construir les pantalles. La interfície va començar com a treball de Disseny d'Interfície i Gràfic i es va refer segons el que deien els tests, no segons el que m'agradava a mi."
     ),
+    changed: l(
+      "Writing the Firestore rules and the SwiftUI views at the same time is what exposed it: two people could settle the same bet, because nothing in a static screen says who owns that write. A wireframe cannot show you a race between two phones. The rules had to become the place where the truth lives, with the interface allowed to ask but never to decide.",
+      "Escribir las reglas de Firestore y las vistas de SwiftUI a la vez fue lo que lo destapó: dos personas podían liquidar la misma apuesta, porque nada en una pantalla estática dice de quién es esa escritura. Un wireframe no te enseña una carrera entre dos móviles. Las reglas tuvieron que pasar a ser el sitio donde vive la verdad, con la interfaz pudiendo preguntar pero nunca decidir.",
+      "Escriure les regles de Firestore i les vistes de SwiftUI alhora és el que ho va destapar: dues persones podien liquidar la mateixa aposta, perquè res en una pantalla estàtica diu de qui és aquella escriptura. Un wireframe no t'ensenya una cursa entre dos mòbils. Les regles van haver de passar a ser el lloc on viu la veritat, amb la interfície podent preguntar però mai decidir."
+    ),
     role: l("Product Design + Research + iOS", "Diseño de Producto + Investigación + iOS", "Disseny de Producte + Recerca + iOS"),
     context: l("Social betting league app", "App social de ligas de apuestas", "App social de lligues d'apostes"),
     age: 18,
@@ -182,6 +202,11 @@ export const projects = [
       "A sticker on the fridge door is the entire onboarding. Tap a phone against it and the family list opens: no store, no account, no password. The software is anchored to the object people already walk up to.",
       "Una pegatina en la puerta de la nevera es todo el onboarding. Acercas el móvil y se abre la lista familiar: sin store, sin cuenta, sin contraseña. El software está anclado al objeto al que la gente ya se acerca.",
       "Un adhesiu a la porta de la nevera és tot l'onboarding. Hi acostes el mòbil i s'obre la llista familiar: sense store, sense compte, sense contrasenya. El software està ancorat a l'objecte al qual la gent ja s'acosta."
+    ),
+    changed: l(
+      "The first version was a normal web app with a login, and it died the way every previous shared list had. Watching my own family not use it was the useful part: nobody refused, they just never got as far as opening it. The fix was not a better screen, it was removing the step before the screen. The NFC sticker exists because the app was never the problem, getting to the app was.",
+      "La primera versión era una web normal con login, y murió como habían muerto todas las listas compartidas anteriores. Ver a mi propia familia no usarla fue la parte útil: nadie se negó, simplemente nunca llegaban a abrirla. El arreglo no era una pantalla mejor, era quitar el paso anterior a la pantalla. La pegatina NFC existe porque la app nunca fue el problema, llegar a la app sí.",
+      "La primera versió era una web normal amb login, i va morir com havien mort totes les llistes compartides anteriors. Veure la meva pròpia família no fer-la servir va ser la part útil: ningú s'hi va negar, simplement mai arribaven a obrir-la. L'arreglo no era una pantalla millor, era treure el pas anterior a la pantalla. L'adhesiu NFC existeix perquè l'app mai va ser el problema, arribar a l'app sí."
     ),
     role: l("UX + Web", "UX + Web", "UX + Web"),
     context: l("NFC-anchored family utility", "Utilidad familiar anclada a NFC", "Utilitat familiar ancorada a NFC"),
@@ -219,6 +244,11 @@ export const projects = [
       "Cazas señales invisibles mediante háptica, sonido dinámico y visuales mínimos. El mismo juego funciona con cualquier combinación de sentidos, porque los tres canales llevan la misma información en vez de uno llevarla y los otros decorar.",
       "Caces senyals invisibles mitjançant hàptica, so dinàmic i visuals mínims. El mateix joc funciona amb qualsevol combinació de sentits, perquè els tres canals porten la mateixa informació en comptes que un la porti i els altres decorin."
     ),
+    changed: l(
+      "The haptics were the hard part, and not for the reason I expected. I designed and tuned them against the simulator, where a vibration is a line in a log rather than something you feel, so everything looked correct and none of it was. On a real device the patterns I had been most pleased with were the ones you could not tell apart in the hand. From then on nothing counted until it had been felt on hardware, which is slower and the only honest way to judge it.",
+      "La háptica fue la parte difícil, y no por lo que esperaba. La diseñé y la ajusté contra el simulador, donde una vibración es una línea en un log y no algo que sientes, así que todo parecía correcto y nada lo era. En un dispositivo real, los patrones de los que estaba más satisfecho eran justo los que no se distinguían en la mano. A partir de ahí nada contaba hasta haberlo sentido en hardware, que es más lento y la única forma honesta de juzgarlo.",
+      "L'hàptica va ser la part difícil, i no pel que esperava. La vaig dissenyar i ajustar contra el simulador, on una vibració és una línia en un log i no res que sentis, així que tot semblava correcte i res ho era. En un dispositiu real, els patrons dels quals estava més satisfet eren justament els que no es distingien a la mà. A partir d'aquí res comptava fins haver-ho sentit en hardware, que és més lent i l'única manera honesta de jutjar-ho."
+    ),
     role: l("Interaction + Accessibility", "Interacción + Accesibilidad", "Interacció + Accessibilitat"),
     context: l("Multisensory accessible game", "Juego accesible multisensorial", "Joc accessible multisensorial"),
     age: 18,
@@ -255,6 +285,11 @@ export const projects = [
       "Un coche de cuatro ruedas con ESP32 conducido desde cualquier móvil a través de un broker MQTT público, con una capa autónoma que frena, retrocede y pita cuando el mundo se acerca demasiado. Broker público, robot privado.",
       "Un cotxe de quatre rodes amb ESP32 conduït des de qualsevol mòbil a través d'un broker MQTT públic, amb una capa autònoma que frena, retrocedeix i pita quan el món s'acosta massa. Broker públic, robot privat."
     ),
+    changed: l(
+      "When the assembled car misbehaved I debugged the assembled car, which cost hours and told me almost nothing: with motors, sensors and the radio all live at once, any of them could have been the liar. Pulling the parts out and testing each one alone found it in minutes. Now I build the pieces so they can be run in isolation from the start, because a system you can only test as a whole is a system you cannot really test.",
+      "Cuando el coche montado fallaba, depuraba el coche montado, lo que costaba horas y no decía casi nada: con motores, sensores y radio activos a la vez, cualquiera podía ser el que mentía. Sacar las piezas y probar cada una por separado lo encontró en minutos. Ahora construyo las partes para poder ejecutarlas aisladas desde el principio, porque un sistema que solo puedes probar entero es un sistema que en realidad no puedes probar.",
+      "Quan el cotxe muntat fallava, depurava el cotxe muntat, cosa que costava hores i no deia gairebé res: amb motors, sensors i ràdio actius alhora, qualsevol podia ser el que mentia. Treure les peces i provar cadascuna per separat ho va trobar en minuts. Ara construeixo les parts per poder executar-les aïllades des del principi, perquè un sistema que només pots provar sencer és un sistema que en realitat no pots provar."
+    ),
     role: l("Hardware + Systems", "Hardware + Sistemas", "Hardware + Sistemes"),
     context: l("La Salle · Electronics course", "La Salle · Asignatura de Electrónica", "La Salle · Assignatura d'Electrònica"),
     age: 18,
@@ -287,6 +322,11 @@ export const projects = [
       "Every song is a sequence of frequencies synthesised in real time by four custom wave engines, inside strict layers. An AlbumGenerator assembles random albums filtered by mood and target length.",
       "Cada canción es una secuencia de frecuencias sintetizada en tiempo real por cuatro motores de onda propios, dentro de capas estrictas. Un AlbumGenerator monta álbumes aleatorios filtrados por mood y duración objetivo.",
       "Cada cançó és una seqüència de freqüències sintetitzada en temps real per quatre motors d'ona propis, dins de capes estrictes. Un AlbumGenerator munta àlbums aleatoris filtrats per mood i durada objectiu."
+    ),
+    changed: l(
+      "Working in a pair, we kept blocking each other: one of us could not start until the other had finished the class underneath. The fix was not better coordination, it was agreeing the interfaces between the layers before either of us wrote anything behind them. After that we could both build against a contract instead of against each other's unfinished work.",
+      "Trabajando en pareja nos bloqueábamos constantemente: uno no podía empezar hasta que el otro terminara la clase de debajo. El arreglo no fue coordinarnos mejor, fue acordar las interfaces entre capas antes de que ninguno escribiera nada detrás de ellas. A partir de ahí los dos podíamos construir contra un contrato en vez de contra el trabajo a medias del otro.",
+      "Treballant en parella ens bloquejàvem constantment: un no podia començar fins que l'altre acabés la classe de sota. L'arreglo no va ser coordinar-nos millor, va ser acordar les interfícies entre capes abans que cap dels dos escrivís res al darrere. A partir d'aquí tots dos podíem construir contra un contracte en comptes de contra la feina a mitges de l'altre."
     ),
     role: l("Architecture + Engineering", "Arquitectura + Ingeniería", "Arquitectura + Enginyeria"),
     context: l("La Salle · OOP course (pair)", "La Salle · Asignatura de POO (en pareja)", "La Salle · Assignatura de POO (en parella)"),
@@ -323,6 +363,11 @@ export const projects = [
       "Gesture TV replaces the remote completely. A clap turns the television on, a hand held inside a zone of the screen opens Netflix or YouTube or moves through the menu, and local voice commands cover the rest. No remote, no phone, and nobody to ask.",
       "Gesture TV sustituye el mando por completo. Una palmada enciende la televisión, la mano dentro de una zona de la pantalla abre Netflix o YouTube o se mueve por el menú, y los comandos de voz locales cubren el resto. Sin mando, sin móvil y sin tener que pedírselo a nadie.",
       "Gesture TV substitueix el comandament del tot. Una palmada encén la televisió, la mà dins d'una zona de la pantalla obre Netflix o YouTube o es mou pel menú, i les ordres de veu locals cobreixen la resta. Sense comandament, sense mòbil i sense haver-ho de demanar a ningú."
+    ),
+    changed: l(
+      "The version that worked best technically was the one I threw away. Full shell access to the television made every feature easy, and it also meant a camera in someone's living room sat behind a door I had left open. I gave up the shell and rebuilt on Wake on LAN and a narrow command set, which cost me features. A system that exists to give someone independence cannot ask for their privacy as the price.",
+      "La versión que mejor funcionaba técnicamente es la que tiré. El acceso completo de shell a la televisión hacía cada función fácil, y también significaba que una cámara en el salón de alguien quedaba detrás de una puerta que yo había dejado abierta. Renuncié al shell y lo rehice sobre Wake on LAN y un conjunto reducido de comandos, lo que me costó funciones. Un sistema que existe para dar independencia a alguien no puede pedirle su privacidad a cambio.",
+      "La versió que millor funcionava tècnicament és la que vaig llençar. L'accés complet de shell a la televisió feia cada funció fàcil, i també volia dir que una càmera al menjador d'algú quedava darrere d'una porta que jo havia deixat oberta. Vaig renunciar al shell i ho vaig refer sobre Wake on LAN i un conjunt reduït d'ordres, cosa que em va costar funcions. Un sistema que existeix per donar independència a algú no li pot demanar la privacitat a canvi."
     ),
     role: l("Interaction Design + Computer Vision", "Diseño de Interacción + Visión por Computador", "Disseny d'Interacció + Visió per Computador"),
     context: l("Hands free TV control", "Control de TV sin manos", "Control de TV sense mans"),
@@ -377,7 +422,15 @@ export const projects = [
       "Un cursor de mà seleccionava botons a un parell de centímetres d'on apuntava. La causa no era el tracking: un ancestre amb transform de CSS es converteix en el bloc contenidor de tot el que sigui fixed a dins, així que el punt es col·locava al marc escalat mentre el hit test llegia el viewport real. Treure el cursor d'aquell marc va tornar tots dos al mateix sistema de coordenades. Gairebé tot el que sembla un problema de tracking és un problema de coordenades."
     ),
     live: "https://home-gym-nine.vercel.app",
-    images: [],
+    images: [
+      IMG + "reps-home.jpg",
+      IMG + "reps-session.jpg",
+      IMG + "reps-rest.jpg",
+      IMG + "reps-leave.jpg",
+      IMG + "reps-summary.jpg",
+      IMG + "reps-log.jpg",
+      IMG + "reps-run.jpg",
+    ],
   },
 ];
 

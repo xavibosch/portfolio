@@ -1,9 +1,9 @@
 import { motion, AnimatePresence } from "motion/react";
-import { X, Play, ArrowLeft, ArrowRight, Images } from "lucide-react";
-import { Github } from "./BrandIcons";
+import { X, ArrowLeft, ArrowRight, Images } from "lucide-react";
 import { useEffect, useState } from "react";
 import { ImageWithFallback } from "./figma/ImageWithFallback";
 import { useLang, t } from "../i18n";
+import { CaseStudy } from "./CaseStudy";
 
 const UI = {
   gallery: { en: "GALLERY", es: "GALERÍA", ca: "GALERIA" },
@@ -11,40 +11,11 @@ const UI = {
   prev: { en: "Prev", es: "Ant.", ca: "Ant." },
   next: { en: "Next", es: "Seg.", ca: "Seg." },
   caseStudy: { en: "CASE STUDY", es: "CASO DE ESTUDIO", ca: "CAS D'ESTUDI" },
-  taughtMe: { en: "What it taught me", es: "Qué aprendí", ca: "Què vaig aprendre" },
-  role: { en: "Role", es: "Rol", ca: "Rol" },
-  viewCode: { en: "View code", es: "Ver código", ca: "Veure codi" },
-  watchDemo: { en: "Watch demo", es: "Ver demo", ca: "Veure demo" },
   viewGallery: { en: "View gallery", es: "Ver galería", ca: "Veure galeria" },
   image: { en: "image", es: "imagen", ca: "imatge" },
   images: { en: "images", es: "imágenes", ca: "imatges" },
   builtAtAge: { en: "Built at 18", es: "Hecho a los 18", ca: "Fet als 18" },
-  builtFor: { en: "Who it is for", es: "Para quién es", ca: "Per a qui és" },
-  problem: { en: "What was broken", es: "Qué estaba roto", ca: "Què estava trencat" },
-  changed: { en: "What went wrong, and what changed", es: "Qué falló, y qué cambió", ca: "Què va fallar, i què va canviar" },
-  research: { en: "Research behind it", es: "Investigación detrás", ca: "Recerca al darrere" },
-  viewLive: { en: "Open it live", es: "Abrir en vivo", ca: "Obrir en directe" },
 };
-
-/**
- * A labelled paragraph in the case study.
- *
- * `accent` marks the two blocks that cost something to write, the research and
- * the failure, so they do not read as more prose: those are the parts a
- * recruiter is actually looking for and the ones most portfolios leave out.
- */
-function Block({ label, body, accent = false }) {
-  return (
-    <div className="mt-6 max-w-xl" style={accent ? { borderLeft: "2px solid rgba(214,48,34,0.45)", paddingLeft: "1.25rem" } : undefined}>
-      <span style={{ fontFamily: "'DM Mono', monospace", fontSize: "0.56rem", letterSpacing: "0.16em", textTransform: "uppercase", color: accent ? "#D63022" : "rgba(245,244,239,0.4)" }}>
-        {label}
-      </span>
-      <p className="mt-2" style={{ fontSize: accent ? "0.88rem" : "0.95rem", lineHeight: 1.6, color: accent ? "rgba(245,244,239,0.72)" : "rgba(245,244,239,0.8)" }}>
-        {body}
-      </p>
-    </div>
-  );
-}
 
 /* ─────────────────────────  FULLSCREEN GALLERY  ───────────────────────── */
 function Gallery({ project, onClose }) {
@@ -178,6 +149,7 @@ export function ProjectOverlay({
           </div>
 
           {/* body */}
+          {/* body: one chapter at a time rather than one long column */}
           <AnimatePresence mode="wait">
             <motion.div
               key={project.id}
@@ -185,123 +157,16 @@ export function ProjectOverlay({
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: -20 }}
               transition={{ duration: 0.4, ease: [0.16, 1, 0.3, 1] }}
-              className={`grid ${hasImages ? "md:grid-cols-[1.2fr_0.8fr]" : "md:grid-cols-1"} h-[calc(100vh-4rem)] overflow-y-auto md:overflow-hidden`}
+              className="h-[calc(100vh-4rem)] overflow-y-auto md:overflow-hidden"
             >
-              {/* LEFT — text */}
-              <div className="flex flex-col justify-center px-6 md:px-12 py-8 overflow-y-auto">
-                <div className="flex flex-wrap gap-2 mb-5">
-                  {project.tags.map((tag, ti) => (
-                    <span key={ti} style={{ fontFamily: "'DM Mono', monospace", fontSize: "0.58rem", letterSpacing: "0.1em", textTransform: "uppercase", padding: "4px 10px", border: "1px solid rgba(245,244,239,0.2)", color: "rgba(245,244,239,0.7)" }}>
-                      {t(tag, lang)}
-                    </span>
-                  ))}
-                  {project.age && (
-                    <span
-                      title={t(UI.builtAtAge, lang)}
-                      aria-label={t(UI.builtAtAge, lang)}
-                      data-cursor={t(UI.builtAtAge, lang)}
-                      style={{ fontFamily: "'DM Mono', monospace", fontSize: "0.58rem", letterSpacing: "0.1em", padding: "4px 9px", border: "1px solid rgba(214,48,34,0.55)", color: "#D63022" }}
-                    >
-                      {project.age}
-                    </span>
-                  )}
-                </div>
-
-                <h2 style={{ fontFamily: "'Big Shoulders Display', sans-serif", fontWeight: 900, fontSize: "clamp(2.8rem, 6vw, 6.5rem)", lineHeight: 0.85, letterSpacing: "-0.03em", textTransform: "uppercase", color: "#F5F4EF" }}>
-                  {project.name}
-                </h2>
-                <p className="mt-3" style={{ fontFamily: "'Big Shoulders Display', sans-serif", fontWeight: 700, fontSize: "clamp(1.1rem, 2vw, 1.7rem)", lineHeight: 1.05, color: "#D63022", textTransform: "uppercase" }}>
-                  {t(project.tagline, lang)}
-                </p>
-
-                {/* Who and what was broken come before what it is: opening on
-                    the solution was the old mistake, and it made nine projects
-                    read like one brochure. */}
-                {project.builtFor && <Block label={t(UI.builtFor, lang)} body={t(project.builtFor, lang)} />}
-                {project.problem && <Block label={t(UI.problem, lang)} body={t(project.problem, lang)} />}
-
-                <p className="mt-6 max-w-xl" style={{ fontSize: "0.98rem", lineHeight: 1.6, color: "rgba(245,244,239,0.78)" }}>
-                  {t(project.description, lang)}
-                </p>
-
-                {/* Only present where the research actually happened. */}
-                {project.research && <Block label={t(UI.research, lang)} body={t(project.research, lang)} accent />}
-                {project.changed && <Block label={t(UI.changed, lang)} body={t(project.changed, lang)} accent />}
-
-                <div className="mt-6 border-l-2 pl-5 max-w-xl" style={{ borderColor: "#D63022" }}>
-                  <span style={{ fontFamily: "'DM Mono', monospace", fontSize: "0.56rem", letterSpacing: "0.16em", textTransform: "uppercase", color: "rgba(245,244,239,0.4)" }}>
-                    {t(UI.taughtMe, lang)}
-                  </span>
-                  <p className="mt-2" style={{ fontSize: "0.88rem", lineHeight: 1.55, color: "rgba(245,244,239,0.7)" }}>
-                    {t(project.learning, lang)}
-                  </p>
-                </div>
-
-                <div className="mt-7 flex flex-wrap items-center gap-4">
-                  <div className="flex flex-col gap-1 mr-3">
-                    <span style={{ fontFamily: "'DM Mono', monospace", fontSize: "0.55rem", letterSpacing: "0.14em", textTransform: "uppercase", color: "rgba(245,244,239,0.4)" }}>{t(UI.role, lang)}</span>
-                    <span style={{ fontSize: "0.82rem", color: "#F5F4EF" }}>{t(project.role, lang)}</span>
-                  </div>
-                  <div className="flex flex-wrap gap-1.5">
-                    {project.tech.map((tech) => (
-                      <span key={tech} style={{ fontFamily: "'DM Mono', monospace", fontSize: "0.6rem", padding: "4px 9px", border: "1px solid rgba(245,244,239,0.18)", color: "rgba(245,244,239,0.7)" }}>{tech}</span>
-                    ))}
-                  </div>
-                </div>
-
-                <div className="mt-7 flex flex-wrap gap-3">
-                  {/* Not every project has a public repo, and a dead link is
-                      worse than no link. */}
-                  {project.repo && (
-                    <a href={project.repo} target="_blank" rel="noreferrer" data-cursor="Open" className="inline-flex items-center gap-2.5 px-5 py-3.5" style={{ background: "#F5F4EF", color: "#0C0B09", fontFamily: "'DM Mono', monospace", fontSize: "0.66rem", letterSpacing: "0.1em", textTransform: "uppercase" }}>
-                      <Github className="w-4 h-4" /> {t(UI.viewCode, lang)}
-                    </a>
-                  )}
-                  {/* A running thing beats a repo: where one exists, it leads. */}
-                  {project.live && (
-                    <a href={project.live} target="_blank" rel="noreferrer" data-cursor="Open" className="inline-flex items-center gap-2.5 px-5 py-3.5" style={{ background: "#D63022", color: "#F5F4EF", fontFamily: "'DM Mono', monospace", fontSize: "0.66rem", letterSpacing: "0.1em", textTransform: "uppercase" }}>
-                      <Play className="w-3.5 h-3.5" /> {t(UI.viewLive, lang)}
-                    </a>
-                  )}
-                  {project.video && (
-                    <a href={project.video} target="_blank" rel="noreferrer" data-cursor="Watch" className="inline-flex items-center gap-2.5 px-5 py-3.5" style={{ border: "1px solid rgba(245,244,239,0.3)", color: "#F5F4EF", fontFamily: "'DM Mono', monospace", fontSize: "0.66rem", letterSpacing: "0.1em", textTransform: "uppercase" }}>
-                      <Play className="w-3.5 h-3.5" /> {t(UI.watchDemo, lang)}
-                    </a>
-                  )}
-                </div>
-              </div>
-
-              {/* RIGHT: gallery entry button, only when there is art to show */}
-              {hasImages && (
-              <div className="relative flex items-center justify-center p-6 md:p-10" style={{ borderLeft: "1px solid rgba(245,244,239,0.1)", background: "#141310" }}>
-                <button
-                  onClick={() => setGallery(true)}
-                  data-cursor="Open"
-                  className="group relative w-full max-w-sm overflow-hidden"
-                  style={{ aspectRatio: "3 / 4", border: "1px solid rgba(245,244,239,0.15)" }}
-                >
-                  <ImageWithFallback
-                    src={project.images[0]}
-                    alt={project.name}
-                    className="absolute inset-0 w-full h-full group-hover:scale-105"
-                    style={{ objectFit: "cover", filter: "brightness(0.55)", transition: "transform 0.6s cubic-bezier(0.16,1,0.3,1), filter 0.4s" }}
-                  />
-                  <div className="absolute inset-0 flex flex-col items-center justify-center gap-3">
-                    <div className="flex items-center justify-center w-14 h-14 rounded-full group-hover:scale-110 transition-transform duration-300" style={{ background: "#D63022" }}>
-                      <Images className="w-6 h-6" style={{ color: "#F5F4EF" }} />
-                    </div>
-                    <span style={{ fontFamily: "'Big Shoulders Display', sans-serif", fontWeight: 900, fontSize: "1.4rem", textTransform: "uppercase", letterSpacing: "0.02em", color: "#F5F4EF" }}>
-                      {t(UI.viewGallery, lang)}
-                    </span>
-                    <span style={{ fontFamily: "'DM Mono', monospace", fontSize: "0.62rem", letterSpacing: "0.14em", textTransform: "uppercase", color: "rgba(245,244,239,0.7)" }}>
-                      {project.images.length} {project.images.length === 1 ? t(UI.image, lang) : t(UI.images, lang)}
-                    </span>
-                  </div>
-                </button>
-              </div>
-              )}
+              <CaseStudy
+                project={project}
+                lang={lang}
+                onOpenGallery={hasImages ? () => setGallery(true) : undefined}
+              />
             </motion.div>
           </AnimatePresence>
+
 
           <AnimatePresence>
             {gallery && <Gallery project={project} onClose={() => setGallery(false)} />}
