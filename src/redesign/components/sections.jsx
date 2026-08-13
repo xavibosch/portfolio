@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from "react";
-import { ArrowUpRight, Mail, MapPin } from "lucide-react";
+import { ArrowUpRight, Download, Mail, MapPin } from "lucide-react";
 import { Github, Linkedin } from "./BrandIcons";
 import { motion } from "motion/react";
 import { projects, techMarquee } from "../data/projects";
@@ -56,6 +56,7 @@ const UI = {
   },
 
   contactLabel: { en: "Contact", es: "Contacto", ca: "Contacte" },
+  downloadCv: { en: "Download CV", es: "Descargar CV", ca: "Descarregar CV" },
   contactStatus: { en: "Open to opportunities", es: "Abierto a oportunidades", ca: "Obert a oportunitats" },
   contactHeading1: { en: "Let's", es: "Hablemos", ca: "Parlem" },
   contactHeading2: { en: "work", es: "de tu", ca: "del teu" },
@@ -598,6 +599,26 @@ export function ContactContent({ onReturnHome }) {
           <p className="mt-6 max-w-md" style={{ fontSize: "0.98rem", lineHeight: 1.6, color: "rgba(245,244,239,0.68)" }}>
             {t(UI.contactBody, lang)}
           </p>
+
+          {/* Plenty of recruiters want a PDF rather than an experience to
+              navigate. Refusing to give them one costs applications. */}
+          <a
+            href="/Xavi-Bosch-CV.pdf"
+            download
+            data-cursor="Download"
+            className="inline-flex items-center gap-3 mt-8 px-6 py-4 transition-colors duration-200"
+            style={{
+              background: "#D63022",
+              color: "#F5F4EF",
+              fontFamily: "'DM Mono', monospace",
+              fontSize: "0.68rem",
+              letterSpacing: "0.12em",
+              textTransform: "uppercase",
+            }}
+          >
+            <Download className="w-4 h-4" />
+            {t(UI.downloadCv, lang)}
+          </a>
         </div>
 
         <div className="flex flex-col md:-translate-y-5">

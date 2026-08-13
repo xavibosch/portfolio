@@ -19,7 +19,32 @@ const UI = {
   image: { en: "image", es: "imagen", ca: "imatge" },
   images: { en: "images", es: "imágenes", ca: "imatges" },
   builtAtAge: { en: "Built at 18", es: "Hecho a los 18", ca: "Fet als 18" },
+  builtFor: { en: "Who it is for", es: "Para quién es", ca: "Per a qui és" },
+  problem: { en: "What was broken", es: "Qué estaba roto", ca: "Què estava trencat" },
+  changed: { en: "What went wrong, and what changed", es: "Qué falló, y qué cambió", ca: "Què va fallar, i què va canviar" },
+  research: { en: "Research behind it", es: "Investigación detrás", ca: "Recerca al darrere" },
+  viewLive: { en: "Open it live", es: "Abrir en vivo", ca: "Obrir en directe" },
 };
+
+/**
+ * A labelled paragraph in the case study.
+ *
+ * `accent` marks the two blocks that cost something to write, the research and
+ * the failure, so they do not read as more prose: those are the parts a
+ * recruiter is actually looking for and the ones most portfolios leave out.
+ */
+function Block({ label, body, accent = false }) {
+  return (
+    <div className="mt-6 max-w-xl" style={accent ? { borderLeft: "2px solid rgba(214,48,34,0.45)", paddingLeft: "1.25rem" } : undefined}>
+      <span style={{ fontFamily: "'DM Mono', monospace", fontSize: "0.56rem", letterSpacing: "0.16em", textTransform: "uppercase", color: accent ? "#D63022" : "rgba(245,244,239,0.4)" }}>
+        {label}
+      </span>
+      <p className="mt-2" style={{ fontSize: accent ? "0.88rem" : "0.95rem", lineHeight: 1.6, color: accent ? "rgba(245,244,239,0.72)" : "rgba(245,244,239,0.8)" }}>
+        {body}
+      </p>
+    </div>
+  );
+}
 
 /* ─────────────────────────  FULLSCREEN GALLERY  ───────────────────────── */
 function Gallery({ project, onClose }) {
@@ -189,9 +214,19 @@ export function ProjectOverlay({
                   {t(project.tagline, lang)}
                 </p>
 
+                {/* Who and what was broken come before what it is: opening on
+                    the solution was the old mistake, and it made nine projects
+                    read like one brochure. */}
+                {project.builtFor && <Block label={t(UI.builtFor, lang)} body={t(project.builtFor, lang)} />}
+                {project.problem && <Block label={t(UI.problem, lang)} body={t(project.problem, lang)} />}
+
                 <p className="mt-6 max-w-xl" style={{ fontSize: "0.98rem", lineHeight: 1.6, color: "rgba(245,244,239,0.78)" }}>
                   {t(project.description, lang)}
                 </p>
+
+                {/* Only present where the research actually happened. */}
+                {project.research && <Block label={t(UI.research, lang)} body={t(project.research, lang)} accent />}
+                {project.changed && <Block label={t(UI.changed, lang)} body={t(project.changed, lang)} accent />}
 
                 <div className="mt-6 border-l-2 pl-5 max-w-xl" style={{ borderColor: "#D63022" }}>
                   <span style={{ fontFamily: "'DM Mono', monospace", fontSize: "0.56rem", letterSpacing: "0.16em", textTransform: "uppercase", color: "rgba(245,244,239,0.4)" }}>
@@ -220,6 +255,12 @@ export function ProjectOverlay({
                   {project.repo && (
                     <a href={project.repo} target="_blank" rel="noreferrer" data-cursor="Open" className="inline-flex items-center gap-2.5 px-5 py-3.5" style={{ background: "#F5F4EF", color: "#0C0B09", fontFamily: "'DM Mono', monospace", fontSize: "0.66rem", letterSpacing: "0.1em", textTransform: "uppercase" }}>
                       <Github className="w-4 h-4" /> {t(UI.viewCode, lang)}
+                    </a>
+                  )}
+                  {/* A running thing beats a repo: where one exists, it leads. */}
+                  {project.live && (
+                    <a href={project.live} target="_blank" rel="noreferrer" data-cursor="Open" className="inline-flex items-center gap-2.5 px-5 py-3.5" style={{ background: "#D63022", color: "#F5F4EF", fontFamily: "'DM Mono', monospace", fontSize: "0.66rem", letterSpacing: "0.1em", textTransform: "uppercase" }}>
+                      <Play className="w-3.5 h-3.5" /> {t(UI.viewLive, lang)}
                     </a>
                   )}
                   {project.video && (
