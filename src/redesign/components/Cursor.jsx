@@ -82,10 +82,13 @@ export function Cursor() {
         <div
           className="flex items-center justify-center rounded-full"
           style={{
-            width: label ? 96 : active ? 54 : 34,
-            height: label ? 96 : active ? 54 : 34,
-            marginLeft: label ? -48 : active ? -27 : -17,
-            marginTop: label ? -48 : active ? -27 : -17,
+            /* Kept small on purpose: at 96px the labelled state sat on top of
+               whatever it was labelling, so the thing you were about to click
+               was the one thing you could not see. */
+            width: label ? 58 : active ? 38 : 26,
+            height: label ? 58 : active ? 38 : 26,
+            marginLeft: label ? -29 : active ? -19 : -13,
+            marginTop: label ? -29 : active ? -19 : -13,
             border: label ? "none" : "1px solid rgba(245,244,239,0.55)",
             background: label ? "#D63022" : "transparent",
             transition:
@@ -97,8 +100,8 @@ export function Cursor() {
               style={{
                 fontFamily: "'Big Shoulders Display', sans-serif",
                 fontWeight: 900,
-                fontSize: "0.62rem",
-                letterSpacing: "0.14em",
+                fontSize: "0.5rem",
+                letterSpacing: "0.08em",
                 textTransform: "uppercase",
                 color: "#F5F4EF",
               }}

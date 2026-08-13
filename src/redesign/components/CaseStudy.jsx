@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useState } from "react";
-import { motion, AnimatePresence } from "motion/react";
-import { ArrowLeft, ArrowRight, Play } from "lucide-react";
+import { motion } from "motion/react";
+import { ArrowLeft, ArrowRight, Images, Play } from "lucide-react";
 import { Github } from "./BrandIcons";
 import { ImageWithFallback } from "./figma/ImageWithFallback";
 import { t } from "../i18n";
@@ -26,6 +26,7 @@ const UI = {
   viewLive: { en: "Open it live", es: "Abrir en vivo", ca: "Obrir en directe" },
   next: { en: "Next", es: "Siguiente", ca: "Següent" },
   back: { en: "Back", es: "Atrás", ca: "Enrere" },
+  viewGallery: { en: "View gallery", es: "Ver galería", ca: "Veure galeria" },
 };
 
 const CHAPTERS = [
@@ -88,42 +89,61 @@ export function CaseStudy({ project, lang, onOpenGallery }) {
           {t(project.tagline, lang)}
         </p>
 
-        {/* ── chapter rail ── */}
-        <div className="flex flex-wrap gap-x-4 gap-y-1.5 mt-6">
-          {chapters.map((c, n) => (
-            <button
-              key={c.key}
-              onClick={() => setI(n)}
-              data-cursor="Read"
-              className="group flex items-center gap-1.5 transition-opacity"
-              style={{ opacity: n === i ? 1 : 0.35 }}
-            >
-              <span style={{ fontFamily: "'DM Mono', monospace", fontSize: "0.52rem", color: n === i ? "#D63022" : "rgba(245,244,239,0.6)" }}>
-                {String(n + 1).padStart(2, "0")}
-              </span>
-              <span style={{ fontFamily: "'DM Mono', monospace", fontSize: "0.55rem", letterSpacing: "0.1em", textTransform: "uppercase", color: n === i ? "#F5F4EF" : "rgba(245,244,239,0.6)" }}>
-                {t(c.label, lang)}
-              </span>
-            </button>
-          ))}
-        </div>
-        <div className="mt-2.5 h-px w-full" style={{ background: "rgba(245,244,239,0.12)" }}>
-          <motion.div
-            className="h-px"
-            style={{ background: "#D63022" }}
-            animate={{ width: `${((i + 1) / chapters.length) * 100}%` }}
-            transition={{ duration: 0.45, ease: [0.16, 1, 0.3, 1] }}
-          />
+        {/* ── chapter marker ──
+            One title at a time, at a size you can actually read. The old row
+            of six tiny labels was both unreadable and told you nothing about
+            where you were. */}
+        <div className="mt-7">
+          <div className="flex items-baseline gap-3 overflow-hidden">
+            <span style={{ fontFamily: "'DM Mono', monospace", fontSize: "0.7rem", color: "#D63022", flexShrink: 0 }}>
+              {String(i + 1).padStart(2, "0")}
+            </span>
+            {/* Deliberately not wrapped in AnimatePresence. This sits inside
+                the overlay's own AnimatePresence mode="wait", and nesting them
+                left the exit animation unresolved, so the outgoing chapter
+                never handed over and the panel froze on chapter one while the
+                counter kept moving. A changing key remounts and replays the
+                entrance, which is the whole effect anyway. */}
+              <motion.h3
+                key={chapter.key}
+                initial={{ opacity: 0, y: 22 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.38, ease: [0.16, 1, 0.3, 1] }}
+                style={{
+                  fontFamily: "'Big Shoulders Display', sans-serif",
+                  fontWeight: 900,
+                  fontSize: "clamp(1.5rem, 2.6vw, 2.4rem)",
+                  lineHeight: 1,
+                  letterSpacing: "-0.01em",
+                  textTransform: "uppercase",
+                  color: "#F5F4EF",
+                }}
+              >
+                {t(chapter.label, lang)}
+              </motion.h3>
+          </div>
+
+          {/* segmented progress, one notch per chapter, each a jump target */}
+          <div className="flex gap-1.5 mt-3">
+            {chapters.map((c, n) => (
+              <button
+                key={c.key}
+                onClick={() => setI(n)}
+                data-cursor="Read"
+                aria-label={t(c.label, lang)}
+                className="h-0.5 flex-1 transition-colors duration-300"
+                style={{ background: n <= i ? "#D63022" : "rgba(245,244,239,0.16)" }}
+              />
+            ))}
+          </div>
         </div>
 
         {/* ── the passage ── */}
         <div className="flex-1 flex items-center min-h-0 py-5">
-          <AnimatePresence mode="wait">
             <motion.p
               key={chapter.key}
               initial={{ opacity: 0, y: 14 }}
               animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -10 }}
               transition={{ duration: 0.34, ease: [0.16, 1, 0.3, 1] }}
               style={{
                 fontSize: "clamp(0.95rem, 1.35vw, 1.15rem)",
@@ -134,7 +154,6 @@ export function CaseStudy({ project, lang, onOpenGallery }) {
             >
               {t(project[chapter.key], lang)}
             </motion.p>
-          </AnimatePresence>
         </div>
 
         {/* ── chapter nav ── */}
@@ -184,37 +203,64 @@ export function CaseStudy({ project, lang, onOpenGallery }) {
         </div>
       </div>
 
-      {/* ── right: the picture for this chapter ── */}
-      <div className="relative hidden md:block" style={{ borderLeft: "1px solid rgba(245,244,239,0.1)" }}>
-        <AnimatePresence mode="wait">
-          {shot ? (
-            <motion.button
-              key={shot}
-              onClick={onOpenGallery}
-              data-cursor="Zoom"
-              className="absolute inset-0 w-full h-full"
-              initial={{ opacity: 0, scale: 1.03 }}
-              animate={{ opacity: 1, scale: 1 }}
-              exit={{ opacity: 0, scale: 0.99 }}
-              transition={{ duration: 0.45, ease: [0.16, 1, 0.3, 1] }}
-            >
-              <ImageWithFallback src={shot} alt={`${project.name}`} className="w-full h-full" style={{ objectFit: "cover" }} />
-              <div className="absolute inset-0" style={{ background: "linear-gradient(90deg, rgba(12,11,9,0.55) 0%, rgba(12,11,9,0) 30%)" }} />
-            </motion.button>
-          ) : (
+      {/* ── right: the picture for this chapter ──
+          Fitted, never cropped. Filling the panel looked sharp and cut the
+          top and sides off every screenshot, which is the one thing a
+          screenshot cannot afford. Whole image here, gallery for a closer
+          look. */}
+      <div className="relative hidden md:flex flex-col" style={{ borderLeft: "1px solid rgba(245,244,239,0.1)", background: "#100E0C" }}>
+        {shot ? (
             <motion.div
-              key="empty"
+              key={shot}
+              className="flex-1 flex items-center justify-center p-8 lg:p-12 min-h-0"
+              initial={{ opacity: 0, y: 12 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.4, ease: [0.16, 1, 0.3, 1] }}
+            >
+              <button
+                onClick={onOpenGallery}
+                data-cursor="Zoom"
+                className="relative max-w-full max-h-full group"
+                style={{ border: "1px solid rgba(245,244,239,0.14)" }}
+              >
+                <ImageWithFallback
+                  src={shot}
+                  alt={project.name}
+                  className="max-w-full block"
+                  style={{ objectFit: "contain", maxHeight: "62vh" }}
+                />
+                <span
+                  className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+                  style={{ background: "rgba(12,11,9,0.25)" }}
+                />
+              </button>
+            </motion.div>
+          ) : (
+            <div
               className="absolute inset-0 grid place-items-center"
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
               style={{ background: "#100E0C" }}
             >
               <span style={{ fontFamily: "'Big Shoulders Display', sans-serif", fontWeight: 900, fontSize: "22vw", lineHeight: 1, color: "rgba(245,244,239,0.035)" }}>
                 {project.id}
               </span>
-            </motion.div>
+            </div>
           )}
-        </AnimatePresence>
+
+        {shots.length > 0 && (
+          <div className="flex items-center justify-between px-8 lg:px-12 py-4 flex-shrink-0" style={{ borderTop: "1px solid rgba(245,244,239,0.1)" }}>
+            <span style={{ fontFamily: "'DM Mono', monospace", fontSize: "0.55rem", letterSpacing: "0.14em", textTransform: "uppercase", color: "rgba(245,244,239,0.4)" }}>
+              {String((i % shots.length) + 1).padStart(2, "0")} / {String(shots.length).padStart(2, "0")}
+            </span>
+            <button
+              onClick={onOpenGallery}
+              data-cursor="Open"
+              className="inline-flex items-center gap-2 px-4 py-2.5"
+              style={{ border: "1px solid rgba(245,244,239,0.25)", color: "#F5F4EF", fontFamily: "'DM Mono', monospace", fontSize: "0.6rem", letterSpacing: "0.1em", textTransform: "uppercase" }}
+            >
+              <Images className="w-3.5 h-3.5" /> {t(UI.viewGallery, lang)}
+            </button>
+          </div>
+        )}
       </div>
     </div>
   );
