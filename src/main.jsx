@@ -1,5 +1,6 @@
 import { StrictMode } from 'react'
 import { createRoot } from 'react-dom/client'
+import { Analytics } from '@vercel/analytics/react'
 import './index.css'
 import App from './App.jsx'
 
@@ -10,5 +11,9 @@ import App from './App.jsx'
 createRoot(document.getElementById('root')).render(
   <StrictMode>
     <App />
+    {/* Page views only, plus the "cv_download" custom event fired from the
+        Contact section's download button. Free on the Hobby plan up to
+        2,500 events/month; tracks counts, not who. */}
+    <Analytics />
   </StrictMode>,
 )

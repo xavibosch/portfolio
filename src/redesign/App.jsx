@@ -152,9 +152,26 @@ function LangToggle() {
 }
 
 /* ─────────────────────────────  APP  ──────────────────────────────────── */
+const BOOT_FLAG = "xb-booted";
+
+/**
+ * The boot overlay is a nice first impression, not something a recruiter
+ * wants to sit through every time they tab back in. sessionStorage marks it
+ * seen for the rest of this browser session (a fresh tab/session still gets
+ * it), while a reload mid-tab skips straight past it.
+ */
+function hasBootedThisSession() {
+  try {
+    return sessionStorage.getItem(BOOT_FLAG) === "true";
+  } catch {
+    return false; // Storage can throw in locked-down/private contexts; just replay the boot.
+  }
+}
+
 function AppInner() {
   const { lang } = useLang();
-  const [booted, setBooted] = useState(false);
+  const [booted, setBooted] = useState(hasBootedThisSession);
+  const [showBoot] = useState(() => !hasBootedThisSession());
   const [index, setIndex] = useState(0);
   const indexRef = useRef(0);
   const [workEntry, setWorkEntry] = useState({
@@ -185,7 +202,14 @@ function AppInner() {
     return () => clearInterval(interval);
   }, [index]);
 
-  const handleDone = useCallback(() => setBooted(true), []);
+  const handleDone = useCallback(() => {
+    try {
+      sessionStorage.setItem(BOOT_FLAG, "true");
+    } catch {
+      // Private/locked-down storage: booting still works, it'll just replay next time.
+    }
+    setBooted(true);
+  }, []);
   const goTo = useCallback((i) => {
     const current = indexRef.current;
     if (i === current) return;
@@ -259,7 +283,7 @@ function AppInner() {
       `}</style>
 
       <Cursor />
-      <BootSequence onDone={handleDone} />
+      {showBoot && <BootSequence onDone={handleDone} />}
       <ProjectOverlay
         project={openProject}
         onClose={() => setOpenId(null)}

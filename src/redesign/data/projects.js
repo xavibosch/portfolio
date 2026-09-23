@@ -379,8 +379,7 @@ export const projects = [
       "Diseñar para una persona con nombre acaba con cualquier discusión abstracta en segundos. La cámara no guarda ni un fotograma, porque un sistema que mira el salón de alguien para darle independencia no puede cobrársela en privacidad.",
       "Dissenyar per a una persona amb nom acaba amb qualsevol discussió abstracta en segons. La càmera no desa ni un fotograma, perquè un sistema que mira el menjador d'algú per donar-li independència no li pot cobrar la privacitat a canvi."
     ),
-    // Repo is private, so no repo field: the case study hides its View code
-    // button rather than pointing visitors at a 404.
+    repo: "https://github.com/xavibosch/gesture-tv",
     images: [],
   },
   {
@@ -422,6 +421,7 @@ export const projects = [
       "Un cursor de mà seleccionava botons a un parell de centímetres d'on apuntava. La causa no era el tracking: un ancestre amb transform de CSS es converteix en el bloc contenidor de tot el que sigui fixed a dins, així que el punt es col·locava al marc escalat mentre el hit test llegia el viewport real. Treure el cursor d'aquell marc va tornar tots dos al mateix sistema de coordenades. Gairebé tot el que sembla un problema de tracking és un problema de coordenades."
     ),
     live: "https://home-gym-nine.vercel.app",
+    repo: "https://github.com/xavibosch/reps",
     images: [
       IMG + "reps-home.jpg",
       IMG + "reps-session.jpg",

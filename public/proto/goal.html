@@ -1,0 +1,1145 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+<title>Xavi Bosch</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@400;700;900&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="lib/lenis.css">
+<style>
+/* ═════════════════════════════════════════════════════════════════════════
+   Dark room, then daylight.
+
+     act 1   the room. One camera move, from the whole bedroom down onto
+             the turntable, and the brass weight on the record turning out
+             to be an arc reactor.
+     cross   the camera keeps going into the core. The core is white, so
+             it whites out.
+     act 2   you come out the other side onto paper. White, quiet, plain.
+
+   It runs both ways: scroll back up and the paper fades, the core closes
+   and the room comes back. One value drives all of it, so reversing is
+   free — nothing here is a one-way transition.
+
+   The work is not built yet. Its door is on the page but inert on purpose.
+   ═════════════════════════════════════════════════════════════════════════ */
+
+:root{
+  --paper:#ffffff;
+  --ink:#111111;
+  --muted:rgba(17,17,17,.56);
+  --faint:rgba(17,17,17,.38);
+  --line:rgba(17,17,17,.13);
+  --red:#d63022;
+  --arc:#7fd4ff;      /* only ever the reactor, only ever in the room */
+  --arc-hot:#eaf9ff;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{background:#080604}
+body{
+  background:#080604;color:var(--ink);
+  font-family:'DM Mono',ui-monospace,monospace;
+  -webkit-font-smoothing:antialiased;
+}
+/* The scroll length is a real element, not `body{height}` — lenis.css sets
+   `html.lenis body { height:auto }` and silently ate it, which left the
+   document zero pixels tall and progress pinned at 1. */
+#track{height:260vh;pointer-events:none}
+img{display:block;user-select:none;-webkit-user-drag:none}
+::selection{background:var(--red);color:#fff}
+
+#scene{position:fixed;inset:0;overflow:hidden;z-index:1}
+
+/* The scene sizes itself off the painting, not the viewport, so the
+   coordinates measured on it stay valid at any window size. */
+.stage{
+  position:absolute;left:50%;top:50%;
+  width:max(100vw, 154.1vh);aspect-ratio:1556/1010;
+  transform:translate(-50%,-50%);
+}
+.stage > img.bg{width:100%;height:100%;object-fit:cover}
+/* The ten frames are stacked, not swapped. Two things stop ten stills from
+   reading as ten cuts, and neither of them is the cross-fade on its own:
+   every frame is moving the whole time it is on screen, and only the top
+   one ever carries a partial opacity — see the ride in the ticker. */
+/* ONE PLATE. There were two, registered on each other's platter to a
+   hundredth of a pixel, and it still read as a change — because the platter
+   was the only thing the two paintings agreed on. The wide one has a
+   brushed silver plinth with buttons across its front and no records beside
+   it; the close one has a plain dark plinth and a stack of sleeves at the
+   left. Same room, different turntable. No transform registers that away,
+   so there is nothing to cross-fade between any more: one photograph, one
+   camera move, and nothing on screen ever swaps. */
+#plate{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+
+/* The record in the photograph cannot turn — it is a photograph. What a
+   turning record actually shows you is not the grooves moving, it is the
+   lamp sweeping across them, so that is what turns: two soft lobes of the
+   lamp's own colour, on the record's ellipse, masked away from the label.
+   Screen blend, because a highlight adds light and never removes any. */
+#sheen{
+  position:absolute;left:50.64%;top:51.19%;width:36%;aspect-ratio:1;
+  border-radius:50%;pointer-events:none;opacity:0;
+  transform:translate(-50%,-50%) rotateX(75.73deg);
+  transform-origin:50% 50%;mix-blend-mode:screen;will-change:transform,opacity;
+  background:conic-gradient(from 0deg,
+    rgba(255,238,206,0) 0deg,   rgba(255,238,206,.62) 24deg,
+    rgba(255,238,206,0) 58deg,  rgba(255,238,206,0) 176deg,
+    rgba(255,238,206,.40) 202deg, rgba(255,238,206,0) 236deg,
+    rgba(255,238,206,0) 360deg);
+  -webkit-mask-image:radial-gradient(circle at center,
+     transparent 0 31%, #000 36% 92%, transparent 99%);
+          mask-image:radial-gradient(circle at center,
+     transparent 0 31%, #000 36% 92%, transparent 99%);
+}
+
+/* ──────────────────────────────  ACT 1 · THE ROOM  ──────────────────────── */
+#study{position:absolute;inset:0;will-change:opacity}
+/* Perspective matters, and it has to scale. Without it the record projects
+   as a symmetric ellipse and the painted platter is not one. A fixed px
+   value only fits one window size: at 3800px the disc sat right at 1440
+   wide and came out 31% too big at 1820, because the distortion depends on
+   element-size ÷ camera-distance and only the size was scaling. */
+#studyStage{--sw:max(100vw, 154.1vh);
+            width:var(--sw);
+            perspective:calc(var(--sw) * 2.64);
+            perspective-origin:50.64% 51.19%;
+            /* the camera pushes toward the platter, not the middle */
+            transform-origin:50.64% 51.19%}
+/* The reactor is not laid on the record. It IS the brass weight already
+   sitting on the record's spindle in the photograph — same ellipse, same
+   place, same size — so it does not arrive, it just stops being brass. */
+#reactorHub{
+  position:absolute;left:50.65%;top:49.05%;width:12.6%;
+  transform:translate(-50%,-50%) rotateX(78.54deg);
+  transform-origin:50% 50%;will-change:transform;
+}
+#reactorHub img{width:100%;height:auto;opacity:0}
+/* The bloom is painted on top rather than baked into the image, so it can
+   actually pulse. */
+#bloom1{
+  position:absolute;left:50%;top:50%;width:300%;aspect-ratio:1;
+  transform:translate(-50%,-50%);border-radius:50%;pointer-events:none;
+  mix-blend-mode:screen;will-change:opacity,transform;
+  background:radial-gradient(circle at center,
+    rgba(255,255,255,.85) 0%, rgba(180,238,255,.5) 18%,
+    rgba(90,190,255,.2) 38%, rgba(60,150,220,0) 68%);
+}
+
+/* Both of these sit inside #study, which is one compositing layer because
+   of its will-change, and the stage inside that layer is re-transformed
+   every single frame. That made the browser re-rasterise the layer's whole
+   contents each frame — including two text-shadows blurred at 40 and 90px,
+   which is the most expensive thing on the page — and the text dropped
+   frames the moving photograph did not. translateZ(0) hands each of them
+   its own layer, so the shadows are rasterised once and then only
+   composited. */
+#nameplate{
+  position:absolute;left:clamp(1.4rem,5vw,5.5rem);top:50%;
+  transform:translateY(-50%) translateZ(0);z-index:6;pointer-events:none;
+  max-width:min(38vw,460px);will-change:opacity;
+}
+#nameplate h1{
+  font-family:'Big Shoulders Display',sans-serif;font-weight:900;line-height:.82;
+  font-size:clamp(3rem,8vw,7.5rem);letter-spacing:-.02em;text-transform:uppercase;
+  color:#efe7d8;text-shadow:0 6px 40px rgba(0,0,0,.95),0 0 90px rgba(0,0,0,.8);
+}
+#nameplate p{
+  margin-top:1.2rem;font-size:.64rem;letter-spacing:.2em;text-transform:uppercase;
+  color:rgba(239,231,216,.6);line-height:2;text-shadow:0 2px 16px rgba(0,0,0,.95);
+}
+#hint{
+  position:absolute;left:50%;bottom:clamp(1.2rem,4vh,2.4rem);
+  transform:translateX(-50%) translateZ(0);will-change:opacity;
+  z-index:6;font-size:.58rem;letter-spacing:.26em;text-transform:uppercase;
+  color:rgba(239,231,216,.5);text-shadow:0 2px 12px #000;pointer-events:none;
+}
+#flash{
+  position:absolute;left:50%;top:50%;width:42vmin;height:42vmin;margin:-21vmin 0 0 -21vmin;
+  border-radius:50%;pointer-events:none;z-index:8;opacity:0;will-change:transform,opacity;
+  background:radial-gradient(circle at center,
+    #fff 0%, var(--arc-hot) 24%, var(--arc) 46%, rgba(127,212,255,0) 72%);
+}
+
+/* ═════════════════════════════  ACT 2 · PAPER  ══════════════════════════ */
+/* No `data-lenis-prevent` here on purpose. It stopped Lenis seeing the
+   wheel over this panel, which meant scrolling back up did nothing and the
+   room was unreachable once you had left it. The layout is built to fit
+   instead, so nothing needs to trap the wheel. */
+#index{
+  position:absolute;inset:0;z-index:7;opacity:0;pointer-events:none;
+  background:var(--paper);color:var(--ink);
+  display:grid;
+  grid-template-columns:minmax(0,1fr) minmax(190px,.4fr);
+  grid-template-rows:auto minmax(0,1fr) auto;
+  column-gap:clamp(1.4rem,4vw,3.6rem);
+  padding:clamp(1.4rem,3.5vh,2.8rem) clamp(1.6rem,6vw,5.5rem) clamp(1.2rem,2.5vh,2rem);
+  will-change:opacity;overflow:hidden;
+}
+#idxLeft{
+  grid-column:1;grid-row:2;min-height:0;
+  display:flex;flex-direction:column;overflow:hidden;
+}
+.label{font-size:.55rem;letter-spacing:.24em;text-transform:uppercase;color:var(--faint)}
+
+#idxHead{
+  grid-column:1 / -1;grid-row:1;
+  display:flex;justify-content:space-between;align-items:baseline;
+  padding-bottom:clamp(.7rem,1.6vh,1.1rem);border-bottom:1px solid var(--line);
+}
+#idxHead b{
+  font-family:'Big Shoulders Display',sans-serif;font-weight:900;
+  font-size:clamp(.95rem,1.5vw,1.2rem);text-transform:uppercase;letter-spacing:.01em;
+}
+
+/* The headline runs the full width of the page rather than stacking in a
+   column: it is meant to be read across, not down. */
+#idxTitle{
+  flex:0 0 auto;
+  font-family:'Big Shoulders Display',sans-serif;font-weight:900;
+  font-size:clamp(1.8rem,min(6.4vw,10vh),5.8rem);line-height:.88;
+  text-transform:uppercase;letter-spacing:-.035em;
+  padding:clamp(.9rem,2.4vh,1.9rem) 0 clamp(.8rem,2vh,1.5rem);
+}
+
+#idxMain{
+  flex:1 1 auto;min-height:0;overflow:hidden;
+  padding-top:clamp(.9rem,2.2vh,1.6rem);border-top:1px solid var(--line);
+}
+#idxText{max-width:58ch;min-width:0}
+#idxText p{
+  font-size:clamp(.8rem,.98vw,.92rem);line-height:1.78;
+  color:var(--muted);margin-bottom:.85rem;
+}
+#idxText .hi{color:var(--red)}
+#chips{display:flex;flex-wrap:wrap;gap:.38rem;margin-top:clamp(.8rem,2vh,1.3rem)}
+#chips span{
+  font-size:.54rem;letter-spacing:.1em;text-transform:uppercase;
+  border:1px solid var(--line);padding:4px 9px;color:var(--faint);
+}
+
+#portrait{
+  grid-column:2;grid-row:2;min-height:0;
+  display:flex;flex-direction:column;
+  padding-top:clamp(.9rem,2.2vh,1.6rem);
+}
+#portrait img{width:100%;flex:1 1 auto;min-height:0;object-fit:cover;object-position:50% 14%}
+#portrait figcaption{margin-top:.5rem;font-size:.54rem;letter-spacing:.22em;
+  text-transform:uppercase;color:var(--faint);flex:0 0 auto}
+
+#idxFoot{
+  grid-column:1 / -1;grid-row:3;
+  display:grid;grid-template-columns:1fr auto;align-items:end;gap:clamp(1.2rem,4vw,3.5rem);
+  padding-top:clamp(.8rem,2vh,1.3rem);margin-top:clamp(.8rem,2vh,1.3rem);
+  border-top:1px solid var(--line);
+}
+#links{display:flex;flex-wrap:wrap;gap:clamp(1rem,3vw,3rem)}
+#links a{text-decoration:none;color:inherit;display:block;transition:color .25s}
+#links a small{display:block;font-size:.51rem;letter-spacing:.22em;text-transform:uppercase;
+  color:var(--faint);margin-bottom:.22rem}
+#links a b{
+  font-family:'Big Shoulders Display',sans-serif;font-weight:900;
+  font-size:clamp(.85rem,1.25vw,1.08rem);text-transform:uppercase;letter-spacing:.01em;
+}
+#links a:hover{color:var(--red)}
+
+/* The door to the work. */
+#workDoor{display:flex;align-items:baseline;gap:.75rem;white-space:nowrap;
+  background:none;border:0;cursor:pointer;padding:0}
+#workDoor b{
+  font-family:'Big Shoulders Display',sans-serif;font-weight:900;
+  font-size:clamp(1.1rem,2vw,1.8rem);text-transform:uppercase;letter-spacing:.02em;
+  color:var(--ink);border-bottom:2px solid var(--ink);padding-bottom:.3rem;
+  transition:color .28s,border-color .28s;
+}
+#workDoor em{font-style:normal;font-size:.52rem;letter-spacing:.2em;
+  text-transform:uppercase;color:var(--faint);transition:transform .35s cubic-bezier(.16,1,.3,1)}
+#workDoor:hover b{color:var(--red);border-color:var(--red)}
+#workDoor:hover em{transform:translateX(6px)}
+
+/* ── grain and vignette belong to the painted room, so they fade with it.
+      On white they would only read as dirt. ─────────────────────────────── */
+#grain{position:fixed;inset:0;z-index:70;pointer-events:none;opacity:0;mix-blend-mode:overlay}
+#vig{position:fixed;inset:0;z-index:69;pointer-events:none;opacity:0;
+  background:radial-gradient(ellipse at center,transparent 34%,rgba(0,0,0,.72) 100%)}
+
+
+/* ═══════════════════════════  ACT 3 · THE HANDHELD  ═════════════════════
+   Pressing the door does not cut to a new page: it runs down the earbud
+   cable and arrives on the car seat. The console's screen is a real
+   photograph at an angle, so the content that goes inside it has to be
+   projected onto that angle rather than laid flat on top.
+   ══════════════════════════════════════════════════════════════════════ */
+#work{
+  position:fixed;inset:0;z-index:40;opacity:0;pointer-events:none;
+  background:#070605;overflow:hidden;
+}
+#work.on{pointer-events:auto}
+
+/* Both plates are cameras, not slides. Each is an image at its own scale
+   and offset, and one function moves them, so the whole thing is a single
+   continuous shot rather than two fades stitched together. */
+#cable,#seatWrap{position:absolute;inset:0;overflow:hidden}
+#cable{opacity:0}
+#cableStage,#seatStage{will-change:transform}
+#cableStage img,#seatStage img.bg{width:100%;height:100%;object-fit:cover}
+#seatWrap{opacity:0}
+
+/* The console's own d-pad. Invisible, sitting exactly on the arrows in the
+   photograph, measured on seat.png: left 23.63%/49.90%, right 27.41%/49.32%. */
+.dpad{
+  position:absolute;width:3.4%;aspect-ratio:1;transform:translate(-50%,-50%);
+  border-radius:50%;background:none;border:0;cursor:pointer;z-index:4;
+  transition:box-shadow .2s;
+}
+.dpad:hover{box-shadow:0 0 0 2px rgba(255,255,255,.55), 0 0 22px rgba(255,255,255,.5)}
+.dpad:active{box-shadow:0 0 0 2px rgba(255,255,255,.9), 0 0 30px rgba(255,255,255,.8)}
+#padL{left:23.633%;top:49.902%}
+#padR{left:27.409%;top:49.316%}
+
+/* The console screen. 480×272 is the PSP's own resolution, which keeps the
+   inside of it honest: whatever is rendered here really is that small. */
+#screen{
+  position:absolute;left:0;top:0;width:480px;height:272px;
+  transform-origin:0 0;background:#000;overflow:hidden;
+  /* the opening: a slit in the middle that widens, like the photograph */
+  clip-path:inset(0 50% 0 50%);
+  will-change:clip-path;
+}
+#screenInner{position:absolute;inset:0;background:#0a0a0c}
+#screenInner img{
+  position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:.8;
+}
+#screenGrad{position:absolute;inset:0;
+  background:linear-gradient(rgba(0,0,0,.35) 0%, transparent 34%, rgba(0,0,0,.92) 100%)}
+#pName{
+  position:absolute;left:26px;right:26px;bottom:20px;
+  font-family:'Big Shoulders Display',sans-serif;font-weight:900;
+  font-size:30px;line-height:.95;text-transform:uppercase;letter-spacing:.01em;
+  color:#fff;text-shadow:0 2px 12px #000;
+}
+#pTech{
+  position:absolute;left:26px;bottom:6px;
+  font-size:9px;letter-spacing:.22em;text-transform:uppercase;color:rgba(255,255,255,.55);
+}
+#pCount{
+  position:absolute;right:26px;bottom:8px;
+  font-size:9px;letter-spacing:.22em;color:rgba(255,255,255,.45);
+}
+.arrow{
+  position:absolute;top:50%;transform:translateY(-50%);
+  width:54px;height:96px;display:grid;place-items:center;
+  border:0;cursor:pointer;color:#fff;
+  font-size:52px;line-height:1;font-family:'DM Mono',monospace;
+  /* a soft chip behind them, otherwise they vanish into whatever
+     screenshot happens to be underneath */
+  background:radial-gradient(ellipse at center, rgba(0,0,0,.55), transparent 72%);
+  text-shadow:0 2px 14px #000, 0 0 30px rgba(0,0,0,.9);
+  opacity:.85;transition:opacity .2s,transform .3s cubic-bezier(.16,1,.3,1);
+}
+.arrow:hover{opacity:1}
+#prev{left:0}
+#next{right:0}
+#prev:hover{transform:translateY(-50%) translateX(-4px)}
+#next:hover{transform:translateY(-50%) translateX(4px)}
+
+#workBack{
+  position:absolute;top:clamp(1.2rem,3vh,2rem);left:clamp(1.4rem,4vw,3rem);z-index:5;
+  background:none;border:0;border-bottom:1px solid rgba(239,231,216,.3);
+  color:rgba(239,231,216,.75);font:inherit;font-size:.56rem;letter-spacing:.22em;
+  text-transform:uppercase;padding:0 0 .35rem;cursor:pointer;transition:color .25s;
+}
+#workBack:hover{color:#fff}
+#workHint{
+  position:absolute;bottom:clamp(1.2rem,3vh,2rem);left:50%;transform:translateX(-50%);z-index:5;
+  font-size:.52rem;letter-spacing:.24em;text-transform:uppercase;
+  color:rgba(239,231,216,.45);pointer-events:none;text-align:center;line-height:2;
+}
+#openCase{
+  position:absolute;bottom:clamp(3.4rem,7vh,4.6rem);left:50%;transform:translateX(-50%);z-index:5;
+  background:none;border:0;color:rgba(239,231,216,.6);font:inherit;
+  font-size:.54rem;letter-spacing:.24em;text-transform:uppercase;cursor:pointer;
+  transition:color .25s;
+}
+#openCase:hover{color:#fff}
+
+/* ── the case study ───────────────────────────────────────────────────────
+   Not a project page: the same physical world, carried on. The console
+   reframes to face you with the project still inside its screen, and the
+   story is told down the page in full-height chapters that alternate side.
+   ────────────────────────────────────────────────────────────────────── */
+#case{
+  position:fixed;inset:0;z-index:65;opacity:0;pointer-events:none;
+  background:var(--paper);color:var(--ink);overflow-y:auto;overscroll-behavior:contain;
+}
+#case.on{pointer-events:auto}
+#caseInner{padding-bottom:0}
+
+.caseEyebrow{font-size:.55rem;letter-spacing:.26em;text-transform:uppercase;color:var(--faint)}
+.caseH{
+  font-family:'Big Shoulders Display',sans-serif;font-weight:900;
+  text-transform:uppercase;letter-spacing:-.03em;line-height:.9;
+}
+.caseP{font-size:clamp(.88rem,1.05vw,1rem);line-height:1.85;color:var(--muted);max-width:58ch}
+
+/* ── hero: the console turns to face you ─────────────────────────────── */
+.caseHero{
+  min-height:96vh;display:flex;flex-direction:column;align-items:center;
+  justify-content:center;gap:clamp(1.5rem,4vh,3rem);
+  padding:clamp(5rem,11vh,7rem) clamp(1.4rem,5vw,4rem) clamp(2rem,6vh,4rem);
+}
+.consolePlate{position:relative;width:min(78vw,900px);flex:0 0 auto}
+.consolePlate > img{width:100%;height:auto}
+/* the project image lies inside the console's own screen, projected onto
+   its four measured corners rather than pasted flat on top */
+#caseScreen{
+  position:absolute;left:0;top:0;width:640px;height:348px;
+  transform-origin:0 0;overflow:hidden;background:#000;
+}
+#caseScreen img{width:100%;height:100%;object-fit:cover;opacity:.95}
+.caseHeroCopy{text-align:center;max-width:52ch}
+.caseHeroCopy .caseH{font-size:clamp(2.4rem,6.5vw,5rem);margin:.5rem 0 .6rem}
+.caseHeroCopy p{font-size:clamp(.95rem,1.3vw,1.15rem);color:var(--ink);line-height:1.55}
+.caseScrollCue{
+  margin-top:clamp(.8rem,2vh,1.4rem);font-size:.52rem;letter-spacing:.26em;
+  text-transform:uppercase;color:var(--faint);
+}
+
+/* ── chapters ────────────────────────────────────────────────────────── */
+.chapter{
+  min-height:52vh;display:flex;align-items:center;
+  padding:clamp(2rem,5.5vh,3.6rem) clamp(1.6rem,8vw,9rem);
+}
+.chapter.right{justify-content:flex-end;text-align:right}
+.chapter.right .caseP{margin-left:auto}
+.chapterBody{max-width:62ch}
+.chapterBody .caseH{font-size:clamp(1.8rem,4.2vw,3.4rem);margin:.7rem 0 1.1rem}
+/* reveal: opacity, a little lift, and a blur that resolves into focus */
+.chapterBody,.toolsInner,.caseEndInner{
+  opacity:0;transform:translateY(34px);filter:blur(7px);
+  transition:opacity .9s ease, transform 1s cubic-bezier(.16,1,.3,1), filter .9s ease;
+}
+.isIn .chapterBody,.isIn .toolsInner,.isIn .caseEndInner{
+  opacity:1;transform:none;filter:blur(0);
+}
+
+/* ── tools and the end ───────────────────────────────────────────────── */
+.toolScene{min-height:46vh;display:flex;align-items:center;justify-content:center;
+  padding:clamp(2.4rem,6vh,4rem) clamp(1.6rem,8vw,9rem)}
+.toolsInner{text-align:center}
+.toolsInner .caseH{font-size:clamp(1.6rem,3.6vw,2.8rem);margin:.7rem 0 1.6rem}
+#caseTech{display:flex;flex-wrap:wrap;gap:.5rem;justify-content:center;max-width:46rem}
+#caseTech span{font-size:.55rem;letter-spacing:.12em;text-transform:uppercase;
+  border:1px solid var(--line);padding:.5rem .85rem;color:var(--faint)}
+.caseEnd{min-height:56vh;display:flex;align-items:center;justify-content:center;
+  padding:clamp(2.4rem,6vh,4rem) clamp(1.6rem,8vw,9rem) clamp(4rem,9vh,6rem)}
+.caseEndInner{text-align:center;max-width:54ch}
+.caseEndInner .caseH{font-size:clamp(2rem,5vw,3.6rem);margin:.7rem 0 1rem}
+.caseActions{display:flex;gap:1rem;justify-content:center;flex-wrap:wrap;margin-top:2rem}
+.caseAction{
+  background:none;border:0;border-bottom:2px solid var(--ink);color:var(--ink);
+  font-family:'Big Shoulders Display',sans-serif;font-weight:900;
+  font-size:clamp(1rem,1.7vw,1.4rem);text-transform:uppercase;letter-spacing:.03em;
+  padding:0 0 .3rem;cursor:pointer;text-decoration:none;display:inline-flex;
+  align-items:baseline;gap:.6rem;transition:color .28s,border-color .28s;
+}
+.caseAction:hover{color:var(--red);border-color:var(--red)}
+
+#caseBack{
+  position:fixed;top:clamp(1.2rem,3vh,2rem);left:clamp(1.4rem,4vw,3rem);z-index:6;
+  background:var(--paper);border:0;border-bottom:1px solid var(--line);color:var(--muted);
+  font:inherit;font-size:.56rem;letter-spacing:.22em;text-transform:uppercase;
+  padding:.3rem 0 .35rem;cursor:pointer;transition:color .25s;
+}
+#caseBack:hover{color:var(--red)}
+#caseBack:focus-visible,.caseAction:focus-visible,.arrow:focus-visible,.dpad:focus-visible{
+  outline:2px solid var(--red);outline-offset:4px;
+}
+
+@media (max-width: 820px){
+  .chapter,.chapter.right{justify-content:flex-start;text-align:left;padding-left:1.4rem;padding-right:1.4rem}
+  .chapter.right .caseP{margin-left:0}
+  .consolePlate{width:94vw}
+}
+
+@media (prefers-reduced-motion: reduce){*{animation:none!important;transition-duration:.01ms!important}}
+@media (max-width: 860px){
+  #index{grid-template-columns:1fr}
+  #idxLeft{grid-column:1}
+  #idxMain{overflow-y:auto}
+  #portrait{display:none}
+  #idxFoot{grid-template-columns:1fr;align-items:start;gap:1.2rem}
+}
+</style>
+</head>
+<body>
+
+<div id="track"></div>
+
+<div id="scene">
+  <!-- ══════════════ ACT 1 · the room ══════════════ -->
+  <div id="study">
+    <div class="stage" id="studyStage">
+      <img id="plate" src="assets/room-seq/f09.webp" alt="A turntable and a stack of records under a lamp">
+      <div id="sheen"></div>
+      <div id="reactorHub"><img id="reactorImg" src="assets/reactor.png" alt=""><div id="bloom1"></div></div>
+    </div>
+    <div id="nameplate">
+      <h1>Xavi<br>Bosch</h1>
+      <p>Interaction &amp; digital product<br>Barcelona · open to 2026</p>
+    </div>
+    <div id="hint">scroll</div>
+  </div>
+
+  <div id="flash"></div>
+
+  <!-- ══════════════ ACT 2 · paper ══════════════ -->
+  <div id="index">
+    <div id="idxHead">
+      <b>Xavi Bosch</b>
+      <span class="label">18 · Barcelona · open to 2026</span>
+    </div>
+
+    <div id="idxLeft">
+      <h2 id="idxTitle">Design, technology<br>and digital product</h2>
+      <div id="idxMain">
+        <div id="idxText">
+        <p>I'm currently studying <span class="hi">Interactive Product Design and Creation</span> at La Salle Barcelona, where I've been developing a perspective that combines design, technology, and digital product development.</p>
+        <p>What motivates me most is exploring the space where technical thinking meets human needs. I enjoy understanding how products work behind the scenes, but I'm just as interested in how people interact with them and what makes an experience feel intuitive.</p>
+        <p>Recently, much of that curiosity has been focused on artificial intelligence, and how it is changing the way digital products are imagined, designed, and built, and the opportunities it creates for the future.</p>
+        <p>This portfolio is a reflection of that journey: a collection of projects, experiments, and ideas that represent what I'm learning and the kind of products I hope to build.</p>
+          <div id="chips">
+            <span>Swift</span><span>Python + AI</span><span>Arduino / ESP32</span>
+            <span>NFC / MQTT</span><span>Java</span><span>Figma</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <figure id="portrait">
+      <img src="/images/about-event.jpg" alt="Xavi Bosch">
+      <figcaption>Barcelona, 2025</figcaption>
+    </figure>
+
+    <div id="idxFoot">
+      <div id="links">
+        <a href="mailto:bosch.xavii@gmail.com"><small>Email</small><b>bosch.xavii@gmail.com</b></a>
+        <a href="https://www.linkedin.com/in/xavi-bosch-galilea-9b3876410" target="_blank" rel="noopener"><small>LinkedIn</small><b>xavi-bosch-galilea</b></a>
+        <a href="https://github.com/xavibosch" target="_blank" rel="noopener"><small>GitHub</small><b>github.com/xavibosch</b></a>
+        <a href="/Xavi-Bosch-CV.pdf" download><small>Résumé</small><b>Download CV</b></a>
+      </div>
+      <button id="workDoor"><b>Selected work</b><em>&rarr;</em></button>
+    </div>
+  </div>
+</div>
+
+
+<!-- ══════════════ ACT 3 · down the cable, onto the seat ══════════════ -->
+<div id="work">
+  <div id="cable"><div class="stage" id="cableStage"><img src="assets/cable.png" alt=""></div></div>
+  <div id="seatWrap"><div class="stage" id="seatStage">
+    <img class="bg" src="assets/seat.png" alt="">
+    <button class="dpad" id="padL" aria-label="Previous project"></button>
+    <button class="dpad" id="padR" aria-label="Next project"></button>
+    <div id="screen">
+      <div id="screenInner">
+        <img id="pImg" alt="">
+        <div id="screenGrad"></div>
+        <div id="pName"></div>
+        <div id="pTech"></div>
+        <div id="pCount"></div>
+      </div>
+      <button class="arrow" id="prev" aria-label="Previous project">&lsaquo;</button>
+      <button class="arrow" id="next" aria-label="Next project">&rsaquo;</button>
+    </div>
+  </div></div>
+  <button id="workBack">&larr; back</button>
+  <button id="openCase">open the project</button>
+  <div id="workHint">arrows on screen · or the console's own d-pad<br>scroll to rewind out</div>
+</div>
+
+<div id="case" tabindex="-1" data-lenis-prevent>
+  <button id="caseBack">&larr; back to projects</button>
+  <div id="caseInner"></div>
+</div>
+
+<canvas id="grain"></canvas>
+<div id="vig"></div>
+
+<script src="lib/lenis.min.js"></script>
+<script src="gsap/gsap.min.js"></script>
+<script src="projects.js"></script>
+<script>
+const clamp01 = v => Math.max(0, Math.min(1, v));
+/* Writing an opacity every frame costs a style recalc even when the number
+   is the same one it already had, and at the top of the page most of these
+   never move off 0 or 1. Quantised to a thousandth and skipped when equal. */
+const setOp = (el, v) => {
+  const t = v <= 0 ? '0' : v >= 1 ? '1' : v.toFixed(3);
+  if (el.style.opacity !== t) el.style.opacity = t;
+};
+const smooth  = v => { const t = clamp01(v); return t*t*(3-2*t); };
+const $ = id => document.getElementById(id);
+
+const study=$('study'), studyStg=$('studyStage'), hub=$('reactorHub'),
+      flash=$('flash'), index=$('index'), hint=$('hint'), bloom1=$('bloom1'),
+      reactorImg=$('reactorImg'),
+      grain=$('grain'), vig=$('vig');
+
+const plate = $('plate'), sheen = $('sheen');
+let hubFix = { dx:0, dy:0, k:1 }, sheenFix = { dx:0, dy:0, k:1 };
+
+/* ═══════════════════════════════════════════════════════════════════════
+   0 · ONE PHOTOGRAPH, ONE CAMERA MOVE
+   The ten stills are gone and so is the pair. Ten cannot be flown through:
+   they were painted one at a time and share no geometry. Two could be
+   registered — the wide turntable frame onto the close one, 2.860x, platter
+   on platter to a hundredth of a pixel — and it still read as a change,
+   because the platter was the only thing the two paintings agreed on. Their
+   plinths, their tonearms and the records beside them are different
+   objects. There is no transform that fixes two different rooms.
+
+   So there is one plate, and the only thing that moves is the camera:
+   a single scale on the stage, from the whole photograph down onto the
+   weight sitting on the record. Nothing cross-fades, nothing arrives,
+   nothing swaps. It is shorter than the old ride, and it is the only
+   version of it that is actually continuous.
+   ═══════════════════════════════════════════════════════════════════════ */
+const S0 = 1.10;    // stage scale at the top: the photograph, barely cropped
+const S1 = 2.80;    // and at the bottom, on the reactor
+
+const logr = (x, a, b) => clamp01(Math.log(x/a) / Math.log(b/a));
+
+/* p → where the camera is. Accelerating rather than eased at both ends: an
+   ease-out would stall the camera at the bottom of the move, and a stall is
+   the one thing that reads as a cut. */
+function cameraAt(p){
+  const u = clamp01(p / 0.80);
+  return S0 * Math.pow(S1 / S0, u * (0.35 + 0.65 * u));
+}
+
+/* THE OPENING DRIFT. The plate starts 10% larger than the window, which
+   buys the room to hold the frame slightly off-centre and let it settle as
+   the camera closes — so the opening is a move rather than a zoom. It is
+   spent by the time the push is properly under way, and the margin is what
+   keeps a bare edge out of shot; the sweep in the console checks it. */
+const PAN = { x:2.7, y:2.1 };
+
+/* ═══════════════════════════════════════════════════════════════════════
+   1 · THE REACTOR AND THE SHEEN FIT THEMSELVES TO THE PHOTOGRAPH
+   Two things are laid on the plate and both are measured onto it rather
+   than placed by eye, by the same method: pose it, measure what the browser
+   actually rendered, fold the error back in, four times.
+
+   The weight on the spindle (1556×1010): centre 788,495 · rx 94 · ry 19.
+   acos(19/94) is where its tilt comes from, steeper than the record's own
+   75.7° because it sits proud of the label rather than flat on it — which
+   is also why it reads a little high of the record's centre.
+   The record itself: centre 788,517 · rx 280 · ry 69.
+   ═══════════════════════════════════════════════════════════════════════ */
+const TILT_HUB = 78.54, TILT_DISC = 75.73;
+const WEIGHT = { cx:788/1556, cy:495.4/1010, rx:94.1/1556 };
+const DISC   = { cx:788/1556, cy:517/1010,   rx:280/1556 };
+/* reactor.png carries about 4% of transparent margin, so its box has to be
+   that much wider than the ellipse for the device inside it to match */
+const ART_FILL = 982/1024;
+
+function pose(el, fix, tilt, spin){
+  el.style.transform = `translate(-50%,-50%) `
+    + `translate(${fix.dx.toFixed(2)}px,${fix.dy.toFixed(2)}px) `
+    + `scale(${fix.k.toFixed(4)}) rotateX(${tilt}deg) rotate(${spin.toFixed(2)}deg)`;
+}
+
+function fit(el, fix, tilt, target, fill){
+  fix.dx = 0; fix.dy = 0; fix.k = 1;
+  const s = studyStg.getBoundingClientRect();
+  if (!s.width) return;
+  const want = {
+    cx: s.left + target.cx * s.width,
+    cy: s.top  + target.cy * s.height,
+    w : 2 * target.rx * s.width / (fill || 1),
+  };
+  /* Iterated, not solved in one pass: moving it shifts it away from the
+     perspective origin, which changes the projection again, so a single
+     correction only cancels part of its own error. */
+  for (let i = 0; i < 4; i++){
+    pose(el, fix, tilt, 0);
+    const b = el.getBoundingClientRect();
+    if (!b.width) break;
+    fix.k  *= want.w / b.width;
+    fix.dx += want.cx - (b.left + b.width/2);
+    fix.dy += want.cy - (b.top  + b.height/2);
+  }
+  pose(el, fix, tilt, 0);
+}
+
+function calibrateStage(){
+  /* Measure against an UNSCALED stage. getBoundingClientRect reports the
+     rect after every ancestor transform, so calibrating mid-scroll — when
+     the camera has already blown the stage up — read a stage 3864px wide
+     instead of 1600 and invented a 168px correction. */
+  const saved = studyStg.style.transform;
+  studyStg.style.transform = 'translate(-50%,-50%)';
+  fit(hub,   hubFix,   TILT_HUB,  WEIGHT, ART_FILL);
+  fit(sheen, sheenFix, TILT_DISC, DISC);
+  studyStg.style.transform = saved;
+}
+addEventListener('resize', calibrateStage);
+addEventListener('load',   calibrateStage);
+/* The first pass can land before reactor.png has a height, which makes the
+   measurement meaningless, so it waits for the image itself. */
+reactorImg.complete ? calibrateStage()
+                    : reactorImg.addEventListener('load', calibrateStage);
+
+/* ═══════════════════════════════════════════════════════════════════════
+   2 · LENIS DRIVES THE JOURNEY, BOTH WAYS
+   Everything hangs off one value, 0 at the top and 1 at the bottom. Because
+   the whole scene is a pure function of that value, scrolling back up plays
+   the crossing in reverse and returns you to the room for free.
+   ═══════════════════════════════════════════════════════════════════════ */
+const lenis = new Lenis({ lerp:0.075, wheelMultiplier:0.9, touchMultiplier:1.6, smoothWheel:true });
+gsap.ticker.add(t => lenis.raf(t * 1000));
+gsap.ticker.lagSmoothing(0);
+
+gsap.ticker.add(() => {
+  const p = clamp01(lenis.progress || 0);
+  const now = performance.now();
+
+  /* THE MOVE. One number: how far in the camera is. Everything in the room
+     is read off it rather than off p, so each beat fires at a place in the
+     move instead of at a place in the scrollbar. */
+  const s = cameraAt(p);
+
+  /* NOTHING ARRIVES AND NOTHING STANDS UP. The record on the deck is the
+     one in the photograph, and it stays exactly where the photograph put
+     it. The only thing that changes is the brass weight on its spindle,
+     which crosses over into the reactor across most of the approach —
+     slowly, in place, at the same size and angle. A cross-fade between two
+     things occupying the same ellipse is not an object appearing, it is a
+     thing turning into another thing, and the camera is still moving
+     through all of it. */
+  const glow = smooth(logr(s, 1.22, 2.10));
+
+  /* AND THEN IT TURNS. Not the grooves — those are printed into the plate
+     and cannot move. What a turning record actually gives you is the lamp
+     sweeping across it, so the highlight turns and the weight on the
+     spindle turns with it, at 78°/s: slow enough to read as a deck at rest
+     speed rather than strobe against the reactor's ten-fold coils. It
+     starts as the reactor lights and is fully up before the white-out, so
+     the last thing you see of the room is a record playing. */
+  const spin = now * 0.078;
+  pose(hub,   hubFix,   TILT_HUB,  spin);
+  pose(sheen, sheenFix, TILT_DISC, spin);
+  setOp(reactorImg, glow);
+  setOp(sheen, 0.46 * smooth(logr(s, 1.30, 2.20)));
+
+  /* A camera on a shoulder is never quite still. Two slow sines a prime
+     apart never repeat, and at a fifth of a percent they are not a wobble,
+     just the thing that stops a scaled photograph looking scaled. */
+  const fx = (Math.sin(now/2300) + Math.sin(now/3700)*0.6) * 0.18;
+  const fy = (Math.sin(now/3100 + 1.1)) * 0.13;
+  /* the pan is spent by the time the plates swap, so the platter is dead
+     centre from there on and the disc has something square to land on */
+  /* the drift is spent well before the end, so the reactor is dead centre
+     for the white-out */
+  const held = 1 - logr(s, S0, 1.55);
+  const tx = PAN.x * held + fx, ty = PAN.y * held + fy;
+  studyStg.style.transform = `translate(-50%,-50%) scale(${s.toFixed(4)}) `
+                           + `translate(${tx.toFixed(3)}%,${ty.toFixed(3)}%)`;
+  setOp(study, 1 - smooth((p - 0.870)/0.11));
+  setOp(hint,  1 - smooth(p / 0.09));
+  /* the name belongs to the room; it lets go as the camera moves in */
+  setOp(nameplate, 1 - smooth((p - 0.16)/0.20));
+
+  /* through the core, which is white, so it whites out into the paper */
+  const fIn = smooth((p - 0.780)/0.130), fOut = smooth((p - 0.900)/0.090);
+  flash.style.transform = `scale(${(0.12 + fIn*7.6).toFixed(3)})`;
+  setOp(flash, fIn * (1 - fOut) * 1.3);
+
+  /* out the other side */
+  const out = smooth((p - 0.900)/0.090);
+  setOp(index, out);
+  index.style.pointerEvents = out > 0.9 ? 'auto' : 'none';
+
+  /* grain and vignette are the room's, not the paper's */
+  const room = workOn ? 0 : (1 - out);   // inside the car neither belongs
+  setOp(grain, 0.055 * room);
+  setOp(vig, room);
+
+  /* the reactor keeps its heartbeat right up to the white-out */
+  setOp(bloom1, (0.55 + Math.sin(now/560)*0.22) * glow);
+  bloom1.style.transform = `translate(-50%,-50%) scale(${(1 + Math.sin(now/560)*0.06).toFixed(3)})`;
+});
+
+
+/* ═══════════════════════════════════════════════════════════════════════
+   4 · ACT 3 — ONE CONTINUOUS SHOT
+   Not two cross-fades. A single value 0→1 flies a camera down the cable and
+   onto the seat, and the plates hand over to each other mid-move while both
+   are travelling at the same apparent rate, so the seam disappears. The
+   whole thing is scrubbable and therefore reversible: scrolling plays it
+   backwards out of the car.
+   ═══════════════════════════════════════════════════════════════════════ */
+const SCREEN_QUAD = [
+  [436/1536, 415/1024],   // measured on seat.png by flood-filling the black
+  [797/1536, 361/1024],   // screen from its centre, then taking the extreme
+  [840/1536, 556/1024],   // corners of the connected region
+  [475/1536, 615/1024],
+];
+const SCREEN_C = [
+  (436+797+840+475)/4/1536,
+  (415+361+556+615)/4/1024,
+];
+const SW = 480, SH = 272;          // the PSP's own resolution, kept honest
+
+const work=$('work'), cableWrap=$('cable'), cableStage=$('cableStage'),
+      seatWrap=$('seatWrap'), seatStage=$('seatStage'), screenEl=$('screen'),
+      pImg=$('pImg'), pName=$('pName'), pTech=$('pTech'), pCount=$('pCount'),
+      caseEl=$('case'), caseInner=$('caseInner');
+const PR = window.PROJECTS;
+/* preload the case-study shells so the lid never flashes in */
+['assets/project-console.png']
+  .forEach(u => { const i = new Image(); i.src = u; });
+let pIndex = 0, workOn = false, caseOn = false;
+
+/* Point (px,py) of the plate, expressed as fractions of the image, is placed
+   at the centre of the viewport at zoom s. Written as translate→scale→
+   translate so the second offset lands in the plate's own units and the
+   maths stays independent of the window. */
+function camera(stage, px, py, s){
+  const W = stage.offsetWidth, H = stage.offsetHeight;
+  const tx = W/2 - px*W, ty = H/2 - py*H;
+  stage.style.transform =
+    `translate(-50%,-50%) scale(${s.toFixed(4)}) translate(${tx.toFixed(1)}px,${ty.toFixed(1)}px)`;
+}
+const lerp = (a,b,t) => a + (b-a)*t;
+const seg  = (t,a,b) => clamp01((t-a)/(b-a));
+
+/* Idle life: a slow drift plus a little parallax on the pointer, so the shot
+   is never completely dead once it has landed. */
+let par = { x:0, y:0, tx:0, ty:0 };
+addEventListener('pointermove', e => {
+  if (!workOn) return;
+  par.tx = (e.clientX/innerWidth  - .5) * 2;
+  par.ty = (e.clientY/innerHeight - .5) * 2;
+});
+
+let shot = { t: 0 };
+let zoomIn = 0;      // 0 resting on the seat, 1 pushed into the screen
+
+/* The way in is a played shot; the way out is yours. Once the entry has
+   finished, the wheel scrubs the same value the entry animated, with the
+   same target/current easing the intro uses — so rewinding out of the car
+   feels identical to scrolling back to the room, in both directions. */
+let shotTarget = 0, scrubbable = false, leaving = false;
+const SHOT_SPEED = 0.00115;
+
+let touchY0 = 0;
+addEventListener('touchstart', e => { touchY0 = e.touches[0].clientY; }, { passive:true });
+addEventListener('touchmove', e => {
+  if (!workOn || caseOn || !scrubbable) return;
+  const y = e.touches[0].clientY;
+  shotTarget = clamp01(shotTarget + (touchY0 - y) * 0.0032);
+  touchY0 = y;
+}, { passive:true });
+function renderShot(){
+  const t = shot.t, now = performance.now();
+
+  /* ── the ride: along the cable, closing on the console ── */
+  const ride = seg(t, 0, 0.66);
+  const e = ride*ride*(3-2*ride);
+  camera(cableStage, lerp(0.34,0.845,e), lerp(0.86,0.32,e), lerp(2.4,3.6,e));
+  cableWrap.style.opacity = String(clamp01(seg(t,0.02,0.10) - seg(t,0.50,0.64)));
+
+  /* ── the arrival: the seat takes over already moving, at a zoom where the
+        console is the same size on screen as it just was ── */
+  const land = seg(t, 0.50, 1);
+  const le = land*land*(3-2*land);
+  par.x = lerp(par.x, par.tx, 0.06);
+  par.y = lerp(par.y, par.ty, 0.06);
+  const drift = Math.sin(now/4200) * 0.004;
+  /* The resting frame drifts gently with the pointer; the push-in aims at
+     the screen itself, not at the middle of the window, so the console
+     stays centred as the camera closes on it. */
+  const restX = 0.5 + par.x*0.012 + drift, restY = 0.5 + par.y*0.010;
+  camera(seatStage,
+    lerp(SCREEN_C[0], lerp(restX, SCREEN_C[0], zoomIn), le),
+    lerp(SCREEN_C[1], lerp(restY, SCREEN_C[1], zoomIn), le),
+    lerp(1.46, lerp(1, 6.5, zoomIn), le));
+  seatWrap.style.opacity = String(seg(t, 0.50, 0.66));
+
+  /* ── the screen opens, the slit widening exactly as photographed ── */
+  const open = seg(t, 0.80, 1);
+  screenEl.style.clipPath = `inset(0 ${(50*(1-open)).toFixed(2)}% 0 ${(50*(1-open)).toFixed(2)}%)`;
+
+  fitScreen();
+}
+
+/* Solve the eight unknowns of the projective transform that carries the flat
+   480×272 rectangle onto the screen's four corners. CSS applies the result
+   as matrix3d, which is how a plain div ends up lying inside a screen that
+   was photographed at an angle instead of floating flat above it. */
+function solve8(A, b){
+  const n = 8;
+  for (let i=0;i<n;i++){
+    let piv = i;
+    for (let r=i+1;r<n;r++) if (Math.abs(A[r][i]) > Math.abs(A[piv][i])) piv = r;
+    [A[i],A[piv]]=[A[piv],A[i]]; [b[i],b[piv]]=[b[piv],b[i]];
+    for (let r=i+1;r<n;r++){
+      const f = A[r][i]/A[i][i];
+      for (let c=i;c<n;c++) A[r][c] -= f*A[i][c];
+      b[r] -= f*b[i];
+    }
+  }
+  const x = new Array(n).fill(0);
+  for (let i=n-1;i>=0;i--){
+    let sum = b[i];
+    for (let c=i+1;c<n;c++) sum -= A[i][c]*x[c];
+    x[i] = sum/A[i][i];
+  }
+  return x;
+}
+function fitScreen(){ projectOnto(screenEl, seatStage, SCREEN_QUAD, SW, SH); }
+addEventListener('resize', () => { if (workOn) renderShot(); });
+gsap.ticker.add(() => {
+  if (!workOn) return;
+  if (scrubbable) shot.t += (shotTarget - shot.t) * 0.09;
+  renderShot();
+  /* rewound all the way back out of the car */
+  if (scrubbable && !leaving && shot.t < 0.012 && shotTarget < 0.004) exitWork();
+});
+
+/* ── the projects on the little screen ─────────────────────────────────── */
+function showProject(i, dir){
+  pIndex = (i + PR.length) % PR.length;
+  const p = PR[pIndex];
+  pImg.src = p.images[0];
+  pName.textContent = p.name;
+  pTech.textContent = p.tech.slice(0,2).join(' · ');
+  pCount.textContent = `${p.id} / ${String(PR.length).padStart(2,'0')}`;
+  gsap.fromTo('#screenInner', { x: dir ? dir*46 : 0, opacity: dir ? 0 : 1 },
+    { x:0, opacity:1, duration:.4, ease:'power2.out' });
+}
+const prevP = () => showProject(pIndex-1, -1);
+const nextP = () => showProject(pIndex+1,  1);
+$('prev').onclick = prevP;  $('next').onclick = nextP;
+$('padL').onclick = prevP;  $('padR').onclick = nextP;   // the console's own d-pad
+
+/* ── entering and leaving, both the same move ──────────────────────────── */
+let shotTween = null;
+function openWork(){
+  workOn = true; leaving = false; scrubbable = false;
+  lenis.stop();
+  work.classList.add('on');
+  showProject(pIndex, 0);
+  gsap.set(work, { opacity:1 });
+  shot.t = 0; shotTarget = 0; zoomIn = 0; renderShot();
+  shotTween && shotTween.kill();
+  /* The arrival plays on its own — that part is not something you should
+     have to drive — and hands the wheel over the moment it lands. */
+  shotTween = gsap.to(shot, { t:1, duration:2.6, ease:'power1.inOut',
+    onUpdate(){ shotTarget = shot.t; },
+    onComplete(){ shotTarget = 1; scrubbable = true; } });
+}
+/* The back button does not cut either: it asks the shot to rewind, and the
+   same scrub the wheel drives carries it out. */
+function closeWork(){
+  shotTween && shotTween.kill();
+  scrubbable = true;
+  shotTarget = 0;
+}
+function exitWork(){
+  leaving = true; scrubbable = false;
+  gsap.to(work, { opacity:0, duration:.35, ease:'power2.in',
+    onComplete(){
+      work.classList.remove('on');
+      workOn = false; leaving = false;
+      lenis.start();
+    }});
+}
+$('workDoor').onclick = openWork;
+$('workBack').onclick = closeWork;
+
+/* Scrolling backs out, which keeps the whole site on one gesture. Lenis is
+   stopped while the car is on screen, so this listens to the raw wheel. */
+addEventListener('wheel', e => {
+  if (caseOn) return;
+  if (!workOn || !scrubbable) return;
+  shotTarget = clamp01(shotTarget + e.deltaY * SHOT_SPEED);
+}, { passive:true });
+
+/* ── into the screen ───────────────────────────────────────────────────── */
+/* ═══════════════════════════════════════════════════════════════════════
+   5 · THE CASE STUDY
+   The same world, carried on. Two more screens are photographs at an angle,
+   so their content is projected onto measured corners exactly as the
+   handheld's is. All three were found by flood-filling the black area of
+   each image from its centre and taking the extreme corners.
+   ═══════════════════════════════════════════════════════════════════════ */
+const CONSOLE_QUAD = [                      // project-console.png, front on
+  [549/1536, 128/1024], [958/1536, 130/1024],
+  [959/1536, 352/1024], [549/1536, 352/1024],
+];
+const REDUCED = matchMedia('(prefers-reduced-motion: reduce)').matches;
+let caseIO = null;
+
+/* Same solver as the handheld: eight unknowns, applied as matrix3d. */
+function projectOnto(el, plate, quad, vw, vh){
+  const W = plate.offsetWidth, H = plate.offsetHeight;
+  if (!W || !H) return;
+  const dst = quad.map(([u,v]) => [u*W, v*H]);
+  const src = [[0,0],[vw,0],[vw,vh],[0,vh]];
+  const A=[], b=[];
+  for (let i=0;i<4;i++){
+    const [x,y]=src[i], [X,Y]=dst[i];
+    A.push([x,y,1,0,0,0,-X*x,-X*y]); b.push(X);
+    A.push([0,0,0,x,y,1,-Y*x,-Y*y]); b.push(Y);
+  }
+  const h = solve8(A,b);
+  el.style.transform =
+    `matrix3d(${h[0]},${h[3]},0,${h[6]},${h[1]},${h[4]},0,${h[7]},0,0,1,0,${h[2]},${h[5]},0,1)`;
+}
+function fitCaseScreens(){
+  const cs = $('caseScreen');
+  if (cs) projectOnto(cs, cs.parentElement, CONSOLE_QUAD, 640, 348);
+}
+addEventListener('resize', () => { if (caseOn) fitCaseScreens(); });
+
+function buildCase(p){
+  const chapter = (n, side, eyebrow, title, text) => text
+    ? `<section class="chapter ${side}"><div class="chapterBody">
+         <div class="caseEyebrow">${n} · ${eyebrow}</div>
+         <h4 class="caseH">${title}</h4>
+         <p class="caseP">${text}</p>
+       </div></section>` : '';
+
+  /* The chapters are only the ones this project can actually answer. There
+     is no "what was needed" field in the data, so there is no such chapter:
+     inventing one would be inventing the project. */
+  let n = 1;
+  const num = () => String(n++).padStart(2,'0');
+
+  return `
+    <header class="caseHero">
+      <div class="consolePlate">
+        <img src="assets/project-console.png" alt="Silver handheld console on a cognac leather car seat">
+        <div id="caseScreen"><img src="${p.images[0]}" alt="${p.name}"></div>
+      </div>
+      <div class="caseHeroCopy">
+        <div class="caseEyebrow">Project ${p.id}</div>
+        <h3 class="caseH">${p.name}</h3>
+        <p>${p.tagline}</p>
+        <div class="caseScrollCue">scroll</div>
+      </div>
+    </header>
+
+    ${chapter(num(), 'left',  'Who it is for',      'Who is it for?',    p.builtFor)}
+    ${chapter(num(), 'right', 'The problem',        'What was broken?',  p.problem)}
+    ${p.research ? chapter(num(), 'left', 'Research', 'What the research said', p.research) : ''}
+    ${chapter(num(), p.research ? 'right' : 'left', 'Build', 'What I did', p.description)}
+    ${chapter(num(), p.research ? 'left' : 'right', 'Iteration',  'What changed along the way?', p.changed)}
+    ${chapter(num(), p.research ? 'right' : 'left', 'Reflection', 'What I took from it', p.learning)}
+
+    <section class="toolScene"><div class="toolsInner">
+      <div class="caseEyebrow">${num()} · Tools &amp; systems</div>
+      <h4 class="caseH">Built with</h4>
+      <div id="caseTech">${p.tech.map(t=>`<span>${t}</span>`).join('')}</div>
+    </div></section>
+
+    <footer class="caseEnd"><div class="caseEndInner">
+      <div class="caseEyebrow">${num()} · Next</div>
+      <h4 class="caseH">That is ${p.name}.</h4>
+      <p class="caseP" style="margin:0 auto">Head back to the console and pick another one.</p>
+      <div class="caseActions">
+        ${p.repo ? `<a class="caseAction" href="${p.repo}" target="_blank" rel="noopener">Open on GitHub <span>&nearr;</span></a>` : ''}
+        <button class="caseAction" id="caseBottomBack">Back to projects <span>&uarr;</span></button>
+      </div>
+    </div></footer>`;
+}
+
+function openCase(){
+  const p = PR[pIndex];
+  caseOn = true;
+  caseInner.innerHTML = buildCase(p);
+  $('caseBottomBack').onclick = closeCase;
+
+  caseEl.classList.add('on');
+  caseEl.scrollTop = 0;
+
+  /* The projector needs the plate's real size, and a plate is only as tall
+     as its photograph once that photograph has loaded. Fitting before then
+     silently bailed out and left the screens unprojected — a flat rectangle
+     sitting over the console instead of lying inside it. */
+  const plates = [...caseInner.querySelectorAll('.consolePlate img')];
+  plates.forEach(im => im.complete || im.addEventListener('load', fitCaseScreens, { once:true }));
+  Promise.all(plates.map(im => im.complete ? null : im.decode().catch(() => {})))
+    .then(fitCaseScreens);
+  fitCaseScreens();
+
+  /* reveal the chapters as they arrive */
+  caseIO?.disconnect();
+  /* Reveal once and stay revealed. Toggling on intersection meant a chapter
+     faded back out the moment its top edge left the viewport, which reads as
+     a glitch rather than an effect on a long page. */
+  caseIO = new IntersectionObserver(es => es.forEach(x => {
+    if (x.isIntersecting){ x.target.classList.add('isIn'); caseIO.unobserve(x.target); }
+  }), { root: caseEl, rootMargin: '0px 0px -12% 0px', threshold: 0.12 });
+  caseInner.querySelectorAll('.chapter,.toolScene,.caseEnd').forEach(el => caseIO.observe(el));
+
+  /* The camera keeps going: it pushes into the console's screen and the
+     page arrives out of that move rather than cutting to it. */
+  const z = { v: zoomIn };
+  gsap.to(z, { v:1, duration: REDUCED ? 0 : 1.05, ease:'power2.in',
+    onUpdate(){ zoomIn = z.v; }, onComplete(){ zoomIn = 1; } });
+
+  gsap.killTweensOf(caseEl);
+  gsap.set(caseEl,{opacity:0});
+  gsap.to(caseEl,{opacity:1,duration:.55,delay: REDUCED ? 0 : .6,ease:'power2.out',
+    onComplete(){ caseEl.focus({preventScroll:true}); }});
+}
+
+function closeCase(){
+  caseOn = false;
+  caseIO?.disconnect(); caseIO = null;
+  gsap.killTweensOf(caseEl);
+  gsap.to(caseEl,{opacity:0,duration:.35,ease:'power2.in',
+    onComplete(){ caseEl.classList.remove('on'); caseInner.innerHTML = ''; }});
+  const z = { v: zoomIn };
+  gsap.to(z, { v:0, duration:.9, ease:'power2.out',
+    onUpdate(){ zoomIn = z.v; }, onComplete(){ zoomIn = 0; } });
+}
+
+$('openCase').onclick = openCase;
+$('caseBack').onclick = closeCase;
+$('screenInner').onclick = openCase;
+
+addEventListener('keydown', e => {
+  if (caseOn){ if (e.key === 'Escape') closeCase(); return; }
+  if (!workOn) return;
+  if (e.key === 'Escape')     closeWork();
+  if (e.key === 'ArrowLeft')  prevP();
+  if (e.key === 'ArrowRight') nextP();
+});
+
+/* ═══════════════════════════════════════════════════════════════════════
+   5 · GRAIN — every 3rd frame: invisible at 60fps, a third of the CPU.
+   Only ever visible over the room; the ticker fades it out with it.
+   ═══════════════════════════════════════════════════════════════════════ */
+{
+  const g = grain.getContext('2d'); let n = 0;
+  const size = () => { grain.width = Math.max(1, Math.floor(innerWidth/2));
+                       grain.height = Math.max(1, Math.floor(innerHeight/2));
+                       grain.style.width = innerWidth+'px'; grain.style.height = innerHeight+'px'; };
+  size(); addEventListener('resize', size);
+  gsap.ticker.add(() => {
+    if (n++%3 || grain.width < 2 || !parseFloat(grain.style.opacity)) return;
+    const img = g.createImageData(grain.width, grain.height), d = img.data;
+    for (let i=0;i<d.length;i+=4){ const v = Math.random()*255|0; d[i]=d[i+1]=d[i+2]=v; d[i+3]=24 }
+    g.putImageData(img, 0, 0);
+  });
+}
+</script>
+</body>
+</html>

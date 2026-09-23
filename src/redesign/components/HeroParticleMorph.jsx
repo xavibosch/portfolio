@@ -485,6 +485,12 @@ export function HeroParticleMorph({
     let cancelled = false;
     let animationFrame = 0;
     let resizeObserver;
+    // Users who've asked their OS for less motion still get the particle
+    // portrait, just frozen after the first frame instead of morphing at
+    // 60fps forever. Read once: a live toggle mid-visit isn't worth chasing.
+    const reduceMotion = window.matchMedia(
+      "(prefers-reduced-motion: reduce)"
+    ).matches;
     let width = 1;
     let height = 1;
     let pixelRatio = 1;
@@ -887,7 +893,9 @@ export function HeroParticleMorph({
 
       if (clipAboutParticles) context.restore();
       previous.set(positions);
-      animationFrame = requestAnimationFrame((time) => render(time, clock));
+      if (!reduceMotion) {
+        animationFrame = requestAnimationFrame((time) => render(time, clock));
+      }
     };
 
     resize();

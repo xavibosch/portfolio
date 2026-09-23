@@ -5,6 +5,7 @@ import { motion } from "motion/react";
 import { projects, techMarquee } from "../data/projects";
 import { degree, intro, disciplines, skillTracks } from "../data/skills";
 import { useLang, t } from "../i18n";
+import { track } from "@vercel/analytics";
 import { Scramble } from "./Scramble";
 import { AssemblePiece, AssembleWords } from "./Assemble";
 import { AsciiPhoto } from "./AsciiPhoto";
@@ -127,25 +128,26 @@ export function HeroName({ booted = true }) {
   let charIndex = 0;
 
   return (
-    <div ref={ref} className="select-none">
-      {rows.map((word, ri) => {
-        const startIndex = charIndex;
-        charIndex += word.length;
-        return (
-          <div
-            key={word}
-            ref={(el) => (rowRefs.current[ri] = el)}
-            style={{ willChange: "transform" }}
-          >
-            <h1
+    // The name renders as one span per letter for the assemble-in animation,
+    // which reads as "X, A, V, I..." to a screen reader with no fix. This h1
+    // carries the real accessible name; the per-row divs below are decorative.
+    <h1 aria-label="Xavi Bosch" className="select-none" style={{ margin: 0 }}>
+      <div ref={ref} aria-hidden="true">
+        {rows.map((word, ri) => {
+          const startIndex = charIndex;
+          charIndex += word.length;
+          return (
+            <div
+              key={word}
+              ref={(el) => (rowRefs.current[ri] = el)}
               style={{
+                willChange: "transform",
                 fontFamily: "'Big Shoulders Display', sans-serif",
                 fontWeight: 900,
                 fontSize: "clamp(4rem, 16vw, 17rem)",
                 lineHeight: 0.82,
                 letterSpacing: "-0.03em",
                 color: "#F5F4EF",
-                margin: 0,
               }}
             >
               {word.split("").map((char, ci) => (
@@ -162,11 +164,11 @@ export function HeroName({ booted = true }) {
                   {char}
                 </AssemblePiece>
               ))}
-            </h1>
-          </div>
-        );
-      })}
-    </div>
+            </div>
+          );
+        })}
+      </div>
+    </h1>
   );
 }
 
@@ -606,6 +608,11 @@ export function ContactContent({ onReturnHome }) {
             href="/Xavi-Bosch-CV.pdf"
             download
             data-cursor="Download"
+            // A plain download has no server round trip to log it, so nothing
+            // ever recorded a single CV download until this fired. `track`
+            // beacons client-side; it doesn't block the download that
+            // follows immediately after.
+            onClick={() => track("cv_download", { lang })}
             className="inline-flex items-center gap-3 mt-8 px-6 py-4 transition-colors duration-200"
             style={{
               background: "#D63022",
