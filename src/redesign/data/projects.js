@@ -120,39 +120,39 @@ export const projects = [
   {
     id: "03",
     name: "Jeffrey Remote",
-    tagline: l("One assistant, many surfaces.", "Un asistente, muchas superficies.", "Un assistent, moltes superfícies."),
+    tagline: l("My Mac, in my hand, from anywhere.", "Mi Mac, en la mano, desde cualquier sitio.", "El meu Mac, a la mà, des de qualsevol lloc."),
     builtFor: l(
-      "Me, away from the desk. The moments an assistant is worth most are the ones where you are not sitting in front of it.",
-      "Para mí, lejos del escritorio. Los momentos en que un asistente vale más son aquellos en que no estás sentado delante.",
-      "Per a mi, lluny de l'escriptori. Els moments en què un assistent val més són aquells en què no ets assegut al davant."
+      "Me, away from the desk. The moments a Mac is worth most from a phone are the ones where you are not sitting in front of it: on the sofa, in class, in another city.",
+      "Para mí, lejos del escritorio. Los momentos en que el Mac vale más desde el móvil son aquellos en que no estás sentado delante: en el sofá, en clase, en otra ciudad.",
+      "Per a mi, lluny de l'escriptori. Els moments en què el Mac val més des del mòbil són aquells en què no ets assegut al davant: al sofà, a classe, en una altra ciutat."
     ),
     problem: l(
-      "Jeffrey only existed where the Mac was. Everything it was good at stopped the moment I left the room.",
-      "Jeffrey solo existía donde estaba el Mac. Todo lo que hacía bien se acababa en cuanto salía de la habitación.",
-      "Jeffrey només existia on era el Mac. Tot el que feia bé s'acabava en el moment que sortia de l'habitació."
+      "Everything I had built on the Mac stopped the moment I left the room. The first version of this app fixed that on paper, but it had grown one feature at a time and nobody would call it pleasant to use.",
+      "Todo lo que había construido en el Mac se acababa en cuanto salía de la habitación. La primera versión de esta app lo arreglaba sobre el papel, pero había crecido una función detrás de otra y nadie diría que era agradable de usar.",
+      "Tot el que havia construït al Mac s'acabava en el moment que sortia de l'habitació. La primera versió d'aquesta app ho arreglava sobre el paper, però havia crescut una funció darrere l'altra i ningú diria que era agradable de fer servir."
     ),
     description: l(
-      "A native iOS surface for Jeffrey and the Mac: live preview, cursor, commands, media, apps and voice, over a connection built to survive a dropout. Each tab is shaped around one remote job rather than being a list of every command that exists.",
-      "Una superficie nativa en iOS para Jeffrey y el Mac: vista en vivo, cursor, comandos, multimedia, apps y voz, sobre una conexión hecha para sobrevivir a un corte. Cada pestaña se organiza alrededor de una tarea remota concreta en vez de ser una lista de todos los comandos que existen.",
-      "Una superfície nativa a iOS per a Jeffrey i el Mac: vista en directe, cursor, ordres, multimèdia, apps i veu, sobre una connexió feta per sobreviure a un tall. Cada pestanya s'organitza al voltant d'una tasca remota concreta en comptes de ser una llista de totes les ordres que existeixen."
+      "Version 2 is a native iPhone app and a small menu bar app on the Mac, rebuilt from scratch. Two modes. Mac: the screen live, a real trackpad (one finger moves, two scroll with momentum, hold to select text), the keyboard, the Mac's apps with their own icons, and commands I compose myself, like opening a chosen set of apps on each desktop with one tap. Desk: Jeffrey Desk drawn on the phone, each widget a tile you tap to change what it shows, plus its video and Spotify. Paired once with a QR code, it reaches the Mac over the home Wi-Fi or Tailscale, whichever answers first.",
+      "La versión 2 es una app nativa de iPhone y una pequeña app de la barra de menús del Mac, rehechas desde cero. Dos modos. Mac: la pantalla en directo, un trackpad de verdad (un dedo mueve, dos desplazan con inercia, mantener selecciona texto), el teclado, las apps del Mac con sus iconos y comandos que compongo yo, como abrir un conjunto de apps en cada escritorio con un toque. Desk: Jeffrey Desk dibujado en el móvil, cada viñeta una ficha que tocas para cambiar lo que muestra, más su vídeo y Spotify. Emparejada una vez con un código QR, llega al Mac por el wifi de casa o por Tailscale, lo que responda primero.",
+      "La versió 2 és una app nativa d'iPhone i una petita app de la barra de menús del Mac, refetes de zero. Dos modes. Mac: la pantalla en directe, un trackpad de debò (un dit mou, dos desplacen amb inèrcia, mantenir selecciona text), el teclat, les apps del Mac amb les seves icones i ordres que componc jo, com obrir un conjunt d'apps a cada escriptori amb un toc. Desk: Jeffrey Desk dibuixat al mòbil, cada vinyeta una fitxa que toques per canviar el que mostra, més el seu vídeo i Spotify. Aparellada un cop amb un codi QR, arriba al Mac per la wifi de casa o per Tailscale, el que respongui primer."
     ),
     changed: l(
-      "I built features first and the connection underneath them second, which meant each new one had to be taught how to survive a dropped link on its own. They did not survive it consistently, and every fix was the same fix written again. I stopped and rebuilt the channel layer as the foundation, and everything added after that was remote and resilient without asking.",
-      "Construí primero las funciones y después la conexión de debajo, lo que significaba que a cada nueva había que enseñarle por su cuenta a sobrevivir a un corte. No sobrevivían de forma consistente, y cada arreglo era el mismo arreglo escrito otra vez. Paré y rehice la capa de canales como cimiento, y todo lo añadido después fue remoto y resiliente sin pedirlo.",
-      "Vaig construir primer les funcions i després la connexió de sota, cosa que volia dir que a cada nova se li havia d'ensenyar pel seu compte a sobreviure a un tall. No hi sobrevivien de manera consistent, i cada arreglo era el mateix arreglo escrit un altre cop. Vaig parar i vaig refer la capa de canals com a fonament, i tot el que hi vaig afegir després va ser remot i resilient sense demanar-ho."
+      "The first version said CONNECTED while nothing on the Mac was answering. Its helper had quietly stopped starting after a folder moved, and the app only checked that it had an address, not that anyone was home, so every button failed with a timeout that looked like bad Wi-Fi. Version 2 keeps one connection open, only shows green when the Mac has just replied, and reconnects by itself. The rebuild also taught me a smaller lesson twice: the number of a message and the id of the thing it is about must never share a name, or one quietly overwrites the other.",
+      "La primera versión decía CONNECTED mientras nada en el Mac respondía. Su ayudante había dejado de arrancar sin avisar después de que se moviera una carpeta, y la app solo comprobaba que tenía una dirección, no que hubiera alguien en casa, así que cada botón fallaba con un timeout que parecía culpa del wifi. La versión 2 mantiene una sola conexión abierta, solo se pone verde cuando el Mac acaba de responder y se reconecta sola. Rehacerla también me enseñó dos veces una lección más pequeña: el número de un mensaje y el id de aquello de lo que habla nunca deben llamarse igual, o uno pisa al otro sin avisar.",
+      "La primera versió deia CONNECTED mentre res al Mac no responia. El seu ajudant havia deixat d'arrencar sense avisar després que es mogués una carpeta, i l'app només comprovava que tenia una adreça, no que hi hagués algú a casa, així que cada botó fallava amb un timeout que semblava culpa de la wifi. La versió 2 manté una sola connexió oberta, només es posa verda quan el Mac acaba de respondre i es reconnecta sola. Refer-la també em va ensenyar dues vegades una lliçó més petita: el número d'un missatge i l'id d'allò de què parla mai no s'han de dir igual, o l'un trepitja l'altre sense avisar."
     ),
-    role: l("Product Design + iOS", "Diseño de Producto + iOS", "Disseny de Producte + iOS"),
-    context: l("Native companion app", "App nativa complementaria", "App nativa complementària"),
+    role: l("Product Design + iOS + macOS", "Diseño de Producto + iOS + macOS", "Disseny de Producte + iOS + macOS"),
+    context: l("Native remote for the Mac and Jeffrey Desk", "Mando nativo para el Mac y Jeffrey Desk", "Comandament natiu per al Mac i Jeffrey Desk"),
     age: 18,
-    tags: ["iOS", l("Product", "Producto", "Producte")],
-    tech: ["Swift", "SwiftUI", "macOS bridge"],
+    tags: ["iOS", "macOS", l("Product", "Producto", "Producte")],
+    tech: ["Swift", "SwiftUI", "Network.framework", "ScreenCaptureKit", "Tailscale"],
     learning: l(
-      "Building the connection layer first, before any feature, meant every feature added later was remote for free. Doing it the other way round would have meant retrofitting each one.",
-      "Construir la capa de conexión primero, antes que cualquier función, hizo que cada función posterior fuera remota sin coste. Al revés habría significado adaptar cada una a mano.",
-      "Construir la capa de connexió primer, abans que cap funció, va fer que cada funció posterior fos remota sense cost. A l'inrevés hauria significat adaptar cadascuna a mà."
+      "A status light is a promise. If it says connected without asking the other side, every failure after it looks like something else, and you lose an evening blaming the Wi-Fi.",
+      "Un indicador de estado es una promesa. Si dice conectado sin preguntarle al otro lado, cada fallo posterior parece otra cosa, y pierdes una tarde culpando al wifi.",
+      "Un indicador d'estat és una promesa. Si diu connectat sense preguntar-ho a l'altra banda, cada error posterior sembla una altra cosa, i perds una tarda culpant la wifi."
     ),
     repo: "https://github.com/xavibosch/jeffrey-remote",
-    images: [IMG + "jeffrey-remote.png", IMG + "jeffrey-remote-apps.webp", IMG + "jeffrey-remote-controls.webp"],
+    images: [IMG + "jeffrey-remote-2-control.jpg", IMG + "jeffrey-remote-2-apps.jpg", IMG + "jeffrey-remote-2-ordres.jpg"],
   },
   {
     id: "04",
