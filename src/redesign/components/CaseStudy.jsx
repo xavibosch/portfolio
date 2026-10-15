@@ -30,6 +30,8 @@ const UI = {
 };
 
 const CHAPTERS = [
+  // only where there is a real story behind the idea (Jeffrey Desk); the rest start at "who it is for"
+  { key: "origin", label: { en: "Where it came from", es: "De dónde viene", ca: "D'on ve" } },
   { key: "builtFor", label: { en: "Who it is for", es: "Para quién es", ca: "Per a qui és" } },
   { key: "problem", label: { en: "What was broken", es: "Qué estaba roto", ca: "Què estava trencat" } },
   { key: "description", label: { en: "What I built", es: "Qué construí", ca: "Què vaig construir" } },

@@ -25,6 +25,59 @@ const l = (en, es, ca) => ({ en, es, ca });
 export const projects = [
   {
     id: "01",
+    name: "Jeffrey Desk",
+    tagline: l(
+      "Everything you do, on one screen.",
+      "Todo lo que haces, en una sola pantalla.",
+      "Tot el que fas, en una sola pantalla."
+    ),
+    origin: l(
+      "It started as a table. For an Intelligent Environments project I designed a desk that wakes up when you sit down: a projector above it, a camera tracking your hands, and the surface itself turning into the interface, greeting me with \"Welcome back, Mr. Bosch\" like something out of Iron Man. I built it, projected and touchable. Living with it every day is what changed the project: nearly everything I valued was the software, not the projection. So I moved the desk off the table and onto the Mac's screen, and kept the idea that mattered: one surface where the whole day lives.",
+      "Empezó siendo una mesa. Para un proyecto de Intelligent Environments diseñé un escritorio que se despierta cuando te sientas: un proyector encima, una cámara que sigue las manos y la propia superficie convirtiéndose en la interfaz, saludándome con un \"Welcome back, Mr. Bosch\" sacado de Iron Man. Lo construí, proyectado y táctil. Usarlo cada día es lo que cambió el proyecto: casi todo lo que valoraba era el software, no la proyección. Así que saqué el escritorio de la mesa y lo llevé a la pantalla del Mac, y me quedé con la idea que importaba: una sola superficie donde vive el día entero.",
+      "Va començar sent una taula. Per a un projecte d'Intelligent Environments vaig dissenyar un escriptori que es desperta quan t'hi asseus: un projector a sobre, una càmera que segueix les mans i la mateixa superfície convertint-se en la interfície, saludant-me amb un \"Welcome back, Mr. Bosch\" tret d'Iron Man. El vaig construir, projectat i tàctil. Fer-lo servir cada dia és el que va canviar el projecte: gairebé tot el que valorava era el software, no la projecció. Així que vaig treure l'escriptori de la taula i el vaig portar a la pantalla del Mac, i em vaig quedar amb la idea que importava: una sola superfície on viu el dia sencer."
+    ),
+    builtFor: l(
+      "Me first: a student whose day was the campus, Netflix, an AI, Spotify, the calendar and the mail, all at once. Then anyone on a Mac who lives in fifteen tabs, because it is now a product with its own website, plans and installer.",
+      "Primero para mí: un estudiante cuyo día era el campus, Netflix, una IA, Spotify, el calendario y el correo, todo a la vez. Después para cualquiera con un Mac que vive en quince pestañas, porque ahora es un producto con su web, sus planes y su instalador.",
+      "Primer per a mi: un estudiant el dia del qual era el campus, Netflix, una IA, Spotify, el calendari i el correu, tot alhora. Després per a qualsevol amb un Mac que viu en quinze pestanyes, perquè ara és un producte amb la seva web, els seus plans i el seu instal·lador."
+    ),
+    problem: l(
+      "My day was spread over a dozen apps and twice as many tabs. Every switch cost a little attention, the browser treated a film and an exam the same way, and nothing could see the whole day at once to help with it.",
+      "Mi día estaba repartido entre una docena de apps y el doble de pestañas. Cada cambio costaba un poco de atención, el navegador trataba igual una película que un examen, y nada podía ver el día entero a la vez para ayudar con él.",
+      "El meu dia estava repartit entre una dotzena d'apps i el doble de pestanyes. Cada canvi costava una mica d'atenció, el navegador tractava igual una pel·lícula que un examen, i res no podia veure el dia sencer alhora per ajudar-hi."
+    ),
+    description: l(
+      "A macOS app that turns the screen into a desk: widgets where any site lives (Netflix, the campus, Gmail, Notion, your files), your day with its tasks and calendar, a timer, Spotify, and the Mac's own controls in a dock. An AI agent, Claude or Codex, sits inside it and acts: it can open a course and download a PDF, or play music and note a deadline. Encrypted video plays properly, through a certified Widevine build. One codebase ships two editions: the personal one I use every day and the product, which starts empty and is set up by whoever installs it.",
+      "Una app de macOS que convierte la pantalla en un escritorio: viñetas donde vive cualquier web (Netflix, el campus, Gmail, Notion, tus archivos), tu día con sus tareas y su calendario, un temporizador, Spotify y los controles del propio Mac en un dock. Dentro hay un agente de IA, Claude o Codex, que actúa: puede entrar en una asignatura y descargar un PDF, o poner música y apuntar una entrega. El vídeo cifrado se reproduce de verdad, con una build de Widevine certificada. Un solo código sale en dos ediciones: la personal que uso cada día y el producto, que empieza vacío y lo monta quien lo instala.",
+      "Una app de macOS que converteix la pantalla en un escriptori: vinyetes on viu qualsevol web (Netflix, el campus, Gmail, Notion, els teus fitxers), el teu dia amb les tasques i el calendari, un temporitzador, Spotify i els controls del mateix Mac en un dock. A dins hi ha un agent d'IA, Claude o Codex, que actua: pot entrar en una assignatura i baixar un PDF, o posar música i apuntar una entrega. El vídeo xifrat es reprodueix de debò, amb una build de Widevine certificada. Un sol codi surt en dues edicions: la personal que faig servir cada dia i el producte, que comença buit i el munta qui l'instal·la."
+    ),
+    changed: l(
+      "The personal desk played Netflix by telling the platforms it was Chrome. For me that was a shortcut; the day I decided to sell it, the same trick became something no customer could be put at risk for, and so did the WhatsApp client and the things written into the code that only made sense for me. I rebuilt video on a certified Electron with production Widevine signing, so the desk says exactly what it is, and set one rule for the product: it must work exactly like mine, except that nothing comes set up. The second lesson was cheaper to learn and more embarrassing: working on the product in the same folder the personal app was serving broke my own desk twice, until the two editions got separate working trees.",
+      "El escritorio personal reproducía Netflix diciéndoles a las plataformas que era Chrome. Para mí era un atajo; el día que decidí venderlo, ese mismo truco pasó a ser algo a lo que no podía exponer a ningún cliente, igual que el cliente de WhatsApp y las cosas escritas en el código que solo tenían sentido para mí. Rehíce el vídeo sobre un Electron certificado con firma de Widevine de producción, para que el escritorio diga exactamente lo que es, y puse una regla al producto: tiene que funcionar exactamente como el mío, salvo que nada viene montado. La segunda lección fue más barata y más vergonzosa: trabajar en el producto en la misma carpeta que servía la app personal me rompió mi propio escritorio dos veces, hasta que las dos ediciones tuvieron carpetas de trabajo separadas.",
+      "L'escriptori personal reproduïa Netflix dient a les plataformes que era Chrome. Per a mi era una drecera; el dia que vaig decidir vendre'l, aquell mateix truc va passar a ser una cosa a la qual no podia exposar cap client, igual que el client de WhatsApp i les coses escrites al codi que només tenien sentit per a mi. Vaig refer el vídeo sobre un Electron certificat amb signatura de Widevine de producció, perquè l'escriptori digui exactament el que és, i vaig posar una regla al producte: ha de funcionar exactament com el meu, excepte que res no ve muntat. La segona lliçó va ser més barata i més vergonyosa: treballar en el producte a la mateixa carpeta que servia l'app personal em va trencar el meu propi escriptori dues vegades, fins que les dues edicions van tenir carpetes de treball separades."
+    ),
+    role: l("Product + Design + Engineering", "Producto + Diseño + Ingeniería", "Producte + Disseny + Enginyeria"),
+    context: l("macOS app, from personal tool to product", "App de macOS, de herramienta personal a producto", "App de macOS, d'eina personal a producte"),
+    age: 18,
+    tags: [l("Product", "Producto", "Producte"), "macOS", l("AI Agent", "Agente IA", "Agent IA")],
+    tech: ["Electron", "JavaScript", "Python", "Widevine", "Claude", "Cloudflare"],
+    learning: l(
+      "A tool for yourself and a product are different things even when the code is the same. What I could live with, someone else should never have to: every shortcut I took for me had to be paid back before a stranger could install it.",
+      "Una herramienta para ti y un producto son cosas distintas aunque el código sea el mismo. Lo que yo podía tolerar, otra persona no debería tener que hacerlo: cada atajo que tomé para mí había que devolverlo antes de que un desconocido pudiera instalarlo.",
+      "Una eina per a tu i un producte són coses diferents encara que el codi sigui el mateix. El que jo podia tolerar, una altra persona no ho hauria d'haver de fer: cada drecera que vaig prendre per a mi s'havia de tornar abans que un desconegut el pogués instal·lar."
+    ),
+    live: "https://jeffreydesk.com",
+    images: [
+      IMG + "jeffrey-desk-idea.jpg",
+      IMG + "jeffrey-desk-concept.jpg",
+      IMG + "jeffrey-desk-spotify.jpg",
+      IMG + "jeffrey-desk-real.jpg",
+      IMG + "jeffrey-desk-setup.jpg",
+      IMG + "jeffrey-desk-web.jpg",
+    ],
+  },
+  {
+    id: "02",
     name: "Jeffrey",
     tagline: l(
       "An assistant that acts, not answers.",
@@ -65,7 +118,7 @@ export const projects = [
     images: [IMG + "jeffrey.png"],
   },
   {
-    id: "02",
+    id: "03",
     name: "Jeffrey Remote",
     tagline: l("One assistant, many surfaces.", "Un asistente, muchas superficies.", "Un assistent, moltes superfícies."),
     builtFor: l(
@@ -102,7 +155,7 @@ export const projects = [
     images: [IMG + "jeffrey-remote.png", IMG + "jeffrey-remote-apps.webp", IMG + "jeffrey-remote-controls.webp"],
   },
   {
-    id: "03",
+    id: "04",
     name: "Jeffrey Wake Station",
     tagline: l("Latency is interaction design.", "La latencia es diseño de interacción.", "La latència és disseny d'interacció."),
     builtFor: l(
@@ -139,7 +192,7 @@ export const projects = [
     images: [IMG + "sensor-workspace.png"],
   },
   {
-    id: "04",
+    id: "05",
     name: "Betsy",
     tagline: l(
       "All the tension of betting, zero real money.",
@@ -185,7 +238,7 @@ export const projects = [
     images: [IMG + "betsy-real-hero.jpg", IMG + "betsy-real-league.png", IMG + "betsy-real-markets.png", IMG + "betsy-real-betslip.png"],
   },
   {
-    id: "05",
+    id: "06",
     name: "Nevera Bosch",
     tagline: l("The fridge is the app.", "La nevera es la app.", "La nevera és l'app."),
     builtFor: l(
@@ -222,7 +275,7 @@ export const projects = [
     images: [IMG + "nevera-real-hero.jpg", IMG + "nevera-real.png"],
   },
   {
-    id: "06",
+    id: "07",
     name: "Haptic Hunter",
     tagline: l(
       "A game you can play with your eyes closed.",
@@ -263,7 +316,7 @@ export const projects = [
     images: [IMG + "haptic-real-hero.jpg", IMG + "haptic-real-game.jpg", IMG + "haptic-real-accessibility.jpg"],
   },
   {
-    id: "07",
+    id: "08",
     name: "Remote Robot Car",
     tagline: l(
       "One message travelling from a thumb to four wheels.",
@@ -305,7 +358,7 @@ export const projects = [
     images: [IMG + "cotxe-hero.jpg", IMG + "cotxe-build.jpg", IMG + "cotxe-wiring.jpg", IMG + "cotxe-final.jpg"],
   },
   {
-    id: "08",
+    id: "09",
     name: "laSallefy",
     tagline: l("No decoder: build the sound.", "Sin decodificador: crear el sonido.", "Sense descodificador: crear el so."),
     builtFor: l(
@@ -342,7 +395,7 @@ export const projects = [
     images: [IMG + "sallefy-hero.svg"],
   },
   {
-    id: "09",
+    id: "10",
     name: "Gesture TV",
     tagline: l(
       "The remote was the barrier, so I removed it.",
@@ -383,7 +436,7 @@ export const projects = [
     images: [],
   },
   {
-    id: "10",
+    id: "11",
     name: "Reps",
     tagline: l(
       "Train without touching anything.",
@@ -437,6 +490,6 @@ export const projects = [
 export const techMarquee = [
   "Swift", "SwiftUI", "Python", "Ollama", "Arduino", "ESP32",
   "MQTT", "NFC", "Core Haptics", "Firestore", "Java", "macOS",
-  "React", "MediaPipe", "Electron",
+  "React", "MediaPipe", "Electron", "Widevine",
   "Interaction Design", "Systems Thinking", "Prototyping",
 ];
