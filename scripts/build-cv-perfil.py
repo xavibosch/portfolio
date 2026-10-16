@@ -412,8 +412,8 @@ def draw(c, L, switcher=None):
     for txt, url in [("bosch.xavii@gmail.com", "mailto:bosch.xavii@gmail.com"),
                      ("boschwebs.website", "https://boschwebs.website"),
                      ("github.com/xavibosch", "https://github.com/xavibosch"),
-                     ("linkedin.com/in/xavi-bosch-galilea-9b3876410",
-                      "https://www.linkedin.com/in/xavi-bosch-galilea-9b3876410")]:
+                     ("linkedin.com/in/xavier-bosch-galilea-9b3876410",
+                      "https://www.linkedin.com/in/xavier-bosch-galilea-9b3876410")]:
         s = 6.6
         while pdfmetrics.stringWidth(txt, "Mono", s) > SIDE_W and s > 4.8: s -= 0.1
         link(ML, sy, txt, url, size=s)

@@ -58,8 +58,8 @@ FOOT = 44
 
 LINKS = [("boschwebs.website", "https://boschwebs.website"),
          ("github.com/xavibosch", "https://github.com/xavibosch"),
-         ("linkedin.com/in/xavi-bosch-galilea-9b3876410",
-          "https://www.linkedin.com/in/xavi-bosch-galilea-9b3876410")]
+         ("linkedin.com/in/xavier-bosch-galilea-9b3876410",
+          "https://www.linkedin.com/in/xavier-bosch-galilea-9b3876410")]
 
 ES = dict(
     out="Xavi-Bosch-CV-Tech-ES.pdf", city="Barcelona, España",

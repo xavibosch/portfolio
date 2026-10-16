@@ -51,8 +51,8 @@ CONTACT = [
     ("bosch.xavii@gmail.com", "mailto:bosch.xavii@gmail.com"),
     ("boschwebs.website", "https://boschwebs.website"),
     ("github.com/xavibosch", "https://github.com/xavibosch"),
-    ("linkedin.com/in/xavi-bosch-galilea-9b3876410",
-     "https://www.linkedin.com/in/xavi-bosch-galilea-9b3876410"),
+    ("linkedin.com/in/xavier-bosch-galilea-9b3876410",
+     "https://www.linkedin.com/in/xavier-bosch-galilea-9b3876410"),
 ]
 
 ES = dict(
