@@ -1,0 +1,200 @@
+/* ── One hover language for every control ─────────────────────────────
+   No boxes, no washes. Text controls draw a line under the words, growing
+   from the left as the cursor arrives and leaving to the right as it goes.
+   The selected item keeps a slightly heavier line. Icon-only buttons draw
+   the same line under the icon. Keyboard focus keeps its outline. */
+
+.wallet-portfolio :is(
+  .navigation button, .panel-nav a, .close-panel > span:first-child, .archive-button, .footer-cv,
+  .card-open > span:first-child, .featured-chip, .col-jump button, .pcase-crumbs button, .pcase-nav button > span,
+  .pcase-more, .pcard-links a, .deck-index button, .cs-toc button, .cs-links a, .cs-next-links button,
+  .story-links a, .about-links a, .contact-mail a, .hm-links a, .hm-mail, .lightbox-close, .col-open, .hm-open
+) {
+  --line: 1.5px;
+  border: 0;
+  border-radius: 0;
+  box-shadow: none;
+  text-shadow: none;
+  background: linear-gradient(currentColor, currentColor) 100% 100% / 0 var(--line) no-repeat;
+  padding-bottom: 4px;
+  transition: background-size .55s cubic-bezier(.22, 1, .36, 1), color .3s, opacity .3s;
+}
+/* Links keep a faint line at rest so they still read as links. */
+.wallet-portfolio :is(.pcard-links a, .cs-links a, .cs-next-links button, .story-links a, .about-links a, .contact-mail a, .hm-links a, .hm-mail) {
+  background: linear-gradient(currentColor, currentColor) 100% 100% / 0 var(--line) no-repeat,
+              linear-gradient(color-mix(in srgb, currentColor 26%, transparent), color-mix(in srgb, currentColor 26%, transparent)) 0 100% / 100% 1px no-repeat;
+}
+.wallet-portfolio :is(
+  .navigation button, .panel-nav a, .close-panel, .archive-button, .footer-cv, .card-open, .featured-chip, .col-jump button,
+  .pcase-crumbs button, .pcase-nav button, .pcase-more, .pcard-links a, .deck-index button, .cs-toc button, .cs-links a,
+  .cs-next-links button, .story-links a, .about-links a, .contact-mail a, .hm-links a, .hm-mail, .lightbox-close, .col-card, .hm-card
+):is(:hover, :focus-visible) :is(.close-panel > span:first-child, .card-open > span:first-child, .pcase-nav button > span, .col-open, .hm-open),
+.wallet-portfolio :is(
+  .navigation button, .panel-nav a, .archive-button, .footer-cv, .featured-chip, .col-jump button, .pcase-crumbs button,
+  .pcase-more, .pcard-links a, .deck-index button, .cs-toc button, .cs-links a, .cs-next-links button, .story-links a,
+  .about-links a, .contact-mail a, .hm-links a, .hm-mail, .lightbox-close
+):is(:hover, :focus-visible) {
+  background-position: 0 100%;
+  background-size: 100% var(--line), 100% 1px;
+}
+.wallet-portfolio :is(.panel-nav a[aria-current], .featured-chip[aria-pressed="true"], .col-jump button[aria-pressed="true"], .deck-index button[aria-selected="true"], .cs-toc button[aria-current]) {
+  --line: 2px;
+  background-position: 0 100%;
+  background-size: 100% var(--line);
+}
+
+/* Icon-only buttons: the same line, under the icon. */
+.wallet-portfolio :is(.arrow-button, .theme-button, .pcard-tool, .lightbox-arrow, .copy-email, .card-open > span:last-child, .close-symbol) { position: relative; overflow: visible; }
+.wallet-portfolio :is(.arrow-button, .theme-button, .pcard-tool, .lightbox-arrow, .copy-email, .card-open > span:last-child, .close-symbol)::after {
+  content: ''; position: absolute; left: 22%; right: 22%; bottom: -8px; height: 1.5px; border-radius: 1px; background: currentColor;
+  transform: scaleX(0); transform-origin: 100% 50%; transition: transform .55s cubic-bezier(.22, 1, .36, 1); pointer-events: none;
+}
+.wallet-portfolio :is(.arrow-button, .theme-button, .pcard-tool, .lightbox-arrow, .copy-email):is(:hover, :focus-visible):not(:disabled)::after,
+.wallet-portfolio :is(.card-open, .close-panel):is(:hover, :focus-visible) :is(.card-open > span:last-child, .close-symbol)::after { transform: scaleX(1); transform-origin: 0 50%; }
+
+/* The panel's own navigation: plain words, the current one underlined. */
+.wallet-portfolio .panel-nav { gap: 22px; padding: 0; border: 0; background: none; box-shadow: none; }
+.wallet-portfolio .panel-nav a { padding: 6px 0 4px; font-size: 12px; color: var(--metal-muted, #4c5b65); }
+.wallet-portfolio .panel-nav a[aria-current] { color: var(--metal-ink, #253844); }
+
+/* Selecting a case study, and jumping between collection groups: an
+   editorial index rather than pills. Number, name, and the line. */
+.wallet-portfolio .featured-picker { gap: 26px; }
+.wallet-portfolio .featured-chip { display: inline-flex; align-items: baseline; gap: 7px; padding: 4px 0; border: 0; background-color: transparent; color: var(--muted); font: 600 13px/1.2 var(--sans); }
+.wallet-portfolio .featured-chip span { font: 400 10px var(--mono); color: inherit; opacity: .8; }
+.wallet-portfolio .featured-chip[aria-pressed="true"] { color: var(--ink); background-color: transparent; }
+.wallet-portfolio .featured-chip:hover { color: var(--ink); }
+.wallet-portfolio .col-jump { gap: 10px 28px; margin: 28px 0 6px; }
+.wallet-portfolio .col-jump button { padding: 4px 0; background-color: transparent; color: #2c3e49; font: 600 13px var(--sans); }
+.wallet-portfolio .col-jump sup { margin-left: 3px; font: 10px var(--mono); opacity: .75; }
+
+/* Text buttons that used to be framed. */
+.wallet-portfolio .about-links { gap: 22px; }
+.wallet-portfolio .about-links a { display: inline-flex; align-items: center; gap: 6px; padding: 2px 0 4px; font-size: 13px; font-weight: 600; }
+.wallet-portfolio .pcase-nav .pcase-more { padding: 4px 0; font-size: 13px; }
+.wallet-portfolio .lightbox-close { padding: 6px 0 4px; }
+.wallet-portfolio .hm-links a { min-height: 44px; padding: 0 0 4px; border: 0; align-items: center; }
+.wallet-portfolio .hm-links { gap: 6px 22px; }
+
+/* Room between the case study names and the hint under them. */
+.wallet-portfolio .transport-hint { top: 63px; }
+
+/* The theme glyph sits in the middle of its circle. */
+.wallet-portfolio .theme-button { display: grid; place-items: center; padding: 0; }
+.wallet-portfolio #theme-label { display: grid; place-items: center; width: 100%; height: 100%; line-height: 0; }
+
+@media (prefers-reduced-motion: reduce) {
+  .wallet-portfolio :is(.navigation button, .panel-nav a, .featured-chip, .col-jump button, .about-links a, .cs-toc button) { transition: none; }
+  .wallet-portfolio :is(.arrow-button, .theme-button, .pcard-tool, .lightbox-arrow, .copy-email)::after { transition: none; }
+}
+
+/* The round arrow beside "Open case study" turns, it no longer fills. */
+.wallet-portfolio .card-open:hover > span:last-child { background: transparent; color: inherit; }
+
+/* Close: the words and a plain cross, one line under both, the cross turns. */
+.wallet-portfolio .close-panel { gap: 9px; padding: 4px 0; font: 11px var(--mono); letter-spacing: .04em;
+  background: linear-gradient(currentColor, currentColor) 100% 100% / 0 1.5px no-repeat; transition: background-size .55s cubic-bezier(.22, 1, .36, 1); }
+.wallet-portfolio .close-panel:is(:hover, :focus-visible) { background-position: 0 100%; background-size: 100% 1.5px; }
+.wallet-portfolio .close-panel > span:first-child { background: none !important; padding: 0; }
+.wallet-portfolio .panel .close-symbol { width: auto; height: auto; border: 0; border-radius: 0; background: none !important; box-shadow: none !important; }
+.wallet-portfolio .close-symbol::after { display: none; }
+.wallet-portfolio .close-symbol .icon { width: 15px; height: 15px; transition: transform .6s cubic-bezier(.22, 1, .36, 1); }
+.wallet-portfolio .close-panel:hover .close-symbol .icon { transform: rotate(90deg); }
+@media (max-width: 800px) { .wallet-portfolio .close-symbol .icon { width: 20px; height: 20px; } }
+
+/* Containers that take focus for screen readers never show a ring. */
+.panel-shell:focus, .lightbox:focus { outline: none; }
+/* Keyboard focus: a soft rounded ring in the text colour, not a blue box. */
+.wallet-portfolio :is(button, a[href], [role="button"], [tabindex="0"]):focus-visible { outline: 2px solid color-mix(in srgb, currentColor 55%, transparent); outline-offset: 5px; }
+.wallet-portfolio .wallet-card .card-lift:focus-visible { outline-color: color-mix(in srgb, currentColor 55%, transparent); }
+
+/* ── Language switch ──────────────────────────────────────────────────
+   EN / ES / CA as three words with the site's underline, never pills. The
+   same switch sits in the header, in the studio on narrow screens and in
+   the rim of the open folio. */
+.lang-switch { display: inline-flex; align-items: center; gap: 9px; }
+.lang-switch button { padding: 3px 0; font: inherit; letter-spacing: .1em; color: inherit; opacity: .5;
+  background: linear-gradient(currentColor, currentColor) 100% 100% / 0 1px no-repeat;
+  transition: background-size .5s var(--ease-out, cubic-bezier(.22, 1, .36, 1)), opacity .3s; }
+.lang-switch button:hover { opacity: .85; background-position: 0 100%; background-size: 100% 1px; }
+.lang-switch button[aria-pressed="true"] { opacity: 1; background-position: 0 100%; background-size: 100% 1.5px; }
+.lang-switch button:focus-visible { outline: 1px solid currentColor; outline-offset: 3px; }
+.location .lang-slot { margin-left: 16px; padding-left: 14px; border-left: 1px solid var(--line); }
+.studio-lang { display: none; }
+.folio-rim .lang-switch { gap: 12px; }
+.folio-rim .lang-switch button { padding: 6px 0; }
+@media (max-width: 1100px) {
+  .studio-lang { position: absolute; top: 2px; right: 3.6%; z-index: 6; display: block; font: 10px var(--mono); }
+  .folio-rim > .lang-slot { display: inline-flex !important; }
+  .folio-rim .lang-switch { font-size: 9px; }
+}
+@media (max-width: 800px) { .folio-rim > span:first-child { display: none; } }
+@media (prefers-reduced-motion: reduce) { .lang-switch button { transition: none; } }
+
+/* Phones: the switch joins the header, after "Get in touch", and the studio
+   loses its own row so the headline can sit higher. */
+.header-lang { display: none; }
+@media (max-width: 760px) {
+  .header-lang { display: block; margin-left: auto; font: 10px var(--mono); }
+  .header-lang .lang-switch { gap: 8px; }
+  .studio-lang { display: none; }
+  html body.wallet-portfolio .header { padding: 0 5%; gap: 14px; }
+  html body.wallet-portfolio .navigation { gap: 14px; margin-left: auto; }
+  /* A shorter header lifts the headline. main.js (clearHeadline) then
+     keeps the fanned cards clear of it. */
+  html body.wallet-portfolio .header { height: 70px; }
+  .wallet-portfolio .studio { inset: 70px 0 86px; }
+  .wallet-portfolio .studio-note { top: 8px; }
+}
+@media (max-width: 400px) {
+  html body.wallet-portfolio .header { padding: 0 4%; gap: 10px; }
+  html body.wallet-portfolio .navigation { gap: 11px; }
+  html body.wallet-portfolio .navigation button { font-size: 10.5px; }
+  .header-lang .lang-switch { gap: 6px; }
+  .header-lang { font-size: 9px; }
+}
+@media (max-width: 360px) {
+  html body.wallet-portfolio .navigation { gap: 9px; }
+  html body.wallet-portfolio .navigation button { font-size: 10px; }
+  html body.wallet-portfolio #contact-button > span[aria-hidden] { display: none; }
+  html body.wallet-portfolio .monogram { font-size: 36px; }
+}
+
+/* Tablets (iPad): the Mac layout, with what does not fit at this width
+   moved. The language switch and the theme button go back to the header's
+   corner (without the clock), the caption makes room for Vito on the
+   right, and the footer drops the named project buttons when the arrows
+   and the collection link would otherwise meet. */
+@media (min-width: 761px) and (max-width: 1100px) {
+  html body.wallet-portfolio .location { display: flex; font-size: 0; }
+  .wallet-portfolio .location #local-time { display: none; }
+  .location .lang-slot { margin: 0 14px 0 0; padding: 0; border: 0; font-size: 10px; }
+  .studio-lang { display: none; }
+  .wallet-portfolio .selected-project { left: 4%; right: 150px; width: auto; translate: none; }
+}
+@media (min-width: 761px) and (max-width: 960px) {
+  .wallet-portfolio .featured-picker { display: none; }
+}
+
+/* Phones and tablets: the caption under the holder is always the same
+   height, whatever the project or the language, so the holder never has to
+   shrink to make room when it changes. Two lines of discipline, one of
+   title, two of summary. */
+@media (max-width: 1100px) {
+  .wallet-portfolio .selected-project .caption-copy { min-width: 0; }
+  /* Up to two lines, always the room of two, so a long discipline in
+     Spanish or Catalan shows whole without changing the caption's height. */
+  html body.wallet-portfolio .selected-project #current-context { display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; line-height: 1.5; min-height: 3em; }
+  .wallet-portfolio .selected-project .caption-copy h2 { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  html body.wallet-portfolio .selected-project .caption-copy p { display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; min-height: 2.9em; line-height: 1.45; }
+}
+/* Phones: the headline says what the eyebrow said, so the eyebrow goes and
+   the holder gets that room in every language. The page is the screen's
+   height, not a fixed minimum taller than small phones. */
+@media (max-width: 760px) {
+  html body.wallet-portfolio .studio-note .eyebrow { display: none; }
+  .wallet-portfolio #app { min-height: 520px; height: 100svh; }
+}
+/* Phones: Vito lies where the rim shows "XB—001". */
+@media (max-width: 760px) { .folio-rim > span:last-child { visibility: hidden; } }
+@media (max-width: 360px) { html body.wallet-portfolio .selected-project #current-context { letter-spacing: 0; font-size: 9px; } }

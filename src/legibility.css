@@ -1,0 +1,34 @@
+/* Legibility floor. The engraved labels had drifted down to 6 to 8 px,
+   which reads as texture rather than text. Nothing a visitor might want to
+   read goes below 10 px on a screen, or 9 px inside the small cards. */
+html body.wallet-portfolio :is(.identity-caption, .location, .eyebrow, .studio-note .eyebrow, .navigation sup,
+  .archive-button, .footer-cv, .selection-index, .selected-project #current-context,
+  .availability, .availability>span>span, .panel-home, .panel-label, .folio-rim, .index-status, .index-card-top,
+  .rail-engraving, .rail-count, .collection-stamp small, .contact-serial, .contact-card-top, .contact-card-top>span>span,
+  .contact-card-bottom, .card-back-tag, .pcase-nav button small) { font-size: 10px; }
+html body.wallet-portfolio :is(.card-label, .card-foot) { font-size: 9px; }
+html body.wallet-portfolio .pcard :is(.pcard-kicker, .pcard-stamp, .pcard-story dt, .pcard-foot, .pcard-count, .pcard-serial small) { font-size: max(10px, 1cqw); }
+html body.wallet-portfolio .story-plate dt { font-size: 10px; }
+
+/* The cards in the holder are drawn at 1060 px and scaled down, so their
+   type has to start bigger than it would on a flat page. */
+html body.wallet-portfolio :is(.slip-category, .slip-foot, .slip-open) { font-size: 10px; letter-spacing: .04em; }
+html body.wallet-portfolio .slip-role { font-size: 11px; }
+html body.wallet-portfolio .eject-label { font-size: 8px; }
+html body.wallet-portfolio .transport-hint { top: 32px; font-size: 9px; }
+
+.footer-cv { display: inline-flex; align-items: center; gap: 8px; letter-spacing: .05em; }
+.footer-cv .icon { width: 13px; height: 13px; transition: transform .3s var(--ease-out); }
+.footer-cv:hover .icon { transform: translateY(2px); }
+
+@media (max-width: 400px) {
+  html body.wallet-portfolio .studio-note .eyebrow { display: none; }
+}
+@media (max-width: 760px) {
+  html body.wallet-portfolio .availability { gap: 6px; }
+  html body.wallet-portfolio .availability>span>span { max-width: 130px; }
+  html body.wallet-portfolio .selected-project .caption-copy p { font-size: 13px; }
+  html body.wallet-portfolio .navigation { gap: 16px; }
+  html body.wallet-portfolio .navigation button { font-size: 11px; white-space: nowrap; }
+  html body.wallet-portfolio .navigation sup { display: none; }
+}

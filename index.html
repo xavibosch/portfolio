@@ -1,0 +1,44 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#eeede9" />
+    <meta name="description" content="Xavi Bosch, interactive product designer and developer in Barcelona. Three case studies, from the problem to the working product. Open to internships from summer 2027." />
+    <title>Xavi Bosch | Interactive product designer and developer</title>
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="preload" href="/fonts/manrope.ttf" as="font" type="font/ttf" crossorigin />
+    <link rel="preload" href="/fonts/instrument-serif.ttf" as="font" type="font/ttf" crossorigin />
+    <link rel="preload" href="/assets/brushed-metal.webp" as="image" />
+  </head>
+  <body class="wallet-portfolio">
+    <a class="skip-link" href="#open-project" data-i18n="skip">Skip to the selected case study</a>
+    <div id="app">
+      <header class="header">
+        <a class="identity" href="#/" aria-label="Xavi Bosch home" data-i18n-attr="aria-label:identity"><span class="monogram" aria-hidden="true">xb<span>®</span></span><span class="identity-caption">XAVI BOSCH<br />DESIGN + CODE</span></a>
+        <nav class="navigation" aria-label="Main navigation" data-i18n-attr="aria-label:nav.main"><button id="index-button"><span data-i18n="nav.collection">The collection</span> <sup>11</sup></button><button id="about-button" data-i18n="nav.about">About me</button><button id="contact-button"><span data-i18n="nav.contact">Get in touch</span> <span aria-hidden="true"><i data-icon="arrow-up-right"></i></span></button></nav>
+        <span class="lang-slot header-lang" data-lang-slot="phone"></span>
+        <div class="location"><span id="local-time"></span> BARCELONA<span class="lang-slot" data-lang-slot="header"></span><button id="theme-button" class="theme-button" aria-pressed="false" aria-label="Switch to dark mode"><span id="theme-label" aria-hidden="true"><i data-icon="theme"></i></span></button></div>
+      </header>
+
+      <main class="studio" id="studio"><span class="lang-slot studio-lang" data-lang-slot="studio"></span>
+        <div class="studio-note"><span class="eyebrow" data-i18n="home.eyebrow">XAVI BOSCH · INTERACTIVE PRODUCT DESIGNER &amp; DEVELOPER</span><h1 class="positioning" data-i18n-html="home.positioning">I design the interface,<br />question the interaction<br />and build the working product.</h1></div>
+        <div class="availability"><span class="status-dot"></span><span><b class="availability-title" data-i18n="home.available">OPEN TO INTERNSHIPS · SUMMER 2027</b><br /><span data-i18n="home.availableDetail">Product design, UX engineering, frontend or interaction design. Barcelona or abroad.</span></span></div>
+        <div class="wallet-scene" id="scene" data-i18n-attr="aria-label:home.scene" aria-label="A silver cardholder with five cards: about me, three case studies and contact. Choose a card to open it."></div>
+        <p class="pick-hint"><span data-i18n="home.pick">Pick a card to open it.</span><svg width="49" height="39" viewBox="0 0 49 39" aria-hidden="true"><path d="M3 3C1 24 23 32 43 26M35 20l9 6-7 9" fill="none" stroke="currentColor" stroke-width="1.2" /></svg></p>
+        <div class="selected-project" aria-live="polite" aria-atomic="true"><div class="selection-index"><span id="project-number">01</span><span>/ 03</span></div><div class="caption-copy"><span id="current-context">PERSONAL PRODUCT</span><h2 id="project-title">Jeffrey Desk</h2><p id="project-summary">A personal workspace, turned into a product.</p><span id="current-role" class="sr-only"></span></div><button id="open-project" class="card-open" aria-label="Open Jeffrey Desk case study"><span data-i18n="home.open">Open case study</span><span aria-hidden="true"><i data-icon="arrow-up-right"></i></span></button></div>
+      </main>
+
+      <footer class="footer">
+        <button class="archive-button" id="archive-button"><span class="grid-icon" aria-hidden="true"><i></i><i></i><i></i><i></i></span><span data-i18n="home.collection">THE COLLECTION · ALL 11 PROJECTS</span></button>
+        <div class="transport"><button id="prev-project" class="arrow-button" aria-label="Previous project" data-i18n-attr="aria-label:home.prev"><i data-icon="arrow-left"></i></button><div class="featured-picker" id="featured-picker" role="group" aria-label="Selected case studies" data-i18n-attr="aria-label:home.picker"></div><button id="next-project" class="arrow-button" aria-label="Next project" data-i18n-attr="aria-label:home.next"><i data-icon="arrow-right"></i></button><span class="transport-hint" data-i18n="home.hint">ARROWS OR SCROLL SWITCH CARDS · SPACE OPENS</span></div>
+        <a class="footer-cv" href="/Xavi-Bosch-CV.pdf" download><span data-i18n="home.cv">DOWNLOAD CV</span> <i data-icon="arrow-down"></i></a>
+      </footer>
+    </div>
+    <section class="home-more" id="home-more" aria-label="Selected case studies and contact" data-i18n-attr="aria-label:home.more"></section>
+    <dialog id="panel" class="panel" aria-label="Portfolio card" data-i18n-attr="aria-label:panel.label"><div class="panel-shell metal-surface" data-reflect tabindex="-1"><div class="panel-top"><a class="panel-home" href="#/" aria-label="Back to the cardholder" data-i18n-attr="aria-label:panel.home"><span class="folio-mark">xb.</span><span><span data-i18n="panel.collection">PERSONAL COLLECTION</span><br /><span class="panel-label" id="panel-label">SELECTED WORK</span></span></a><nav class="panel-nav" aria-label="Inside the cardholder" data-i18n-attr="aria-label:panel.nav"><a href="#/index" data-view="index" data-i18n="panel.navCollection">Collection</a><a href="#/about" data-view="about" data-i18n="panel.navAbout">About me</a><a href="#/contact" data-view="contact" data-i18n="panel.navContact">Contact</a></nav><button class="close-panel" id="close-panel" aria-label="Close panel" data-i18n-attr="aria-label:panel.closeLabel"><span data-i18n="panel.close">Put back</span><span class="close-symbol" aria-hidden="true"><i data-icon="close"></i></span></button></div><div id="panel-content" class="panel-content"></div><div class="folio-rim"><span aria-hidden="true" data-i18n="panel.rim">XAVI BOSCH / DESIGN + CODE</span><span class="lang-slot" data-lang-slot="rim"></span><span aria-hidden="true">XB—001</span></div></div></dialog>
+    <div class="toast" id="toast" role="status"></div>
+    <noscript><div class="noscript">This interactive portfolio needs JavaScript. Contact Xavi at <a href="mailto:bosch.xavii@gmail.com">bosch.xavii@gmail.com</a>.</div></noscript>
+    <script type="module" src="/src/main.js"></script>
+  </body>
+</html>

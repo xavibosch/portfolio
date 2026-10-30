@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1500" height="900" viewBox="0 0 1500 900">
+<rect width="1500" height="900" fill="#ded6c8"/>
+<g fill="#343e31" font-family="Georgia,serif"><text x="90" y="165" font-size="92">Gesture TV</text><text x="93" y="213" font-family="monospace" font-size="18">ILLUSTRATED SYSTEM / PROJECT VISUAL TO COME</text></g>
+<rect x="520" y="302" width="790" height="450" rx="28" fill="#29352d"/>
+<rect x="540" y="322" width="750" height="410" rx="12" fill="#aebda4"/>
+<path d="M810 755v45h210v-45M740 801h350" stroke="#29352d" stroke-width="14" fill="none"/>
+<g fill="#29352d" font-family="Georgia,serif"><text x="606" y="405" font-size="39">A little more independence.</text></g>
+<g fill="none" stroke="#64745d" stroke-width="2"><rect x="600" y="450" width="185" height="180" rx="15"/><rect x="815" y="450" width="185" height="180" rx="15"/><rect x="1030" y="450" width="185" height="180" rx="15"/></g>
+<g fill="#33422e" font-family="monospace" font-size="20" text-anchor="middle"><text x="693" y="552">WATCH</text><text x="908" y="552">BROWSE</text><text x="1123" y="552">LISTEN</text></g>
+<g fill="#343e31" font-family="monospace" font-size="23"><text x="95" y="400">01 / CLAP</text><text x="95" y="525">02 / GESTURE</text><text x="95" y="650">03 / VOICE</text></g>
+<g fill="#747c6b" font-family="monospace" font-size="18"><text x="95" y="435">Power on</text><text x="95" y="560">Point &amp; hold</text><text x="95" y="685">Local commands</text></g>
+<g fill="none" stroke="#87947d" stroke-width="2"><path d="M330 400h140v122h50M330 525h190M330 650h140V525"/></g>
+<circle cx="470" cy="525" r="9" fill="#e55e37"/>
+</svg>

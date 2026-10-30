@@ -1,0 +1,147 @@
+/* ── Dark: black chrome ────────────────────────────────────────────────
+   The same objects, made of polished black metal instead of brushed
+   silver. The brushed texture stays underneath at low strength so the
+   grain still catches the light, and the existing reflections (screen
+   blended highlights that follow the pointer) become the chrome glints.
+   Every view follows the switch: the holder, the folio, the cards, the
+   case studies, the collection and the phone layout. */
+
+html[data-theme="dark"] {
+  color-scheme: dark;
+  --chrome: linear-gradient(118deg, #34373ce8 0%, #0b0c0ef2 24%, #16181bf0 44%, #4a4e55d6 57%, #07080af5 76%, #23262ae8 100%), var(--metal-texture);
+  --chrome-soft: linear-gradient(122deg, #1c1e21f2 0%, #0a0b0cf5 32%, #202226f0 55%, #08090af5 78%, #17191cf2 100%), var(--metal-texture);
+  --metal-satin: var(--chrome-soft);
+  --metal-polished: var(--chrome);
+  --metal-ink: #e6e9ec;
+  --metal-muted: #9ba3aa;
+  --metal-line: #ffffff1c;
+  --engraved: 0 -1px 0 #000000cc, 0 1px 0 #ffffff12;
+  --bevel: inset 0 1px 0 #ffffff3a, inset 1px 0 0 #ffffff12, inset -1px 0 0 #00000080, inset 0 -2px 1px #000000b3;
+  --read-bg: #111214;
+  --read-ink: #e7e9eb;
+  --read-soft: #9aa2a9;
+  --read-line: #2b2e32;
+  --read-card: #191b1e;
+  --st-known: #c9d0d6;   --st-known-bg: #262a2e;
+  --st-observed: #a9cdf2; --st-observed-bg: #14273a;
+  --st-assumed: #f0c987;  --st-assumed-bg: #33260f;
+  --st-tested: #8fdbd1;   --st-tested-bg: #0f2f2c;
+  --st-validated: #9fdca7; --st-validated-bg: #142e18;
+  --st-not: #f3aaa2;      --st-not-bg: #3a1714;
+  --st-planned: #c8b8f5;  --st-planned-bg: #241c3d;
+}
+html[data-theme="dark"] body.wallet-portfolio { --paper: #08090a; --ink: #eceef0; --muted: #9aa1a8; --line: #2d3034; background: #08090a; }
+html[data-theme="dark"] .wallet-portfolio #app { background: radial-gradient(ellipse at 50% 34%, #1d1f22 0%, #0c0d0f 52%, #050506 100%); }
+html[data-theme="dark"] .wallet-portfolio #app::before { opacity: .07; }
+html[data-theme="dark"] .wallet-portfolio .studio-note .positioning,
+html[data-theme="dark"] .wallet-portfolio .selected-project .caption-copy h2 { color: var(--ink); }
+html[data-theme="dark"] .wallet-portfolio :is(.arrow-button, .theme-button, .card-open > span:last-child) { background: linear-gradient(140deg, #ffffff14, #00000040); border-color: #3a3e43; box-shadow: inset 0 1px 0 #ffffff26; color: var(--ink); }
+html[data-theme="dark"] .wallet-portfolio .col-jump button { color: var(--ink); }
+
+/* The holder */
+html[data-theme="dark"] .wallet-shadow { background: #000; opacity: .7; }
+html[data-theme="dark"] .sleeve-back { background: linear-gradient(145deg, #6a6d73 0%, #1b1c1f 15%, #030304 50%, #2d3035 86%, #8b8e94); border-color: #000; box-shadow: 0 1px 0 #ffffff40, 0 2px 1px #000, 0 4px 0 #2a2c30, 0 7px 2px #000, 0 20px 40px -10px #000; }
+html[data-theme="dark"] .sleeve-edge { background: linear-gradient(110deg, #2a2c30, #8a8d92 27%, #0a0b0d 45%, #1d1f23 61%, #b4b7bc 85%, #1a1c1f); }
+html[data-theme="dark"] .sleeve-front { filter: drop-shadow(0 -3px 2px #000000a0) drop-shadow(0 2px 1px #ffffff26); }
+html[data-theme="dark"] .wallet-portfolio .metal-face { background-image: linear-gradient(114deg, #ffffff2e 0%, #ffffff00 21%, #00000070 42%, #ffffff24 68%, #00000070 100%), linear-gradient(#141518e6, #07080aeb), url('/assets/brushed-metal.webp'); background-size: cover; }
+html[data-theme="dark"] .metal-face::after { box-shadow: inset 0 -2px 1px #000000b3, inset 0 2px 1px #ffffff4d, inset 1px 0 1px #ffffff33, inset -1px 0 2px #000; }
+html[data-theme="dark"] .wallet-portfolio :is(.engraving, .engraving-top, .engraving-description p, .engraving-bottom) { color: #a3a9ae; text-shadow: 0 -1px 0 #000, 0 1px 0 #ffffff17; }
+html[data-theme="dark"] .wallet-portfolio .engraving .engraving-name { color: #d4d8dc; text-shadow: 0 -1px 1px #000, 0 1px 1px #ffffff2e; }
+html[data-theme="dark"] .engraving-bottom { border-top-color: #ffffff17; box-shadow: inset 0 1px 0 #00000080; }
+html[data-theme="dark"] .sleeve-screw { background: linear-gradient(130deg, #9a9ea4, #1d1f22 48%, #4b4f55); box-shadow: inset 0 0 1px #000, 0 1px 0 #ffffff26; }
+html[data-theme="dark"] .eject-switch { background: linear-gradient(90deg, #050506, #3a3d42 31%, #6b6e73 39%, #2a2c30 80%, #55585d); box-shadow: 3px 3px 4px #000a, inset 0 1px 1px #ffffff40; }
+html[data-theme="dark"] .eject-label { color: #b9bec3; text-shadow: none; }
+html[data-theme="dark"] .wallet-portfolio .wallet-card .card-lift,
+html[data-theme="dark"] .wallet-portfolio .slip-previous .card-lift,
+html[data-theme="dark"] .wallet-portfolio .slip-next .card-lift,
+html[data-theme="dark"] .wallet-portfolio .slip-current .card-lift { background: var(--chrome); background-size: cover; border-color: #3a3d42; color: var(--metal-ink); text-shadow: var(--engraved); box-shadow: var(--bevel), 0 4px 6px #0008, 0 14px 26px -10px #000; }
+html[data-theme="dark"] .wallet-card .card-lift::after { background: linear-gradient(120deg, #ffffff1f, transparent 36%, #fff0 65%, #ffffff12); box-shadow: inset 0 1px 1px #ffffff40, inset 0 -1px 0 #000; }
+html[data-theme="dark"] .wallet-card .slip-top { border-bottom-color: #ffffff1a; }
+html[data-theme="dark"] .wallet-portfolio :is(.slip-role, .identity-slip-role) { color: #b4bac0; }
+html[data-theme="dark"] .wallet-portfolio .slip-image { border-color: #000; box-shadow: 0 1px 0 #ffffff26, inset 0 1px 3px #000; }
+html[data-theme="dark"] :is(.identity-slip-mark, .identity-slip-name) { text-shadow: 0 -1px 0 #000; }
+
+/* The folio and everything inside it */
+html[data-theme="dark"] .panel { background: #0b0c0e; border-color: #2c2f33; color: #e3e6e9;
+  box-shadow: 0 1px 0 #ffffff33, 0 4px 0 #17191c, 0 5px 0 #3a3d42, 0 8px 2px #000, 0 30px 90px -20px #000; }
+html[data-theme="dark"] .panel::backdrop { background: #000000b3; }
+html[data-theme="dark"] .panel :is(div, section, article, header, footer, nav, aside, figure, dl, ul, ol, h1, h2, h3, h4, h5, p, span, dt, dd, li, a, button, small, strong, b, em, sup, figcaption, label, i) { color: inherit; text-shadow: none; }
+html[data-theme="dark"] .panel .human-lede { color: #c9ced2 !important; }
+html[data-theme="dark"] .panel .pcase-crumbs { color: #9aa2a9; }
+html[data-theme="dark"] .panel .pcase-crumbs :is(button, [aria-current]) { color: #e8ebee; }
+/* The pointer reflection on black is a glint, not a floodlight. */
+html[data-theme="dark"] .metal-surface::before { opacity: .32; }
+html[data-theme="dark"] .panel :is(.eyebrow, .panel-label, .folio-rim, dt, small, .cs-num, .col-card-top, .col-facts b, .pcard-kicker, .pcard-story dt, .pcard-hood, .pcard-team,
+  .deck-card-no, .deck-card-foot, .story-head .eyebrow, .cs-toc-title, .cs-media figcaption, .cs-plan h5, .cs-plan-who span, .col-group header p, .col-head p,
+  .hint-hover, .hint-touch, .card-hint, .contact-smallprint, .contact-intro p, .contact-serial, .contact-card-bottom, .pcard-counter, .deck-count, .human-facts dt, .contact-facts dt) { color: #9aa2a9; }
+html[data-theme="dark"] .panel :is(.panel-top, .folio-rim, .case-bottom, .col-group header) { border-color: #ffffff14; box-shadow: none; }
+html[data-theme="dark"] .panel .panel-nav a { color: #9aa2a9; }
+html[data-theme="dark"] .panel .panel-nav a[aria-current], html[data-theme="dark"] .panel .panel-nav a:hover { color: #f1f3f5; }
+html[data-theme="dark"] .panel .close-symbol { background: linear-gradient(140deg, #ffffff14, #00000040); border-color: #3a3e43; box-shadow: inset 0 1px 0 #ffffff26; }
+
+/* Black chrome sheets: project card, story cards, collection cards,
+   the decision plate, the next-project card, the ID and contact cards. */
+html[data-theme="dark"] :is(.pcard-face, .deck-card, .col-card, .hm-card, .cs-decision, .cs-next-card, .contact-card, .card-front) {
+  background: var(--chrome); background-size: cover; border-color: #34373c;
+  box-shadow: inset 0 1px 0 #ffffff33, inset 0 -1px 0 #000, 0 2px 0 #000, 0 3px 0 #2a2d31, 0 30px 46px -26px #000;
+}
+html[data-theme="dark"] .pcase { --card-ink: #e8ebee; --card-soft: #9aa3aa; --card-line: #ffffff1c; --card-light: #00000000; --card-engrave: 0 -1px 0 #000000c0, 0 1px 0 #ffffff12; }
+html[data-theme="dark"] .pcard-title h2 { color: #f0f2f4 !important; text-shadow: 0 -1.5px 0 #000, 0 1px 0 #ffffff26 !important; }
+html[data-theme="dark"] .pcard-title p { color: #c5cbd0 !important; }
+html[data-theme="dark"] .pcard-sheen { background: linear-gradient(112deg, transparent calc(var(--mx, 25%) - 30%), #ffffff2b var(--mx, 25%), transparent calc(var(--mx, 25%) + 30%)); }
+html[data-theme="dark"] :is(.pcard-serial, .pcard-tech li, .story-tags span, .col-tags span) { background: #ffffff0d; box-shadow: inset 0 1px 2px #000c, 0 1px 0 #ffffff14; }
+html[data-theme="dark"] .pcard-chip { background: linear-gradient(135deg, #8d9197, #2b2e33 45%, #6e7278 60%, #1b1d20); box-shadow: inset 0 1px 0 #ffffff59, inset 0 -1px 1px #000, 0 1px 1px #000; }
+html[data-theme="dark"] .pcard-stamp { border-color: #ffffff2e; box-shadow: none; }
+html[data-theme="dark"] :is(.pcard-turn, .pcard-tool, .lightbox-arrow) { background: linear-gradient(#ffffff1f, #00000059); border-color: #44484e; box-shadow: inset 0 1px 0 #ffffff2e, 0 2px 6px #0009; color: #eceef0 !important; }
+html[data-theme="dark"] .pcard-count { background: #eceef0; color: #0b0c0e !important; }
+html[data-theme="dark"] :is(.pcard-track, .col-card-media, .hm-media) { background: radial-gradient(ellipse at 50% 40%, #1a1c1f, #050506); box-shadow: inset 0 2px 9px #000, 0 1px 0 #ffffff1a; }
+html[data-theme="dark"] .pcard-dots button::after { background: #ffffff38; box-shadow: none; }
+html[data-theme="dark"] .pcard-dots button[aria-pressed="true"]::after { background: #eceef0; }
+html[data-theme="dark"] .deck-marker { background: #ffffff12; box-shadow: inset 0 1px 0 #ffffff1f; }
+
+/* Reading surface */
+html[data-theme="dark"] .cs { box-shadow: inset 0 1px 0 #ffffff14, 0 30px 60px -40px #000; }
+html[data-theme="dark"] .cs :is(.cs-section-body p, .cs-lede, .cs-stack dd, .cs-next-line, .cs-option dd, .cs-decision dd) { color: #d6dadd; }
+html[data-theme="dark"] .cs-frame { background: #1b1d20; box-shadow: inset 0 0 0 1px #ffffff12; }
+html[data-theme="dark"] .cs-zoom-icon { background: #000000b3; }
+html[data-theme="dark"] .cs-media.is-placeholder .cs-frame { border-color: #4b5056; background: repeating-linear-gradient(135deg, #16181b 0 10px, #1b1d21 10px 20px); }
+html[data-theme="dark"] .is-placeholder p { color: #c9ced2 !important; }
+html[data-theme="dark"] .cs-plan { border-color: #d7dbde; }
+html[data-theme="dark"] .cs-decision dl > div { border-top-color: #ffffff1a; box-shadow: none; }
+html[data-theme="dark"] .cs-toc button::before { background: #eceef0; }
+
+/* Labels keep their own colours over the catch-all above. */
+html[data-theme="dark"] .panel [data-status="known"] > .cs-claim-tag, html[data-theme="dark"] .panel .cs-claim-tag[data-status="known"] { color: var(--st-known); }
+html[data-theme="dark"] .panel [data-status="observed"] > .cs-claim-tag, html[data-theme="dark"] .panel .cs-claim-tag[data-status="observed"] { color: var(--st-observed); }
+html[data-theme="dark"] .panel [data-status="assumed"] > .cs-claim-tag, html[data-theme="dark"] .panel .cs-claim-tag[data-status="assumed"] { color: var(--st-assumed); }
+html[data-theme="dark"] .panel [data-status="tested"] > .cs-claim-tag, html[data-theme="dark"] .panel .cs-claim-tag[data-status="tested"] { color: var(--st-tested); }
+html[data-theme="dark"] .panel [data-status="validated"] > .cs-claim-tag, html[data-theme="dark"] .panel .cs-claim-tag[data-status="validated"] { color: var(--st-validated); }
+html[data-theme="dark"] .panel [data-status="not-validated"] > .cs-claim-tag, html[data-theme="dark"] .panel .cs-claim-tag[data-status="not-validated"] { color: var(--st-not); }
+html[data-theme="dark"] .panel [data-status="planned"] > .cs-claim-tag, html[data-theme="dark"] .panel .cs-claim-tag[data-status="planned"] { color: var(--st-planned); }
+html[data-theme="dark"] .panel [data-state="done"] .cs-check-tag, html[data-theme="dark"] .panel [data-verdict="kept"] .cs-verdict { color: var(--st-validated); background: var(--st-validated-bg); }
+html[data-theme="dark"] .panel [data-state="reviewed"] .cs-check-tag { color: var(--st-observed); background: var(--st-observed-bg); }
+html[data-theme="dark"] .panel [data-state="missing"] .cs-check-tag, html[data-theme="dark"] .panel [data-verdict="discarded"] .cs-verdict { color: var(--st-not); background: var(--st-not-bg); }
+html[data-theme="dark"] .panel :is(.cs-tag, .pcard-caption .img-tag) { color: var(--st-known); background: var(--st-known-bg); box-shadow: none; }
+html[data-theme="dark"] .panel :is(.cs-tag[data-evidence="concept"], .cs-tag[data-evidence="mockup"], .col-media-tag, .img-concept, .img-mockup, .ph-kind) { color: var(--st-assumed); }
+html[data-theme="dark"] .panel :is(.col-media-tag, .img-concept, .img-mockup) { background: var(--st-assumed-bg); }
+html[data-theme="dark"] .panel .edit-note { background: #2e2410; border-color: #a77a2c; color: #f1d9a8; }
+html[data-theme="dark"] .panel .edit-note strong { color: #f6c46b; }
+html[data-theme="dark"] .panel .about-photo.is-placeholder { background: #16181b; border-color: #4b5056; }
+
+/* About and contact */
+html[data-theme="dark"] .card-front .card-chip { filter: brightness(.6); }
+html[data-theme="dark"] .contact-engraved-arrow .icon { color: #8c939a; filter: drop-shadow(0 -1px 0 #000) drop-shadow(0 1px 0 #ffffff26); }
+html[data-theme="dark"] .wallet-portfolio .contact-card .copy-email { background: #ffffff0d; color: #c3c9ce; box-shadow: inset 0 1px 3px #000, inset 0 -1px 0 #ffffff14, 0 1px 0 #ffffff12; }
+html[data-theme="dark"] .wallet-portfolio .contact-card .copy-email .icon { filter: drop-shadow(0 -1px 0 #000); }
+html[data-theme="dark"] .personal-underlay { background: #17191c; border-color: #2b2e32; }
+
+/* Enlarged images */
+html[data-theme="dark"] .lightbox { background: var(--chrome-soft); background-size: cover; border-color: #34373c; color: #e3e6e9; }
+html[data-theme="dark"] .lightbox-bar { border-bottom-color: #ffffff1a; }
+html[data-theme="dark"] .lightbox-stage { background: #00000059; }
+
+/* Phone section under the holder */
+html[data-theme="dark"] .home-more { background: #08090a; }
+html[data-theme="dark"] .hm-card { color: #e8ebee; text-shadow: none; }
+html[data-theme="dark"] .hm-card :is(.hm-num, .hm-line) { color: #aab1b7; }
+html[data-theme="dark"] .hm-collection { border-color: #2d3034; }

@@ -1,0 +1,22 @@
+{
+  "name": "xavi-bosch-portfolio",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "vite --host 127.0.0.1",
+    "build": "vite build",
+    "preview": "vite preview --host 127.0.0.1",
+    "test:browser": "node scripts/check.mjs",
+    "knowledge": "node scripts/build-knowledge.mjs",
+    "test:mobile": "node scripts/check-mobile.mjs"
+  },
+  "dependencies": {
+    "three": "^0.180.0",
+    "gsap": "^3.13.0"
+  },
+  "devDependencies": {
+    "vite": "^7.1.0",
+    "playwright": "^1.55.0"
+  }
+}

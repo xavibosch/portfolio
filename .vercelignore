@@ -1,0 +1,9 @@
+node_modules
+dist
+screenshots
+iterations
+scripts
+.env*
+.git
+src/style.css
+README.md
