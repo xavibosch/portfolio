@@ -21,7 +21,7 @@ export function createWallet(element, projects, { onSelect, onOpen, onAbout, onC
       <div class="wallet-object">
         <div class="sleeve-back" aria-hidden="true"></div>
         <div class="wallet-cards" id="wallet-cards">
-          <div class="wallet-card identity-slip"><button class="card-lift" data-card="about" data-i18n-attr="aria-label:wallet.aboutLabel"><span class="slip-top"><span data-i18n="wallet.about">ABOUT ME</span><span aria-hidden="true">${icon('arrow-up-right')}</span></span><span class="identity-slip-mark">xb.</span><span class="identity-slip-name">Xavi Bosch</span><span class="identity-slip-role" data-i18n-html="wallet.aboutRole"></span><span class="identity-slip-photo"><img src="/assets/xavi-portrait.webp" alt="" draggable="false" /></span><span class="slip-foot" data-i18n="wallet.aboutFoot"></span></button></div>
+          <div class="wallet-card identity-slip"><button class="card-lift" data-card="about" data-i18n-attr="aria-label:wallet.aboutLabel"><span class="slip-top"><span data-i18n="wallet.about">ABOUT ME</span><span aria-hidden="true">${icon('arrow-up-right')}</span></span><span class="identity-slip-mark">xb.</span><span class="identity-slip-name">Xavier Bosch</span><span class="identity-slip-role" data-i18n-html="wallet.aboutRole"></span><span class="identity-slip-photo"><img src="/assets/xavi-portrait.webp" alt="" draggable="false" /></span><span class="slip-foot" data-i18n="wallet.aboutFoot"></span></button></div>
           ${projectCard('previous')}${projectCard('next')}${projectCard('current')}
           <div class="wallet-card contact-slip"><button class="card-lift" data-card="contact" data-i18n-attr="aria-label:wallet.contactLabel"><span class="slip-top"><span data-i18n="wallet.connect"></span><span aria-hidden="true">${icon('arrow-up-right')}</span></span><span class="contact-slip-title" data-i18n-html="wallet.hello"></span><span class="contact-slip-symbol" aria-hidden="true">${icon('arrow-up-right')}</span><span class="slip-foot" data-i18n="wallet.contactFoot"></span></button></div>
         </div>
@@ -31,7 +31,7 @@ export function createWallet(element, projects, { onSelect, onOpen, onAbout, onC
             <div class="metal-reflection" aria-hidden="true"></div>
             <div class="engraving">
               <div class="engraving-top"><span data-i18n="wallet.edition"></span><span data-i18n="wallet.est"></span></div>
-              <p class="engraving-name">XAVI BOSCH<span data-i18n="wallet.portfolio"></span></p>
+              <p class="engraving-name">XAVIER BOSCH<span data-i18n="wallet.portfolio"></span></p>
               <div class="engraving-description"><p data-i18n-html="wallet.desc"></p><span class="engraved-monogram" aria-hidden="true">xb.</span></div>
               <div class="engraving-bottom"><span data-i18n="wallet.bottom"></span><span>XB—001</span></div>
             </div>

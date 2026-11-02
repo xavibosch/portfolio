@@ -556,7 +556,7 @@ async function route(){
       swapIn(direction);
     }
     $('#panel-label').textContent=t('panel.work');
-    document.title=`${project.name} — Xavi Bosch`;
+    document.title=`${project.name} — Xavier Bosch`;
   }else{
     const fresh=currentPanel!==view;
     if(fresh){
@@ -568,7 +568,7 @@ async function route(){
     if(view==='about')setupCard();
     if(view==='index'&&(fresh||!panel.open))requestAnimationFrame(revealCollection);
     $('#panel-label').textContent=t(view==='index'?'panel.index':view==='about'?'panel.about':'panel.contact');
-    document.title=`${t(view==='index'?'title.index':view==='about'?'title.about':'title.contact')} — Xavi Bosch`;
+    document.title=`${t(view==='index'?'title.index':view==='about'?'title.about':'title.contact')} — Xavier Bosch`;
   }
   if(!panel.open){
     previousFocus=document.activeElement;

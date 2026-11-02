@@ -2,7 +2,7 @@
 export default [
  {
   "title": "About Xavi: Who Xavi is",
-  "text": "Xavi Bosch lives and studies in Barcelona. He is a second-year student of the Bachelor's Degree in Design and Creation of Interactive Products at La Salle Campus Barcelona, Universitat Ramon Llull, a four-year, 240 ECTS degree. His profile combines product design, UX/UI, interaction, frontend development, programming and interactive technologies. He is not a senior professional or an expert yet: he is a student who has already built working products with an unusual amount of initiative.",
+  "text": "Xavier Bosch (he goes by Xavi) lives and studies in Barcelona. He is a second-year student of the Bachelor's Degree in Design and Creation of Interactive Products at La Salle Campus Barcelona, Universitat Ramon Llull, a four-year, 240 ECTS degree. His profile combines product design, UX/UI, interaction, frontend development, programming and interactive technologies. He is not a senior professional or an expert yet: he is a student who has already built working products with an unusual amount of initiative.",
   "link": "#/about"
  },
  {

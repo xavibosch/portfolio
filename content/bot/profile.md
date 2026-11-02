@@ -5,7 +5,7 @@ piece short and factual. Anything inside [TODO: ...] is ignored. After editing,
 run `npm run knowledge` and deploy.
 
 ## Who Xavi is
-Xavi Bosch lives and studies in Barcelona. He is a second-year student of the Bachelor's Degree in Design and Creation of Interactive Products at La Salle Campus Barcelona, Universitat Ramon Llull, a four-year, 240 ECTS degree. His profile combines product design, UX/UI, interaction, frontend development, programming and interactive technologies. He is not a senior professional or an expert yet: he is a student who has already built working products with an unusual amount of initiative.
+Xavier Bosch (he goes by Xavi) lives and studies in Barcelona. He is a second-year student of the Bachelor's Degree in Design and Creation of Interactive Products at La Salle Campus Barcelona, Universitat Ramon Llull, a four-year, 240 ECTS degree. His profile combines product design, UX/UI, interaction, frontend development, programming and interactive technologies. He is not a senior professional or an expert yet: he is a student who has already built working products with an unusual amount of initiative.
 
 ## One-line description
 Xavi is an interactive product designer and developer who designs the interface, questions the interaction and builds the working product.
