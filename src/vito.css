@@ -233,3 +233,17 @@ html[data-theme="dark"] .vito .vito-pose { filter: drop-shadow(0 6px 10px #000c)
   .vito.is-in-panel .vito-chat { margin-right: -40px; }
 }
 .vito-chat:focus { outline: none; }
+
+/* Inside the folio his feet (standing) or his body (lying) rest exactly on
+   the header's bottom line, whatever pose he is in and however tall the bar
+   is: 74px normally, 62px on short laptop screens. */
+@media (min-width: 961px) {
+  .vito.is-in-panel { top: 7px; }
+  .vito.is-in-panel[data-pose="lie"] { top: 9px; }
+}
+@media (max-height: 780px) and (min-width: 961px) {
+  .vito.is-in-panel { top: 1px; }
+  .vito.is-in-panel .vito-figure { width: 52px; height: 60px; }
+  .vito.is-in-panel[data-pose="lie"] { top: 7px; }
+  .vito.is-in-panel[data-pose="lie"] .vito-figure { width: 114px; height: 54px; }
+}

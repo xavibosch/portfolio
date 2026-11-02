@@ -204,9 +204,9 @@ html[data-theme="dark"] .panel-lang { border-color: #ffffff1f; }
 @media (max-width: 760px) { .folio-rim > span:last-child { visibility: hidden; } }
 @media (max-width: 360px) { html body.wallet-portfolio .selected-project #current-context { letter-spacing: 0; font-size: 9px; } }
 
-/* The availability dot sits on the middle of the first line, whatever the
-   font size the screen ends up with (1lh is that line's height). */
-.wallet-portfolio .availability .status-dot { flex: none; margin-top: calc(.5lh - 2.5px); }
+/* Availability: no dot. The line itself carries it, bold and underlined. */
+.wallet-portfolio .availability .status-dot { display: none; }
+.wallet-portfolio .availability-title { font-weight: 700; color: var(--ink); text-decoration: underline; text-decoration-thickness: 1.5px; text-underline-offset: 4px; }
 /* Small phones: the folio's top bar has to hold the mark, three links, the
    language switch and the close button, so everything steps down a size. */
 @media (max-width: 400px) {
