@@ -244,6 +244,7 @@ try {
   assert.match(await page.locator('#vito-input').getAttribute('placeholder'), /Pregunta sobre/);
   assert.equal(await page.locator('#index-button [data-i18n]').textContent(), 'La col·lecció');
   assert.equal(await page.locator('html').getAttribute('lang'), 'ca');
+  assert.equal(await page.getAttribute('.footer-cv', 'href'), '/Xavi-Bosch-CV-CA.pdf', 'the CV link follows the language');
   assert.equal(await page.locator('.location [data-set-lang="ca"]').getAttribute('aria-pressed'), 'true');
   await page.locator('.location [data-set-lang="en"]').click();
   assert.equal(await page.locator('#index-button [data-i18n]').textContent(), 'The collection');

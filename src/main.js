@@ -8,6 +8,7 @@ import './redesign.css';
 import './controls.css';
 import './dark.css';
 import './vito.css';
+import { inject } from '@vercel/analytics';
 import gsap from 'gsap';
 import { caseView, collectionView, aboutView, contactView, homeMoreView, imageLabel, thumb } from './views';
 import { caseStudyFor } from './case-studies';
@@ -19,6 +20,7 @@ import { createWallet } from './wallet';
 import { icon, hydrateIcons } from './icons';
 import { mountVito } from './vito';
 
+inject();
 hydrateIcons();
 import { createWheelNavigation } from './wheel-navigation';
 
@@ -29,7 +31,10 @@ const escape = value => String(value).replace(/[&<>"']/g, char => ({'&':'&amp;',
 const email = 'bosch.xavii@gmail.com';
 const linkedin = 'https://www.linkedin.com/in/xavier-bosch-galilea-9b3876410';
 const github = 'https://github.com/xavibosch';
-const cv = '/Xavi-Bosch-CV.pdf';
+// The CV in the language the site is showing: /Xavi-Bosch-CV-EN.pdf, -ES, -CA.
+// /Xavi-Bosch-CV.pdf keeps all three, for links shared before this existed.
+const cvFor = () => `/Xavi-Bosch-CV-${getLang().toUpperCase()}.pdf`;
+const syncCvLink = () => $('.footer-cv')?.setAttribute('href', cvFor());
 const panel = $('#panel');
 const content = $('#panel-content');
 let current = 0;
@@ -300,7 +305,7 @@ function revealCollection(){
   gsap.fromTo(cards,{y:34,opacity:0},{y:0,opacity:1,duration:.8,ease:'expo.out',stagger:.035,overwrite:true,clearProps:'transform,opacity'});
 }
 
-function socialLinks(){return `<div class="about-links"><a class="cv-link" href="${cv}" download>${t('links.cv')} <span aria-hidden="true">${icon('arrow-down')}</span></a><a href="${linkedin}" target="_blank" rel="noopener noreferrer">LinkedIn ${icon('arrow-up-right')}</a><a href="${github}" target="_blank" rel="noopener noreferrer">GitHub ${icon('arrow-up-right')}</a><a href="mailto:${email}">${t('links.email')} ${icon('arrow-up-right')}</a></div>`;}
+function socialLinks(){return `<div class="about-links"><a class="cv-link" href="${cvFor()}" download>${t('links.cv')} <span aria-hidden="true">${icon('arrow-down')}</span></a><a href="${linkedin}" target="_blank" rel="noopener noreferrer">LinkedIn ${icon('arrow-up-right')}</a><a href="${github}" target="_blank" rel="noopener noreferrer">GitHub ${icon('arrow-up-right')}</a><a href="mailto:${email}">${t('links.email')} ${icon('arrow-up-right')}</a></div>`;}
 function aboutTemplate(){ return aboutView(socialLinks(),EDITING); }
 
 function setupCard(){
@@ -463,7 +468,7 @@ function filterCollection(id){
    with copies, and landing on a copy jumps, without animation, to the card
    it copies. The dots follow and can be tapped. */
 function renderHomeMore(){
-  $('#home-more').innerHTML=homeMoreView(featured,{email,linkedin,github,cv});
+  $('#home-more').innerHTML=homeMoreView(featured,{email,linkedin,github,cv:cvFor()});
   const list=$('#home-more .hm-list');
   const cards=[...list.querySelectorAll('.hm-card')];
   const dots=[...document.querySelectorAll('#home-more [data-hm-dot]')];
@@ -836,8 +841,10 @@ mountVito({panel});
    re-renders whatever is on screen in place. */
 document.querySelectorAll('[data-lang-slot]').forEach(slot=>{slot.innerHTML=langSwitch();});
 applyStatic();
+syncCvLink();
 addEventListener('langchange',()=>{
   localizeProjects(projects);
+  syncCvLink();
   applyStatic();syncSwitches();applyTheme();renderPicker();
   viewer?.retranslate();select(current,0,false);
   renderHomeMore();
