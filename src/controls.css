@@ -111,7 +111,7 @@
 /* ── Language switch ──────────────────────────────────────────────────
    EN / ES / CA as three words with the site's underline, never pills. The
    same switch sits in the header, in the studio on narrow screens and in
-   the rim of the open folio. */
+   the top bar of the open folio. */
 .lang-switch { display: inline-flex; align-items: center; gap: 9px; }
 .lang-switch button { padding: 3px 0; font: inherit; letter-spacing: .1em; color: inherit; opacity: .5;
   background: linear-gradient(currentColor, currentColor) 100% 100% / 0 1px no-repeat;
@@ -121,14 +121,19 @@
 .lang-switch button:focus-visible { outline: 1px solid currentColor; outline-offset: 3px; }
 .location .lang-slot { margin-left: 16px; padding-left: 14px; border-left: 1px solid var(--line); }
 .studio-lang { display: none; }
-.folio-rim .lang-switch { gap: 12px; }
-.folio-rim .lang-switch button { padding: 6px 0; }
+/* In the open folio it sits in the top bar, just before the close button. */
+.panel-actions { display: flex; align-items: center; gap: 22px; }
+.panel-lang { font: 10px var(--mono); padding-right: 22px; border-right: 1px solid #78899655; line-height: 1; }
+.panel-lang .lang-switch button { padding: 6px 0; }
+html[data-theme="dark"] .panel-lang { border-color: #ffffff1f; }
 @media (max-width: 1100px) {
   .studio-lang { position: absolute; top: 2px; right: 3.6%; z-index: 6; display: block; font: 10px var(--mono); }
-  .folio-rim > .lang-slot { display: inline-flex !important; }
-  .folio-rim .lang-switch { font-size: 9px; }
 }
-@media (max-width: 800px) { .folio-rim > span:first-child { display: none; } }
+@media (max-width: 760px) {
+  .panel-actions { gap: 10px; }
+  .panel-lang { padding-right: 10px; font-size: 9.5px; }
+  .panel-lang .lang-switch { gap: 6px; }
+}
 @media (prefers-reduced-motion: reduce) { .lang-switch button { transition: none; } }
 
 /* Phones: the switch joins the header, after "Get in touch", and the studio
@@ -198,3 +203,19 @@
 /* Phones: Vito lies where the rim shows "XB—001". */
 @media (max-width: 760px) { .folio-rim > span:last-child { visibility: hidden; } }
 @media (max-width: 360px) { html body.wallet-portfolio .selected-project #current-context { letter-spacing: 0; font-size: 9px; } }
+
+/* The availability dot sits on the middle of the first line, whatever the
+   font size the screen ends up with (1lh is that line's height). */
+.wallet-portfolio .availability .status-dot { flex: none; margin-top: calc(.5lh - 2.5px); }
+/* Small phones: the folio's top bar has to hold the mark, three links, the
+   language switch and the close button, so everything steps down a size. */
+@media (max-width: 400px) {
+  html body.wallet-portfolio .panel-top { padding: 0 12px; gap: 8px; }
+  html body.wallet-portfolio .panel-nav { gap: 11px; }
+  html body.wallet-portfolio .panel-nav a { font-size: 12.5px; white-space: nowrap; padding-inline: 0; }
+  html body.wallet-portfolio .folio-mark { font-size: 27px; }
+  .panel-actions { gap: 8px; }
+  .panel-lang { padding-right: 8px; font-size: 9px; }
+  .panel-lang .lang-switch { gap: 5px; }
+}
+@media (max-width: 340px) { html body.wallet-portfolio .panel-home { display: none; } }

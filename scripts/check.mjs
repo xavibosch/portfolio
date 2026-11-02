@@ -255,11 +255,11 @@ try {
   await page.waitForFunction(() => document.querySelector('.pcard-title h2')?.textContent === 'Reps');
   assert.equal(await page.locator('.vito').evaluate(el => el.classList.contains('is-in-panel')), true);
   // The switch in the folio's rim re-renders the open case study in place.
-  await page.locator('.folio-rim [data-set-lang="es"]').click();
+  await page.locator('.panel-lang [data-set-lang="es"]').click();
   await page.waitForFunction(() => document.querySelector('.cs-toc-title')?.textContent === 'En este caso');
   assert.equal(await page.locator('.pcard-title h2').textContent(), 'Reps');
   assert.match(await page.locator('.cs-lede').textContent(), /gimnasio de garaje/);
-  await page.locator('.folio-rim [data-set-lang="en"]').click();
+  await page.locator('.panel-lang [data-set-lang="en"]').click();
   await page.waitForFunction(() => document.querySelector('.cs-toc-title')?.textContent === 'In this case');
   await page.locator('.vito-close').click();
   await page.waitForTimeout(500);

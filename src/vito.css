@@ -10,13 +10,13 @@
 .vito:not(.is-ready) .vito-launch { visibility: hidden; }
 /* Inside the folio he sits on the header's line, next to "Put back", and
    the chat drops down from there, so he never covers the work. */
-.vito.is-in-panel { position: absolute; right: 168px; top: 4px; bottom: auto; z-index: 30; flex-direction: column-reverse; align-items: flex-end; gap: 12px; }
+.vito.is-in-panel { position: absolute; right: 300px; top: 4px; bottom: auto; z-index: 30; flex-direction: column-reverse; align-items: flex-end; gap: 12px; }
 .vito.is-in-panel .vito-figure { width: 58px; height: 66px; }
 .vito.is-in-panel[data-pose="lie"] .vito-figure { width: 132px; height: 64px; }
 .vito.is-in-panel[data-pose="card"] .vito-figure { width: 72px; }
 .vito.is-in-panel .vito-tag { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); }
 .vito.is-in-panel .vito-doodle { top: -6px; left: 88%; width: 56px; }
-.vito.is-in-panel .vito-chat { margin-right: -140px; height: min(520px, calc(100svh - 170px)); max-height: none; max-width: calc(100vw - 140px); }
+.vito.is-in-panel .vito-chat { margin-right: -272px; height: min(520px, calc(100svh - 170px)); max-height: none; max-width: calc(100vw - 140px); }
 .metal-surface > .vito.is-in-panel { position: absolute; }
 
 /* The launcher: Vito himself, sitting on the line, with a small engraved tag. */

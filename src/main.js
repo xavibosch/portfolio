@@ -837,7 +837,7 @@ addEventListener('langchange',()=>clearHeadline());
 mountVito({panel});
 
 /* The language switch lives in the header (its corner on a Mac or iPad, after the navigation on a phone) and in
-   the rim of the open panel, so it is always one tap away. Changing it
+   the top bar of the open panel, next to the close button, so it is always one tap away. Changing it
    re-renders whatever is on screen in place. */
 document.querySelectorAll('[data-lang-slot]').forEach(slot=>{slot.innerHTML=langSwitch();});
 applyStatic();
