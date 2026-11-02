@@ -163,7 +163,7 @@ export function aboutView(links, editing) {
         <div><dt>${t('about.bringT')}</dt><dd>${t('about.bring')}</dd></div>
         ${editing ? `<div><dt>${t('about.learningT')}</dt><dd><aside class="edit-note"><strong>[CONTENT NEEDED]</strong> What you are learning at the moment, in one line.</aside></dd></div>` : ''}
       </dl>
-      <div class="availability-inlay"><span class="tiny-status"></span><div><strong>${t('about.available')}</strong><p>${t('about.availableDetail')}</p></div></div>${links}
+      <div class="availability-inlay"><div><strong>${t('about.available')}</strong><p>${t('about.availableDetail')}</p></div></div>${links}
     </div>
   </section>`;
 }

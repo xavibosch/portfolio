@@ -204,8 +204,9 @@ html[data-theme="dark"] .panel-lang { border-color: #ffffff1f; }
 @media (max-width: 760px) { .folio-rim > span:last-child { visibility: hidden; } }
 @media (max-width: 360px) { html body.wallet-portfolio .selected-project #current-context { letter-spacing: 0; font-size: 9px; } }
 
-/* Availability: no dot. The line itself carries it, bold and underlined. */
-.wallet-portfolio .availability .status-dot { display: none; }
+/* Availability, on the home page and in About me: no dot. The line itself
+   carries it, bold and underlined. */
+.wallet-portfolio .availability-inlay strong { font-weight: 700; color: var(--ink); text-decoration: underline; text-decoration-thickness: 1.5px; text-underline-offset: 4px; }
 .wallet-portfolio .availability-title { font-weight: 700; color: var(--ink); text-decoration: underline; text-decoration-thickness: 1.5px; text-underline-offset: 4px; }
 /* Small phones: the folio's top bar has to hold the mark, three links, the
    language switch and the close button, so everything steps down a size. */
