@@ -11,6 +11,14 @@ const number = value => String(value + 1).padStart(2, '0');
 const publicText = value => String(value || '').replace(/\[Cal [^\]]*\]/g, '').replace(/SENSE PROVA VISUAL REAL\.?/g, '').trim();
 
 
+// The four questions a reader comes with, answered before the long version.
+export const glanceView = (project, role = project.role) => `<section class="glance" aria-label="${t('glance.label')}"><span class="glance-title">${t('glance.title')}</span><dl>
+      <div><dt>${t('glance.problem')}</dt><dd>${esc(project.card.problem)}</dd></div>
+      <div><dt>${t('glance.role')}</dt><dd>${esc(role)}</dd></div>
+      <div><dt>${t('glance.decision')}</dt><dd>${esc(project.card.decision)}</dd></div>
+      <div><dt>${t('glance.outcome')}</dt><dd>${esc(project.card.outcome)}</dd></div>
+    </dl></section>`;
+
 export function caseView(project, index, total, neighbours, fullCase = '') {
   const team = publicText(project.team);
   const real = project.imageMeta.filter(m => m.type === 'screenshot' || m.type === 'photo').length;
@@ -48,7 +56,7 @@ export function caseView(project, index, total, neighbours, fullCase = '') {
           <dl class="pcard-story">
             <div><dt>${t('card.problem')}</dt><dd>${esc(project.card.problem)}</dd></div>
             <div><dt>${t('card.decision')}</dt><dd>${esc(project.card.decision)}</dd></div>
-            <div><dt>${t('card.learned')}</dt><dd>${esc(project.card.learned)}</dd></div>
+            <div><dt>${t('card.outcome')}</dt><dd>${esc(project.card.outcome)}</dd></div>
           </dl>
           <footer class="pcard-foot">
             <span class="pcard-hood">${t('card.hood')}</span>
@@ -74,9 +82,9 @@ export function caseView(project, index, total, neighbours, fullCase = '') {
         </section>
       </div></div></div></div>
       <nav class="pcase-nav" aria-label="${t('case.more')}">
-        <button data-action="prev-case">${icon('arrow-left')}<span><small>${t('case.previous')}</small>${esc(neighbours[0].name)}</span></button>
+        <button data-action="prev-case" aria-label="${esc(`${t('case.previous')}: ${neighbours[0].name}`)}">${icon('arrow-left')}<span><small>${t('case.previous')}</small>${esc(neighbours[0].name)}</span></button>
         ${fullCase ? `<button class="pcase-more" data-action="case">${t('case.readCase')} ${icon('arrow-down')}</button>` : `<button class="pcase-more" data-action="story">${t('case.readStory')} ${icon('arrow-down')}</button>`}
-        <button data-action="next-case"><span><small>${t('case.next')}</small>${esc(neighbours[1].name)}</span>${icon('arrow-right')}</button>
+        <button data-action="next-case" aria-label="${esc(`${t('case.next')}: ${neighbours[1].name}`)}"><span><small>${t('case.next')}</small>${esc(neighbours[1].name)}</span>${icon('arrow-right')}</button>
       </nav>
     </div>
     ${fullCase || `    <section class="pcase-story" id="full-story" aria-labelledby="story-title">
@@ -84,10 +92,11 @@ export function caseView(project, index, total, neighbours, fullCase = '') {
         <div><span class="eyebrow">${t('story.eyebrow', { n: number(chapters.length - 1) })}</span><h3 id="story-title">${esc(t('story.title', { name: project.name }))}</h3></div>
         <div class="deck-controls"><button class="pcard-tool" data-deck="-1" aria-label="${t('story.prevCard')}">${icon('arrow-left')}</button><span class="deck-count" id="deck-count" aria-live="polite">01 / ${number(chapters.length - 1)}</span><button class="pcard-tool" data-deck="1" aria-label="${t('story.nextCard')}">${icon('arrow-right')}</button></div>
       </header>
+      ${glanceView(project)}
       <div class="story-layout">
         <div class="deck-index" role="tablist" aria-label="${t('story.chapters')}" aria-orientation="vertical"><span class="deck-marker" aria-hidden="true"></span>${chapters.map(([title], i) => `<button role="tab" id="deck-tab-${i}" data-deck-to="${i}" aria-selected="${i === 0}" aria-controls="deck-card-${i}" tabindex="${i ? -1 : 0}"><span>${number(i)}</span>${title}</button>`).join('')}</div>
         <div class="deck" aria-label="${t('story.deck')}">
-          ${chapters.map(([title, body], i) => `<article class="deck-card" id="deck-card-${i}" data-deck-card="${i}" role="tabpanel" aria-labelledby="deck-tab-${i}"${i ? ' hidden' : ''}><span class="deck-card-no">${number(i)} / ${number(chapters.length - 1)}</span><h4>${title}</h4>${body}<footer class="deck-card-foot"><span>XB—${number(index)} / ${esc(project.name.toUpperCase())}</span><span class="deck-hint">${t('story.drag')} ${icon('arrow-left')}</span></footer></article>`).join('')}
+          ${chapters.map(([title, body], i) => `<div class="deck-card" id="deck-card-${i}" data-deck-card="${i}" role="tabpanel" aria-labelledby="deck-tab-${i}"${i ? ' hidden' : ''}><span class="deck-card-no">${number(i)} / ${number(chapters.length - 1)}</span><h4>${title}</h4>${body}<footer class="deck-card-foot"><span>XB—${number(index)} / ${esc(project.name.toUpperCase())}</span><span class="deck-hint">${t('story.drag')} ${icon('arrow-left')}</span></footer></div>`).join('')}
         </div>
       </div>
       <p class="story-tags">${project.tech.map(x => `<span>${esc(x)}</span>`).join('')}</p>
@@ -161,7 +170,7 @@ export function aboutView(links, editing) {
       <dl class="human-facts">
         <div><dt>${t('about.howT')}</dt><dd>${t('about.how')}</dd></div>
         <div><dt>${t('about.bringT')}</dt><dd>${t('about.bring')}</dd></div>
-        ${editing ? `<div><dt>${t('about.learningT')}</dt><dd><aside class="edit-note"><strong>[CONTENT NEEDED]</strong> What you are learning at the moment, in one line.</aside></dd></div>` : ''}
+        ${editing ? `<div><dt>${t('about.learningT')}</dt><dd><span class="edit-note" role="note"><strong>[CONTENT NEEDED]</strong> What you are learning at the moment, in one line.</span></dd></div>` : ''}
       </dl>
       <div class="availability-inlay"><div><strong>${t('about.available')}</strong><p>${t('about.availableDetail')}</p></div></div>${links}
     </div>

@@ -42,7 +42,7 @@ const blockText = b => {
 for (const p of projects) {
   const link = `#/work/${p.slug}`;
   add(`${p.name}: overview`, `${p.name} is a ${p.featured ? 'main case study' : p.category.toLowerCase()} in Xavi's portfolio. ${p.summary} ${p.tagline} Status: ${p.status}. Built: ${clean(p.team) || 'not stated'}. Xavi's role: ${p.role}. It shows: ${p.capability}. Technologies: ${p.tech.join(', ')}.${p.live ? ` Live at ${p.live}.` : ''}${p.repo ? ` Source code: ${p.repo}.` : ''}`, link);
-  add(`${p.name}: problem, decision and lesson`, `The problem: ${p.card.problem} The decision: ${p.card.decision} What Xavi learned: ${p.card.learned}`, link);
+  add(`${p.name}: problem, decision and lesson`, `The problem: ${p.card.problem} The decision: ${p.card.decision} What Xavi learned: ${p.card.learned} Where it stands: ${p.card.outcome}`, link);
   if (!caseStudies[p.slug]) {
     add(`${p.name}: the full story`, `Who it is for: ${p.builtFor} ${p.problem} What it does: ${p.description} What changed along the way: ${p.changed} ${p.research ? `Research: ${p.research}` : ''} What he learned: ${p.learning} ${clean(p.pending) ? `Still open: ${clean(p.pending)}` : ''}`, link);
   }

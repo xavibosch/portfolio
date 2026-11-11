@@ -1,0 +1,32 @@
+/* Contrast and target-size fixes from the accessibility pass. Loaded last so
+   it wins over the layers before it. Every small label on the metal is held
+   to 4.5:1 against the pixels actually behind it, in both themes. */
+
+/* Light theme: the soft greys on metal were a step too light. */
+.pcase { --card-soft: #354852; }
+.wallet-portfolio :is(.engraving-top, .engraving-bottom) { color: #18252c; }
+.wallet-portfolio :is(.card-label, .card-foot) { color: #18262f; opacity: 1; }
+.wallet-portfolio :is(.contact-card-bottom, .contact-serial, .contact-card-top > span > span, .contact-intro p) { color: #1f3442; }
+.wallet-portfolio :is(.human-facts dt, .contact-facts dt) { color: #2e4351; }
+.wallet-portfolio .col-facts b { color: #283b48; }
+.wallet-portfolio .col-group header p { color: #22333f; }
+.wallet-portfolio .panel .eyebrow { color: #2b3e4b; }
+.wallet-portfolio .panel-nav a:not([aria-current]) { color: #34495a; }
+
+/* Dark theme: the same labels were a step too dim. */
+html[data-theme="dark"] .pcase { --card-soft: #c8cfd4; }
+html[data-theme="dark"] .panel :is(.eyebrow, .panel-label, .folio-rim, dt, small, .cs-num, .col-card-top, .col-facts b, .pcard-kicker, .pcard-story dt, .pcard-hood, .pcard-team,
+  .deck-card-no, .deck-card-foot, .story-head .eyebrow, .cs-toc-title, .cs-media figcaption, .cs-plan h5, .cs-plan-who span, .col-group header p, .col-head p,
+  .hint-hover, .hint-touch, .card-hint, .contact-smallprint, .contact-intro p, .contact-serial, .contact-card-bottom, .pcard-counter, .deck-count, .human-facts dt, .contact-facts dt) { color: #c8cfd4; }
+html[data-theme="dark"] .panel .panel-nav a:not([aria-current]):not(:hover) { color: #c8cfd4; }
+html[data-theme="dark"] .wallet-portfolio :is(.engraving, .engraving-top, .engraving-description p, .engraving-bottom) { color: #bcc2c7; }
+html[data-theme="dark"] .contact-card-top > span > span { color: #c8cfd4; }
+html[data-theme="dark"] .panel .contact-card :is(.contact-serial, .contact-card-bottom) { color: #d6dbdf; }
+html[data-theme="dark"] .panel .glance dt { color: var(--card-ink); }
+html[data-theme="dark"] .panel .cs .glance dt { color: var(--read-ink); }
+
+/* The language words: readable when not chosen, and a 24px target each.
+   The padding grows the target; the underline stays under the letters. */
+html body.wallet-portfolio .lang-switch { gap: 0; }
+html body.wallet-portfolio .lang-switch button { opacity: .75; min-width: 24px; min-height: 24px; padding: 6px 5px; margin-block: -6px; background-origin: content-box; background-clip: content-box; }
+html body.wallet-portfolio .lang-switch button[aria-pressed="true"], html body.wallet-portfolio .lang-switch button:hover { opacity: 1; }

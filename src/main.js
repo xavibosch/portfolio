@@ -8,6 +8,7 @@ import './redesign.css';
 import './controls.css';
 import './dark.css';
 import './vito.css';
+import './a11y.css';
 import { inject } from '@vercel/analytics';
 import gsap from 'gsap';
 import { caseView, collectionView, aboutView, contactView, homeMoreView, imageLabel, thumb } from './views';
@@ -535,6 +536,9 @@ async function route(){
     currentPanel='';document.title=t('title.home');return;
   }
   if(!['index','about','contact','work'].includes(view)){history.replaceState(null,'','#/');return;}
+  // A closed dialog ignores scrollTop, so a new view is put back at the top
+  // again once the panel is showing, or it reopens where the last one was.
+  let rendered=false;
   panel.dataset.view=view;
   panel.querySelectorAll('.panel-nav a').forEach(link=>{
     if(link.dataset.view===view||(view==='work'&&link.dataset.view==='index'))link.setAttribute('aria-current','page');
@@ -551,7 +555,7 @@ async function route(){
       await swapOut(direction);
       if(revision!==routeRevision)return;
       preloadImages(project.images);
-      turning?.kill();turning=undefined;galleryIndex=0;flipped=false;content.innerHTML=caseTemplate(project);content.scrollTop=0;
+      turning?.kill();turning=undefined;galleryIndex=0;flipped=false;content.innerHTML=caseTemplate(project);content.scrollTop=0;rendered=true;
       currentPanel=project.slug;setupProjectCard();setupDeck();setupFullCase();updateGallery(false);
       swapIn(direction);
     }
@@ -562,7 +566,7 @@ async function route(){
     if(fresh){
       await swapOut(0);
       if(revision!==routeRevision)return;
-      content.innerHTML=view==='index'?collectionTemplate():view==='about'?aboutTemplate():contactTemplate();content.scrollTop=0;currentPanel=view;
+      content.innerHTML=view==='index'?collectionTemplate():view==='about'?aboutTemplate():contactTemplate();content.scrollTop=0;rendered=true;currentPanel=view;
       swapIn(0);
     }
     if(view==='about')setupCard();
@@ -574,6 +578,7 @@ async function route(){
     previousFocus=document.activeElement;
     viewer?.zoomIn();
     panel.showModal();
+    if(rendered)content.scrollTop=0;
     gsap.fromTo(panel,{opacity:0,y:reduced.matches?0:40,scale:reduced.matches?1:.965,transformOrigin:'50% 70%'},{opacity:1,y:0,scale:1,duration:duration(.75),ease:'expo.out',clearProps:'transform',onComplete:()=>{if(panel.open)viewer?.setActive(false);}});
     // Focus goes to the folio itself, not to a button: a programmatic focus
     // on the close button drew a keyboard ring after a mouse click. The

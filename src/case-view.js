@@ -1,6 +1,7 @@
 import { icon } from './icons';
 import { SECTIONS } from './case-studies';
 import { t } from './i18n.js';
+import { glanceView } from './views.js';
 
 /* Renders a case study from src/case-studies.js. The page is a reading
    surface: neutral background, one column of text, large media, and a
@@ -18,7 +19,7 @@ const claimLabel = status => t(`claim.${status}`);
 const NOTE = { content: 'CONTENT NEEDED', evidence: 'EVIDENCE NEEDED', validation: 'VALIDATION NEEDED', video: 'VIDEO NEEDED', decision: 'DECISION NEEDED' };
 const evidenceLabel = kind => ['screenshot', 'photo', 'concept', 'diagram', 'video', 'mockup', 'placeholder'].includes(kind) ? t(`img.${kind}`) : t('img.unknown');
 
-const editNote = (kind, text) => EDITING ? `<aside class="edit-note" data-kind="${kind}"><strong>[${NOTE[kind] || 'TO DO'}]</strong> ${esc(text)}</aside>` : '';
+const editNote = (kind, text) => EDITING ? `<span class="edit-note" role="note" data-kind="${kind}"><strong>[${NOTE[kind] || 'TO DO'}]</strong> ${esc(text)}</span>` : '';
 
 export function figure(item, zoomIndex) {
   if (!item) return '';
@@ -81,6 +82,7 @@ export function fullCaseView(project, cs, position, nextProject) {
   const heroItem = cs.hero.kind === 'placeholder' && !EDITING ? cs.heroFallback : cs.hero;
   const hero = figure(heroItem, zoom(heroItem));
   const fact = (label, value, editing) => value ? `<div><dt>${label}</dt><dd>${esc(value)}</dd></div>` : (editing ? `<div><dt>${label}</dt><dd>${editNote('content', editing)}</dd></div>` : '');
+  const glance = glanceView(project, cs.role);
   const sections = SECTIONS.map(([id], i) => `<section class="cs-section" id="cs-${id}" aria-labelledby="cs-${id}-title">
       <header class="cs-section-head"><span class="cs-num">${pad(i + 1)}</span><h3 id="cs-${id}-title" tabindex="-1">${t(`sec.${id}`)}</h3></header>
       <div class="cs-section-body">${(cs.sections[id] || []).map(b => block(b, zoom)).join('')}</div>
@@ -92,7 +94,7 @@ export function fullCaseView(project, cs, position, nextProject) {
         <h2 id="cs-title" tabindex="-1"><span class="sr-only">${t('cs.sr')}</span>${esc(project.name)}</h2>
         <p class="cs-lede">${esc(cs.oneLiner)}</p>
         <dl class="cs-facts">
-          ${fact(t('cs.role'), cs.role)}${fact(t('cs.type'), cs.type)}${fact(t('cs.team'), cs.team)}${cs.teamNote ? editNote('content', cs.teamNote) : ''}
+          ${fact(t('cs.type'), cs.type)}${fact(t('cs.team'), cs.team)}${cs.teamNote && EDITING ? `<div><dt>${t('cs.team')}</dt><dd>${editNote('content', cs.teamNote)}</dd></div>` : ''}
           ${fact(t('cs.timeline'), cs.timeline, cs.timelineNote)}${fact(t('cs.status'), cs.status)}
           <div class="cs-fact-wide"><dt>${t('cs.built')}</dt><dd>${cs.stack.map(s => `<span>${esc(s)}</span>`).join('')}</dd></div>
         </dl>
@@ -100,6 +102,7 @@ export function fullCaseView(project, cs, position, nextProject) {
       </div>
       <div class="cs-hero-media">${hero}</div>
     </header>
+    ${glance}
     <div class="cs-legend" aria-label="${t('cs.legendLabel')}">
       <span>${t('cs.legend')}</span>${CLAIMS.map(key => `<span class="cs-claim-tag" data-status="${key}">${claimLabel(key)}</span>`).join('')}
     </div>

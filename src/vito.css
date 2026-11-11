@@ -214,7 +214,6 @@ html[data-theme="dark"] .vito .vito-pose { filter: drop-shadow(0 6px 10px #000c)
   .vito[data-open="true"] .vito-say { display: none; }
   html.vito-open, html.vito-open body { overflow: hidden; }
 }
-}
 
 @media (prefers-reduced-motion: reduce) {
   .vito-body, .vito-shadow, .vito-typing i { animation: none; }

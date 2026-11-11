@@ -152,7 +152,7 @@ export default [
  },
  {
   "title": "Jeffrey Desk: problem, decision and lesson",
-  "text": "The problem: My day was spread over a dozen apps and twice as many tabs, and nothing could see the whole day at once. The decision: I moved the desk off the projected table and onto the Mac, then shipped one codebase as two editions: mine, and an empty one that whoever installs it sets up. What Xavi learned: A tool for yourself and a product are different things. Every shortcut I took for me had to be paid back before a stranger could install it.",
+  "text": "The problem: My day was spread over a dozen apps and twice as many tabs, and nothing could see the whole day at once. The decision: I moved the desk off the projected table and onto the Mac, then shipped one codebase as two editions: mine, and an empty one that whoever installs it sets up. What Xavi learned: A tool for yourself and a product are different things. Every shortcut I took for me had to be paid back before a stranger could install it. Where it stands: I use it every day. The product edition, version 0.1.29, is ready to publish and has not been tried by other users yet.",
   "link": "#/work/jeffrey-desk"
  },
  {
@@ -162,7 +162,7 @@ export default [
  },
  {
   "title": "Reps: problem, decision and lesson",
-  "text": "The problem: Between sets your hands are chalked or holding a bar. Every gym app assumes a free, clean hand. The decision: No swipes. You hold a finger over a button and a ring fills before anything fires, because a gesture that can be mistaken for moving the cursor will be. What Xavi learned: A cursor landing centimetres off was not a tracking bug. A CSS transform had moved its frame. Most tracking problems are coordinate problems.",
+  "text": "The problem: Between sets your hands are chalked or holding a bar. Every gym app assumes a free, clean hand. The decision: No swipes. You hold a finger over a button and a ring fills before anything fires, because a gesture that can be mistaken for moving the cursor will be. What Xavi learned: A cursor landing centimetres off was not a tracking bug. A CSS transform had moved its frame. Most tracking problems are coordinate problems. Where it stands: A working Mac app I use in my own sessions, with a web version online. So far it has only been tested in one garage.",
   "link": "#/work/reps"
  },
  {
@@ -172,7 +172,7 @@ export default [
  },
  {
   "title": "Betsy: problem, decision and lesson",
-  "text": "The problem: My friends argue about football every week, and the only apps that turn that into a game want your card details. The decision: The Firestore rules are where the truth lives. The interface can ask to settle a bet, only the rules can decide it. What Xavi learned: Writing the rules and the views at the same time surfaced product problems that no static screen could show.",
+  "text": "The problem: My friends argue about football every week, and the only apps that turn that into a game want your card details. The decision: The Firestore rules are where the truth lives. The interface can ask to settle a bet, only the rules can decide it. What Xavi learned: Writing the rules and the views at the same time surfaced product problems that no static screen could show. Where it stands: A working iOS prototype on a real Firebase backend, with real fixtures and real settlement. TestFlight and the App Store come next.",
   "link": "#/work/betsy"
  },
  {
@@ -182,7 +182,7 @@ export default [
  },
  {
   "title": "Nevera Bosch: problem, decision and lesson",
-  "text": "The problem: Every shared list we tried died the same way: someone had to remember the app, find it and log in. The decision: Remove the step before the screen. An NFC sticker on the fridge opens the list with no store, no account and no password. What Xavi learned: The app was never the problem, getting to it was. Family is the most honest usability test there is.",
+  "text": "The problem: Every shared list we tried died the same way: someone had to remember the app, find it and log in. The decision: Remove the step before the screen. An NFC sticker on the fridge opens the list with no store, no account and no password. What Xavi learned: The app was never the problem, getting to it was. Family is the most honest usability test there is. Where it stands: In daily use by my family. Tapping the fridge is the whole onboarding, and the list syncs live between every phone.",
   "link": "#/work/nevera-bosch"
  },
  {
@@ -197,7 +197,7 @@ export default [
  },
  {
   "title": "Jeffrey Remote: problem, decision and lesson",
-  "text": "The problem: Jeffrey only existed where the Mac was. Everything it was good at stopped the moment I left the room. The decision: I stopped adding features and rebuilt the connection as the foundation, so every tab survives a dropped link without being taught how. What Xavi learned: Every fix was the same fix written again. When that happens, what is missing is a layer, not another patch.",
+  "text": "The problem: Jeffrey only existed where the Mac was. Everything it was good at stopped the moment I left the room. The decision: I stopped adding features and rebuilt the connection as the foundation, so every tab survives a dropped link without being taught how. What Xavi learned: Every fix was the same fix written again. When that happens, what is missing is a layer, not another patch. Where it stands: A working iOS prototype. Everything added after the rebuild worked remotely and survived a dropped link with no extra code.",
   "link": "#/work/jeffrey-remote"
  },
  {
@@ -212,7 +212,7 @@ export default [
  },
  {
   "title": "Haptic Hunter: problem, decision and lesson",
-  "text": "The problem: Blind, deaf and low vision players usually get a separate, weaker mode of the game everyone else plays. The decision: Every gameplay signal travels on three channels at once: haptics, sound and minimal visuals. Nothing counted until it was felt on a real device. What Xavi learned: Building the redundant channels first made accessibility a property of the system, not a mode added at the end.",
+  "text": "The problem: Blind, deaf and low vision players usually get a separate, weaker mode of the game everyone else plays. The decision: Every gameplay signal travels on three channels at once: haptics, sound and minimal visuals. Nothing counted until it was felt on a real device. What Xavi learned: Building the redundant channels first made accessibility a property of the system, not a mode added at the end. Where it stands: A playable iOS prototype where every signal arrives as vibration, sound and image, tuned on a real iPhone.",
   "link": "#/work/haptic-hunter"
  },
  {
@@ -227,7 +227,7 @@ export default [
  },
  {
   "title": "Gesture TV: problem, decision and lesson",
-  "text": "The problem: Someone I know cannot use a TV remote. Watching television meant asking someone else to press the buttons. The decision: I gave up full shell access to the TV. Wake on LAN and a narrow command set cost features, and the camera never writes a frame to disk. What Xavi learned: Designing for one named person ends every abstract argument in seconds.",
+  "text": "The problem: Someone I know cannot use a TV remote. Watching television meant asking someone else to press the buttons. The decision: I gave up full shell access to the TV. Wake on LAN and a narrow command set cost features, and the camera never writes a frame to disk. What Xavi learned: Designing for one named person ends every abstract argument in seconds. Where it stands: A working assistive prototype. A clap turns the TV on and a held hand opens Netflix or YouTube, with no remote and no frame saved.",
   "link": "#/work/gesture-tv"
  },
  {
@@ -242,7 +242,7 @@ export default [
  },
  {
   "title": "Jeffrey: problem, decision and lesson",
-  "text": "The problem: Chat assistants answer and stop. Ask one to rename and send a file and it writes you instructions. The decision: Fix the menu, not the model. I rewrote the tools to be narrow and unambiguous so the agent never chooses between overlapping options. What Xavi learned: When an AI acts instead of answering, a weaker model with well shaped tools beats a stronger one with vague ones.",
+  "text": "The problem: Chat assistants answer and stop. Ask one to rename and send a file and it writes you instructions. The decision: Fix the menu, not the model. I rewrote the tools to be narrow and unambiguous so the agent never chooses between overlapping options. What Xavi learned: When an AI acts instead of answering, a weaker model with well shaped tools beats a stronger one with vague ones. Where it stands: A working voice agent that acts on macOS and keeps working with the network down, on a local model.",
   "link": "#/work/jeffrey"
  },
  {
@@ -257,7 +257,7 @@ export default [
  },
  {
   "title": "Jeffrey Wake Station: problem, decision and lesson",
-  "text": "The problem: Every way of triggering Jeffrey started with unlocking something. The assistant was fast, getting to it was not. The decision: Latency became the design. I chased the delay through the whole sensor to screen path instead of tuning one part. What Xavi learned: Feedback has to arrive fast enough for a person to believe they were heard. Test the whole path, not one component.",
+  "text": "The problem: Every way of triggering Jeffrey started with unlocking something. The assistant was fast, getting to it was not. The decision: Latency became the design. I chased the delay through the whole sensor to screen path instead of tuning one part. What Xavi learned: Feedback has to arrive fast enough for a person to believe they were heard. Test the whole path, not one component. Where it stands: A working hardware prototype. Motion, sound or a button on an Arduino triggers routines on the Mac.",
   "link": "#/work/wake-station"
  },
  {
@@ -272,7 +272,7 @@ export default [
  },
  {
   "title": "Remote Robot Car: problem, decision and lesson",
-  "text": "The problem: Driving a robot from a phone meant keeping a server alive or sharing the car's network. The decision: A public MQTT broker instead of a server I would have to keep alive, and every part built so it can be tested on its own. What Xavi learned: Testing each part alone found in minutes what debugging the assembled car had hidden for hours.",
+  "text": "The problem: Driving a robot from a phone meant keeping a server alive or sharing the car's network. The decision: A public MQTT broker instead of a server I would have to keep alive, and every part built so it can be tested on its own. What Xavi learned: Testing each part alone found in minutes what debugging the assembled car had hidden for hours. Where it stands: A working car driven from any phone, which brakes, reverses and beeps on its own when something gets too close.",
   "link": "#/work/robot-car"
  },
  {
@@ -287,7 +287,7 @@ export default [
  },
  {
   "title": "laSallefy: problem, decision and lesson",
-  "text": "The problem: A music player with no audio files allowed, built in a pair for the object oriented programming course. The decision: We agreed the interfaces between the layers before writing anything behind them, so two people could build against a contract. What Xavi learned: The no audio files rule produced a cleaner architecture than a file based player ever would have.",
+  "text": "The problem: A music player with no audio files allowed, built in a pair for the object oriented programming course. The decision: We agreed the interfaces between the layers before writing anything behind them, so two people could build against a contract. What Xavi learned: The no audio files rule produced a cleaner architecture than a file based player ever would have. Where it stands: A working player, built as pair coursework, that synthesises every song in real time with no audio files.",
   "link": "#/work/lasallefy"
  },
  {
