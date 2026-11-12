@@ -4,3 +4,6 @@ dist
 screenshots
 .env*
 .DS_Store
+.baseline/
+.baseline-first-attempt/
+.astro/
