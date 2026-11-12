@@ -151,6 +151,7 @@ document.addEventListener('keydown',e=>{
     if(e.key==='Enter'&&document.activeElement===document.body)openCurrent();
   }else if(panel.dataset.view==='work'&&(e.key==='ArrowLeft'||e.key==='ArrowRight')){
     if(e.target.closest('.pcard-track')&&!flipped)return;
+    if(deckInView()){e.preventDefault();if(!e.repeat){const d=e.key==='ArrowRight'?1:-1;deckGo(deckState.active+d,d);}return;}
     if(e.target.closest('.pcase-story, .cs'))return;
     e.preventDefault();
     if(e.repeat)return;
@@ -395,6 +396,32 @@ function setupDeck(){
   };
   root.addEventListener('pointerup',release);
   root.addEventListener('pointercancel',release);
+  // The wheel or a trackpad swipe deals one card per gesture, like the
+  // holder. Scrolling up from the first card or down from the last goes on
+  // to the page, unless the gesture already moved the deck.
+  const wheel=createWheelNavigation();
+  let consuming=false,lastWheel=-Infinity;
+  root.addEventListener('wheel',e=>{
+    if(e.ctrlKey||e.metaKey)return;
+    const now=performance.now();
+    if(now-lastWheel>140)consuming=false;
+    lastWheel=now;
+    const sideways=Math.abs(e.deltaX)>Math.abs(e.deltaY);
+    const sign=Math.sign(sideways?e.deltaX:e.deltaY);
+    const {active,cards}=deckState;
+    if(!sideways&&!consuming&&((sign<0&&active===0)||(sign>0&&active===cards.length-1)))return;
+    consuming=true;
+    e.preventDefault();
+    const direction=wheel(e,now,innerHeight);
+    if(direction)deckGo(active+direction,direction);
+  },{passive:false});
+}
+// The arrow keys deal the deck while it is on screen, wherever the focus is.
+function deckInView(){
+  const root=deckState?.root;
+  if(!root?.isConnected)return false;
+  const r=root.getBoundingClientRect(), view=content.getBoundingClientRect();
+  return Math.min(r.bottom,view.bottom)-Math.max(r.top,view.top)>Math.min(r.height,view.height)*.4;
 }
 function placeDeck(animate=true){
   const {cards,active}=deckState, count=cards.length;

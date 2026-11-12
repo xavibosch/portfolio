@@ -96,7 +96,7 @@ export function caseView(project, index, total, neighbours, fullCase = '') {
       <div class="story-layout">
         <div class="deck-index" role="tablist" aria-label="${t('story.chapters')}" aria-orientation="vertical"><span class="deck-marker" aria-hidden="true"></span>${chapters.map(([title], i) => `<button role="tab" id="deck-tab-${i}" data-deck-to="${i}" aria-selected="${i === 0}" aria-controls="deck-card-${i}" tabindex="${i ? -1 : 0}"><span>${number(i)}</span>${title}</button>`).join('')}</div>
         <div class="deck" aria-label="${t('story.deck')}">
-          ${chapters.map(([title, body], i) => `<div class="deck-card" id="deck-card-${i}" data-deck-card="${i}" role="tabpanel" aria-labelledby="deck-tab-${i}"${i ? ' hidden' : ''}><span class="deck-card-no">${number(i)} / ${number(chapters.length - 1)}</span><h4>${title}</h4>${body}<footer class="deck-card-foot"><span>XB—${number(index)} / ${esc(project.name.toUpperCase())}</span><span class="deck-hint">${t('story.drag')} ${icon('arrow-left')}</span></footer></div>`).join('')}
+          ${chapters.map(([title, body], i) => `<div class="deck-card" id="deck-card-${i}" data-deck-card="${i}" role="tabpanel" aria-labelledby="deck-tab-${i}"${i ? ' hidden' : ''}><span class="deck-card-no">${number(i)} / ${number(chapters.length - 1)}</span><h4>${title}</h4>${body}<footer class="deck-card-foot"><span>XB—${number(index)} / ${esc(project.name.toUpperCase())}</span><span class="deck-hint"><span class="hint-all">${t('story.dragAll')}</span><span class="hint-drag">${t('story.drag')}</span> ${icon('arrow-left')}</span></footer></div>`).join('')}
         </div>
       </div>
       <p class="story-tags">${project.tech.map(x => `<span>${esc(x)}</span>`).join('')}</p>

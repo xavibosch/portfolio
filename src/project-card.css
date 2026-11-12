@@ -135,6 +135,9 @@ html[data-theme="dark"] .theme-button .icon { transform: rotate(180deg); }
 .deck-card-foot { display: flex; justify-content: space-between; gap: 12px; margin-top: auto; padding-top: 16px; border-top: 1px solid var(--card-line); box-shadow: inset 0 1px 0 var(--card-light);
   font: 10px var(--mono); letter-spacing: .08em; color: var(--card-soft); }
 .deck-hint { display: inline-flex; align-items: center; gap: 6px; }
+/* With a mouse the wheel and the arrow keys deal the deck too; on touch it is a swipe. */
+.deck-hint .hint-drag { display: none; }
+@media (hover: none) { .deck-hint .hint-all { display: none; } .deck-hint .hint-drag { display: inline; } }
 .deck-hint .icon { animation: deck-nudge 2.4s var(--ease-out) infinite; }
 @keyframes deck-nudge { 0%, 60%, 100% { transform: none; } 30% { transform: translateX(-4px); } }
 .story-links { display: flex; flex-wrap: wrap; gap: 20px; margin-top: 6px; }
