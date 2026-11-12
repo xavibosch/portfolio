@@ -1,21 +1,10 @@
-import './foundation.css';
-import './wallet.css';
-import './folio.css';
-import './interaction.css';
-import './project-card.css';
-import './legibility.css';
-import './redesign.css';
-import './controls.css';
-import './dark.css';
-import './vito.css';
-import './a11y.css';
 import { inject } from '@vercel/analytics';
 import gsap from 'gsap';
-import { caseView, collectionView, aboutView, contactView, homeMoreView, imageLabel, thumb } from './views';
-import { caseStudyFor } from './case-studies';
-import { t, getLang, localizeProjects, applyStatic, langSwitch, syncSwitches } from './i18n.js';
-import { fullCaseView, EDITING } from './case-view';
-import projects from './projects.json';
+import { homeMoreView, imageLabel, thumb } from './views';
+import { t, localizeProjects, applyStatic, langSwitch, syncSwitches } from './i18n.js';
+import { caseMarkup, collectionMarkup, aboutMarkup, contactMarkup, cvFor, panelLabel, titleFor, headingFor } from './render.js';
+import { email, linkedin, github, pathFor, viewFromPath, pathForHash } from './site.js';
+import projects from './data/projects.json';
 localizeProjects(projects);
 import { createWallet } from './wallet';
 import { icon, hydrateIcons } from './icons';
@@ -29,15 +18,13 @@ const $ = selector => document.querySelector(selector);
 const reduced = matchMedia('(prefers-reduced-motion: reduce)');
 const duration = value => reduced.matches ? 0 : value;
 const escape = value => String(value).replace(/[&<>"']/g, char => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[char]));
-const email = 'bosch.xavii@gmail.com';
-const linkedin = 'https://www.linkedin.com/in/xavier-bosch-galilea-9b3876410';
-const github = 'https://github.com/xavibosch';
-// The CV in the language the site is showing: /Xavi-Bosch-CV-EN.pdf, -ES, -CA.
-// /Xavi-Bosch-CV.pdf keeps all three, for links shared before this existed.
-const cvFor = () => `/Xavi-Bosch-CV-${getLang().toUpperCase()}.pdf`;
 const syncCvLink = () => $('.footer-cv')?.setAttribute('href', cvFor());
 const panel = $('#panel');
 const content = $('#panel-content');
+/* A page built for a view arrives with the folio already written and open,
+   for readers without JavaScript and for search engines. Here the folio is
+   run by the script, so it starts closed and opens the way it always does. */
+if (panel.hasAttribute('data-ssr')) { panel.removeAttribute('open'); panel.removeAttribute('data-ssr'); }
 let current = 0;
 let viewer;
 let lastChange = -Infinity;
@@ -113,7 +100,20 @@ function homeStep(direction,repeat=false){
   const position=Math.max(0,featured.indexOf(projects[current]));
   select(projects.indexOf(featured[(position+direction+featured.length)%featured.length]),direction);
 }
-function navigate(path){location.hash=`#/${path}`;}
+/* Each view has a real address. Moving between them keeps this one document,
+   so the holder stays where it is and the folio animates as before; the
+   address bar and the history follow. */
+function navigate(path){
+  // Like a hash link to where you already are, the same address does nothing.
+  const target=pathFor(path);
+  if(target===location.pathname&&!location.hash)return;
+  history.pushState(null,'',target);
+  // A hash change reached route() one task later, not in the same one. The
+  // folio keeps that timing, so every animation starts on the same frame.
+  routeTask.port2.postMessage(0);
+}
+const routeTask=new MessageChannel();
+routeTask.port1.onmessage=()=>{dispatchEvent(new Event('routechange'));route();};
 function openCurrent(){navigate(`work/${projects[current].slug}`);}
 $('#prev-project').addEventListener('click',()=>homeStep(-1));
 $('#next-project').addEventListener('click',()=>homeStep(1));
@@ -163,16 +163,12 @@ document.addEventListener('keydown',e=>{
 });
 
 let caseZoom=[];
-function caseTemplate(project){
-  const n=projects.length;
-  const study=caseStudyFor(project.slug);
-  let full='';
-  caseZoom=[];
-  if(study){
-    const next=projects.find(p=>p.slug===study.next.slug);
-    ({html:full,zoomable:caseZoom}=fullCaseView(project,study,featured.indexOf(project),next));
-  }
-  return caseView(project,current,n,[projects[(current-1+n)%n],projects[(current+1)%n]],full);
+let caseStudies;
+const loadCaseStudies=()=>(caseStudies||=import('./data/case-studies.js'));
+function caseTemplate(study){
+  const {html,zoomable}=caseMarkup(projects,current,study);
+  caseZoom=zoomable;
+  return html;
 }
 
 /* The section index follows the reading position. One scroll listener for
@@ -299,15 +295,14 @@ function setupProjectCard(){
   area.addEventListener('pointerleave',()=>{for(const v of ['--rx','--ry','--mx'])hover.style.removeProperty(v);});
 }
 
-function collectionTemplate(){ return collectionView(projects); }
+function collectionTemplate(){ return collectionMarkup(projects); }
 function revealCollection(){
   const cards=[...content.querySelectorAll('.col-card')];
   if(!cards.length||reduced.matches)return;
   gsap.fromTo(cards,{y:34,opacity:0},{y:0,opacity:1,duration:.8,ease:'expo.out',stagger:.035,overwrite:true,clearProps:'transform,opacity'});
 }
 
-function socialLinks(){return `<div class="about-links"><a class="cv-link" href="${cvFor()}" download>${t('links.cv')} <span aria-hidden="true">${icon('arrow-down')}</span></a><a href="${linkedin}" target="_blank" rel="noopener noreferrer">LinkedIn ${icon('arrow-up-right')}</a><a href="${github}" target="_blank" rel="noopener noreferrer">GitHub ${icon('arrow-up-right')}</a><a href="mailto:${email}">${t('links.email')} ${icon('arrow-up-right')}</a></div>`;}
-function aboutTemplate(){ return aboutView(socialLinks(),EDITING); }
+function aboutTemplate(){ return aboutMarkup(); }
 
 function setupCard(){
   const stage=$('.card-stage');
@@ -491,7 +486,7 @@ function renderHomeMore(){
   new ResizeObserver(start).observe(list);
 }
 
-function contactTemplate(){ return contactView(email,socialLinks()); }
+function contactTemplate(){ return contactMarkup(); }
 
 /* Moving between views inside the open folio. Neighbouring projects slide
    sideways in the direction you went; everything else rises into place. */
@@ -518,6 +513,7 @@ function preloadImages(list){
   }
 }
 (window.requestIdleCallback||(fn=>setTimeout(fn,1200)))(()=>{
+  loadCaseStudies();
   featured.forEach(p=>preloadImages(p.images.slice(0,2)));
   preloadImages(projects.map(p=>thumb(p.images[0])));
 });
@@ -525,17 +521,17 @@ function preloadImages(list){
 let routeRevision=0;
 async function route(){
   const revision=++routeRevision;
-  const parts=location.hash.replace(/^#\/?/,'').split('/');
-  const view=parts[0];
+  const {view,slug}=viewFromPath(location.pathname);
+  // An address that is not ours shows the holder at /, as an unknown hash did.
+  if(view===null){history.replaceState(null,'','/');route();return;}
   if(!view){
     if(panel.open){
       await gsap.to(panel,{opacity:0,y:reduced.matches?0:22,scale:reduced.matches?1:.975,duration:duration(.3),ease:'power2.in'});
       if(revision!==routeRevision)return;
       panel.close();previousFocus?.focus();
     }
-    currentPanel='';document.title=t('title.home');return;
+    currentPanel='';document.title=titleFor('');return;
   }
-  if(!['index','about','contact','work'].includes(view)){history.replaceState(null,'','#/');return;}
   // A closed dialog ignores scrollTop, so a new view is put back at the top
   // again once the panel is showing, or it reopens where the last one was.
   let rendered=false;
@@ -545,22 +541,25 @@ async function route(){
     else link.removeAttribute('aria-current');
   });
   if(view==='work'){
-    const index=projects.findIndex(p=>p.slug===parts[1]);
+    const index=projects.findIndex(p=>p.slug===slug);
     if(index===-1){navigate('index');return;}
     select(index,1,false);
     const project=projects[index];
     if(currentPanel!==project.slug){
       const previous=projects.findIndex(p=>p.slug===currentPanel), n=projects.length;
       const direction=previous<0?0:(previous+1)%n===index?1:(previous-1+n)%n===index?-1:1;
+      const studies=loadCaseStudies();
       await swapOut(direction);
+      const study=(await studies).caseStudyFor(project.slug);
       if(revision!==routeRevision)return;
       preloadImages(project.images);
-      turning?.kill();turning=undefined;galleryIndex=0;flipped=false;content.innerHTML=caseTemplate(project);content.scrollTop=0;rendered=true;
+      turning?.kill();turning=undefined;galleryIndex=0;flipped=false;content.innerHTML=caseTemplate(study);content.scrollTop=0;rendered=true;
       currentPanel=project.slug;setupProjectCard();setupDeck();setupFullCase();updateGallery(false);
       swapIn(direction);
     }
-    $('#panel-label').textContent=t('panel.work');
-    document.title=`${project.name} — Xavier Bosch`;
+    $('#panel-label').textContent=panelLabel('work');
+    $('#panel-title').textContent=headingFor('work',project);
+    document.title=titleFor('work',project);
   }else{
     const fresh=currentPanel!==view;
     if(fresh){
@@ -571,8 +570,9 @@ async function route(){
     }
     if(view==='about')setupCard();
     if(view==='index'&&(fresh||!panel.open))requestAnimationFrame(revealCollection);
-    $('#panel-label').textContent=t(view==='index'?'panel.index':view==='about'?'panel.about':'panel.contact');
-    document.title=`${t(view==='index'?'title.index':view==='about'?'title.about':'title.contact')} — Xavier Bosch`;
+    $('#panel-label').textContent=panelLabel(view);
+    $('#panel-title').textContent=headingFor(view);
+    document.title=titleFor(view);
   }
   if(!panel.open){
     previousFocus=document.activeElement;
@@ -789,7 +789,28 @@ function notify(message){
 }
 function updateTime(){$('#local-time').textContent=new Intl.DateTimeFormat('en-GB',{hour:'2-digit',minute:'2-digit',timeZone:'Europe/Madrid'}).format(new Date());}
 updateTime();setInterval(updateTime,30000);
-addEventListener('hashchange',route);
+addEventListener('popstate',()=>{dispatchEvent(new Event('routechange'));route();});
+/* Links inside the site move the folio instead of loading a new page, the
+   way the hash links did. A modified click (new tab, new window) or a
+   download is left to the browser, which opens the real page. */
+document.addEventListener('click',e=>{
+  if(e.defaultPrevented||e.button!==0||e.metaKey||e.ctrlKey||e.shiftKey||e.altKey)return;
+  const link=e.target.closest?.('a[href]');
+  if(!link||link.target||link.hasAttribute('download')||link.origin!==location.origin)return;
+  const legacy=link.getAttribute('href').startsWith('#/')?pathForHash(link.getAttribute('href')):null;
+  const {view,slug}=viewFromPath(legacy||link.pathname);
+  if(view===null||(!legacy&&link.hash))return;
+  e.preventDefault();
+  navigate(view==='work'?`work/${slug}`:view);
+});
+// Old hash links, followed from inside the page (Vito's answers carried them).
+addEventListener('hashchange',()=>{
+  const path=pathForHash(location.hash);
+  if(!path)return;
+  history.replaceState(null,'',path);
+  dispatchEvent(new Event('routechange'));
+  route();
+});
 viewer=createWallet($('#scene'),featured,{
   onSelect: position => {const index=projects.indexOf(featured[position]);select(index,index>current?1:-1);},
   onOpen: openCurrent,
@@ -857,6 +878,6 @@ addEventListener('langchange',()=>{
     const scroll=content.scrollTop;
     currentPanel='';
     route().then(()=>{content.scrollTop=scroll;});
-  }else document.title=t('title.home');
+  }else document.title=titleFor('');
 });
 document.documentElement.dataset.viewer='ready';

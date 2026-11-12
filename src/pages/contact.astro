@@ -1,0 +1,14 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { contactMarkup, panelLabel, titleFor, headingFor } from '../render.js';
+---
+<BaseLayout
+  title={titleFor('contact')}
+  description="Get in touch with Xavier Bosch about an internship or a project. Based in Barcelona, open to internships from June 2027 or through a university agreement."
+  path="/contact"
+  image="/og/contact.jpg"
+  view="contact"
+  panelHtml={contactMarkup()}
+  panelLabel={panelLabel('contact')}
+  heading={headingFor('contact')}
+/>

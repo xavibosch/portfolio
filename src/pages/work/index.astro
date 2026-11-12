@@ -1,0 +1,17 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { collectionMarkup, panelLabel, titleFor, headingFor } from '../../render.js';
+import { localizeProjects } from '../../i18n.js';
+import projects from '../../data/projects.json';
+localizeProjects(projects);
+---
+<BaseLayout
+  title={titleFor('index')}
+  description="All eleven projects by Xavier Bosch: three full case studies, finished tools in daily use, prototypes, experiments and university work."
+  path="/work"
+  image="/og/work.jpg"
+  view="index"
+  panelHtml={collectionMarkup(projects)}
+  panelLabel={panelLabel('index')}
+  heading={headingFor('index')}
+/>

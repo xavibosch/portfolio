@@ -5,8 +5,8 @@
 import { readFile, writeFile } from 'node:fs/promises';
 
 const root = new URL('../', import.meta.url);
-const projects = JSON.parse(await readFile(new URL('src/projects.json', root)));
-const { caseStudies, SECTIONS } = await import(new URL('src/case-studies.js', root));
+const projects = JSON.parse(await readFile(new URL('src/data/projects.json', root)));
+const { caseStudies, SECTIONS } = await import(new URL('src/data/case-studies.js', root));
 const profile = await readFile(new URL('content/bot/profile.md', root), 'utf8');
 
 const chunks = [];

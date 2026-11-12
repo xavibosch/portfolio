@@ -10,8 +10,8 @@ import projectsCa from './i18n/projects.ca.js';
    - Static markup in index.html: data-i18n="key" (text), data-i18n-html
      (markup), data-i18n-attr="aria-label:key; title:key".
    - Projects: src/i18n/projects.<lang>.js, by slug, same fields as
-     projects.json.
-   - Case studies: src/case-studies.<lang>.js, same shape as the English one. */
+     src/data/projects.json.
+   - Case studies: src/data/case-studies.<lang>.js, same shape as the English one. */
 
 export const LANGS = { en: 'EN', es: 'ES', ca: 'CA' };
 const OVERLAYS = { es: projectsEs, ca: projectsCa };
@@ -24,7 +24,8 @@ function initial() {
 // The knowledge build (Node) imports the case studies, which import this
 // file, so nothing here may assume a browser.
 const inBrowser = typeof document !== 'undefined';
-let lang = initial();
+// The build renders every page in English, whatever the machine's locale.
+let lang = inBrowser ? initial() : 'en';
 if (inBrowser) document.documentElement.lang = lang;
 
 export const getLang = () => lang;

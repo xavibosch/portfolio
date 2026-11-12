@@ -4,20 +4,22 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "dev": "vite --host 127.0.0.1",
-    "build": "vite build",
-    "preview": "vite preview --host 127.0.0.1",
+    "dev": "ASTRO_TELEMETRY_DISABLED=1 astro dev --host 127.0.0.1",
+    "build": "ASTRO_TELEMETRY_DISABLED=1 astro build",
+    "preview": "ASTRO_TELEMETRY_DISABLED=1 astro preview --host 127.0.0.1",
     "test:browser": "node scripts/check.mjs",
     "knowledge": "node scripts/build-knowledge.mjs",
-    "test:mobile": "node scripts/check-mobile.mjs"
+    "test:mobile": "node scripts/check-mobile.mjs",
+    "test:routes": "node scripts/check-routes.mjs",
+    "og": "node scripts/generate-og.mjs"
   },
   "dependencies": {
+    "@astrojs/sitemap": "^3.7.4",
     "@vercel/analytics": "^2.0.1",
-    "gsap": "^3.13.0",
-    "three": "^0.180.0"
+    "astro": "^7.4.11",
+    "gsap": "^3.13.0"
   },
   "devDependencies": {
-    "playwright": "^1.55.0",
-    "vite": "^7.1.0"
+    "playwright": "^1.55.0"
   }
 }

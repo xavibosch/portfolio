@@ -1,9 +1,9 @@
 import { icon } from './icons';
-import { SECTIONS } from './case-studies';
+import { SECTIONS } from './data/sections.js';
 import { t } from './i18n.js';
 import { glanceView } from './views.js';
 
-/* Renders a case study from src/case-studies.js. The page is a reading
+/* Renders a case study from src/data/case-studies.js. The page is a reading
    surface: neutral background, one column of text, large media, and a
    section index on the side. The metal stays in the frame around it. */
 
@@ -12,7 +12,7 @@ const pad = value => String(value).padStart(2, '0');
 
 // Notes and placeholders are for editing. They show while developing or
 // with ?edit in the address, and never in the public build.
-export const EDITING = import.meta.env.DEV || new URLSearchParams(location.search).has('edit');
+export const EDITING = import.meta.env.DEV || (typeof location !== 'undefined' && new URLSearchParams(location.search).has('edit'));
 
 const CLAIMS = ['known', 'observed', 'assumed', 'tested', 'validated', 'not-validated', 'planned'];
 const claimLabel = status => t(`claim.${status}`);

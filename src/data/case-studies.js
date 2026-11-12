@@ -21,7 +21,8 @@
      and are left out of the public build. */
 
 import { text, claims, media, gallery, options, decision, stack, checks, testPlan, note, placeholder, image } from './case-blocks.js';
-import { getLang } from './i18n.js';
+import { getLang } from '../i18n.js';
+import { SECTIONS } from './sections.js';
 import caseStudiesEs from './case-studies.es.js';
 import caseStudiesCa from './case-studies.ca.js';
 
@@ -466,21 +467,7 @@ export const caseStudies = {
   },
 };
 
-export const SECTIONS = [
-  ['context', 'Context'],
-  ['problem', 'Problem'],
-  ['audience', 'Who it is for'],
-  ['evidence', 'Where it started'],
-  ['assumptions', 'Assumptions'],
-  ['exploration', 'Alternatives'],
-  ['decision', 'The decision'],
-  ['interaction', 'Interaction'],
-  ['implementation', 'Implementation'],
-  ['accessibility', 'Accessibility'],
-  ['validation', 'Validation'],
-  ['result', 'Where it stands'],
-  ['reflection', 'Reflection'],
-];
+export { SECTIONS };
 
 const translated = { es: caseStudiesEs, ca: caseStudiesCa };
 export const caseStudyFor = slug => translated[getLang()]?.[slug] || caseStudies[slug];

@@ -1,0 +1,14 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { aboutMarkup, panelLabel, titleFor, headingFor } from '../render.js';
+---
+<BaseLayout
+  title={titleFor('about')}
+  description="About Xavier Bosch, a Design and Creation of Interactive Products student at La Salle Barcelona who designs the interface and builds the working product."
+  path="/about"
+  image="/og/about.jpg"
+  view="about"
+  panelHtml={aboutMarkup()}
+  panelLabel={panelLabel('about')}
+  heading={headingFor('about')}
+/>

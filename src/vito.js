@@ -1,6 +1,7 @@
 import gsap from 'gsap';
 import { icon } from './icons';
 import { getLang } from './i18n.js';
+import { pathForHash } from './site.js';
 
 /* ── Vito ─────────────────────────────────────────────────────────────
    The little robot who lives in the portfolio and answers questions about
@@ -56,11 +57,12 @@ const esc = value => String(value).replace(/[&<>"']/g, char => ({'&':'&amp;','<'
 const pick = list => list[Math.floor(Math.random() * list.length)];
 
 /* Answers are plain text. Only two kinds of links are turned into links:
-   portfolio paths (#/...) and https addresses. Everything else stays text. */
+   portfolio paths (#/..., written as the page's real address) and https
+   addresses. Everything else stays text. */
 function format(text) {
   let html = esc(text.replace(/\*\*(.+?)\*\*/g, '$1'));
   html = html.replace(/\[([^\]]+)\]\((#\/[a-z0-9/-]*|https:\/\/[^\s)]+)\)/gi, (_, label, href) =>
-    `<a href="${href}"${href.startsWith('https') ? ' target="_blank" rel="noopener noreferrer"' : ''}>${label} ${icon(href.startsWith('https') ? 'arrow-up-right' : 'arrow-right')}</a>`);
+    `<a href="${href.startsWith('#/') ? pathForHash(href) : href}"${href.startsWith('https') ? ' target="_blank" rel="noopener noreferrer"' : ''}>${label} ${icon(href.startsWith('https') ? 'arrow-up-right' : 'arrow-right')}</a>`);
   html = html.replace(/\[#\/[a-z0-9/-]*\]/gi, '');
   return html.split(/\n{2,}/).map(p => `<p>${p.replace(/\n/g, '<br />')}</p>`).join('');
 }
@@ -441,7 +443,7 @@ export function mountVito({ panel }) {
     if (chat.hidden && !hovering) setPose(rest());
   };
   new MutationObserver(place).observe(panel, { attributes: true, attributeFilter: ['open'] });
-  addEventListener('hashchange', () => { if (phone.matches && !chat.hidden) toggle(false); });
+  addEventListener('routechange', () => { if (phone.matches && !chat.hidden) toggle(false); });
 
   // The visible part of the screen, which shrinks when the phone keyboard opens.
   const viewport = window.visualViewport;

@@ -1,0 +1,28 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { caseMarkup, panelLabel, titleFor, headingFor } from '../../render.js';
+import { localizeProjects } from '../../i18n.js';
+import { caseStudies } from '../../data/case-studies.js';
+import projects from '../../data/projects.json';
+
+export function getStaticPaths() {
+  return projects.map(project => ({ params: { slug: project.slug } }));
+}
+localizeProjects(projects);
+const index = projects.findIndex(p => p.slug === Astro.params.slug);
+const project = projects[index];
+const study = caseStudies[project.slug];
+const { html } = caseMarkup(projects, index, study);
+// The case study's one line when there is one, otherwise the project's own summary and problem.
+const description = study ? study.oneLiner : `${project.summary} ${project.card.problem}`;
+---
+<BaseLayout
+  title={titleFor('work', project)}
+  description={description}
+  path={`/work/${project.slug}`}
+  image={`/og/${project.slug}.jpg`}
+  view="work"
+  panelHtml={html}
+  panelLabel={panelLabel('work')}
+  heading={headingFor('work', project)}
+/>

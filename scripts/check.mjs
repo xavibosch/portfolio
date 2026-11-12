@@ -6,7 +6,7 @@ import { chromium } from 'playwright';
 const base = process.env.PORTFOLIO_URL || 'http://127.0.0.1:4186';
 const output = new URL('../screenshots/', import.meta.url);
 const screenshotPath = filename => fileURLToPath(new URL(filename, output));
-const projects = JSON.parse(await readFile(new URL('../src/projects.json', import.meta.url)));
+const projects = JSON.parse(await readFile(new URL('../src/data/projects.json', import.meta.url)));
 const featured = projects.filter(p => p.featured);
 await mkdir(output, { recursive: true });
 const browser = await chromium.launch({ channel: 'chrome', headless: true });
@@ -250,7 +250,7 @@ try {
   assert.equal(await page.locator('#index-button [data-i18n]').textContent(), 'The collection');
   await page.locator('#vito-input').fill('What is Reps?');
   await page.keyboard.press('Enter');
-  await page.waitForFunction(() => document.querySelector('.vito-msg:last-child .vito-text a[href="#/work/reps"]'));
+  await page.waitForFunction(() => document.querySelector('.vito-msg:last-child .vito-text a[href="/work/reps"]'));
   await page.locator('.vito-msg:last-child .vito-text a').click();
   await page.waitForFunction(() => document.querySelector('.pcard-title h2')?.textContent === 'Reps');
   assert.equal(await page.locator('.vito').evaluate(el => el.classList.contains('is-in-panel')), true);

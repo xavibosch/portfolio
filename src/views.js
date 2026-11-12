@@ -112,7 +112,7 @@ export const imageLabel = type => t(`img.${IMAGE_TYPES.includes(type) ? type : '
 export const GROUPS = ['case-study', 'small', 'prototype', 'experiment', 'university', 'wip'];
 
 export function collectionView(projects) {
-  const card = (p, i) => `<a class="col-card${p.featured ? ' is-featured' : ''}" href="#/work/${esc(p.slug)}" data-project="${i}" style="--tint:${esc(p.color)}">
+  const card = (p, i) => `<a class="col-card${p.featured ? ' is-featured' : ''}" href="/work/${esc(p.slug)}" data-project="${i}" style="--tint:${esc(p.color)}">
       <span class="col-card-media"><img src="${esc(thumb(p.images[0]))}" alt="" loading="lazy" decoding="async" />${['mockup', 'concept'].includes(p.imageMeta[0]?.type) ? `<span class="col-media-tag">${t(p.imageMeta[0].type === 'mockup' ? 'col.mockup' : 'col.concept')}</span>` : ''}</span>
       <span class="col-card-body">
         <span class="col-card-top"><span class="col-num">${number(i)}</span><span class="col-status"><i aria-hidden="true"></i>${esc(p.status)}</span></span>
@@ -201,15 +201,15 @@ export function homeMoreView(featured, { email, linkedin, github, cv }) {
         // The first and last slots are copies, so swiping past either end lands on the other: an endless wheel.
         const copy = slot === 0 || slot === all.length - 1;
         const p = featured[i];
-        return `<a class="hm-card" href="#/work/${esc(p.slug)}" data-slide="${i}" style="--tint:${esc(p.color)}"${copy ? ' data-copy aria-hidden="true" tabindex="-1"' : ''}>
+        return `<a class="hm-card" href="/work/${esc(p.slug)}" data-slide="${i}" style="--tint:${esc(p.color)}"${copy ? ' data-copy aria-hidden="true" tabindex="-1"' : ''}>
         <span class="hm-media"><img src="${esc(thumb(p.images[0]))}" alt="" loading="lazy" decoding="async" /></span>
         <span class="hm-body"><span class="hm-num">${String(i + 1).padStart(2, '0')} / 03 · ${esc(p.category)}</span><span class="hm-name">${esc(p.name)}</span><span class="hm-line">${esc(p.capability)}.</span><span class="hm-open">${t('hm.open')} ${icon('arrow-right')}</span></span>
       </a>`;
       }).join('')}</div>
       <div class="hm-dots">${featured.map((p, i) => `<button data-hm-dot="${i}" aria-label="${esc(p.name)}" aria-current="${i === 0}"></button>`).join('')}</div>
     </div>
-    <a class="hm-collection" href="#/index"><span><span class="eyebrow">${t('hm.colEyebrow')}</span><strong>${t('hm.colTitle')}</strong><span>${t('hm.colText')}</span></span>${icon('arrow-right')}</a>
+    <a class="hm-collection" href="/work"><span><span class="eyebrow">${t('hm.colEyebrow')}</span><strong>${t('hm.colTitle')}</strong><span>${t('hm.colText')}</span></span>${icon('arrow-right')}</a>
     <div class="hm-contact"><span class="eyebrow">${t('hm.available')}</span><p>${t('hm.availableText')}</p>
       <a class="hm-mail" href="mailto:${esc(email)}">${esc(email)}</a>
-      <div class="hm-links"><a href="${esc(linkedin)}" target="_blank" rel="noopener noreferrer">LinkedIn ${icon('arrow-up-right')}</a><a href="${esc(github)}" target="_blank" rel="noopener noreferrer">GitHub ${icon('arrow-up-right')}</a><a href="${esc(cv)}" download>CV ${icon('arrow-down')}</a><a href="#/about">${t('hm.about')} ${icon('arrow-right')}</a></div></div>`;
+      <div class="hm-links"><a href="${esc(linkedin)}" target="_blank" rel="noopener noreferrer">LinkedIn ${icon('arrow-up-right')}</a><a href="${esc(github)}" target="_blank" rel="noopener noreferrer">GitHub ${icon('arrow-up-right')}</a><a href="${esc(cv)}" download>CV ${icon('arrow-down')}</a><a href="/about">${t('hm.about')} ${icon('arrow-right')}</a></div></div>`;
 }

@@ -1,0 +1,27 @@
+/* Without JavaScript. The inline script in the head marks html with .js
+   before anything paints, so none of these rules ever reach a browser that
+   runs the site: they only shape the plain page a reader without scripts
+   (or a crawler) gets. The holder, the picker and the buttons that need the
+   script step aside for a list of every project with its real address. */
+
+html:not(.js) :is(.wallet-scene, .pick-hint, .selected-project, .transport, .home-more, .navigation, .theme-button, .archive-button, .close-panel:not(.noscript-close)) { display: none !important; }
+html:not(.js) #app { min-height: 0; height: auto; }
+
+html:not(.js) .noscript-work { position: relative; z-index: 3; max-width: 1080px; margin: 0 auto; padding: 0 32px 64px; color: var(--ink); }
+html:not(.js) .noscript-work ul { display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 12px; margin: 18px 0 0; padding: 0; list-style: none; }
+html:not(.js) .noscript-work li a { display: flex; flex-direction: column; gap: 6px; height: 100%; padding: 18px 20px; border: 1px solid var(--line); border-radius: 14px; background: #ffffff8c; }
+html:not(.js) .noscript-work strong { font: 700 18px/1.2 var(--sans); letter-spacing: -.02em; }
+html:not(.js) .noscript-work li span { font-size: 14px; line-height: 1.5; color: var(--muted); }
+html:not(.js) .noscript-more { margin-top: 20px; font-size: 14px; }
+html:not(.js) .noscript-more a { text-decoration: underline; text-underline-offset: 3px; }
+
+/* A page built for a view keeps its folio open over the list. */
+html:not(.js) .panel[open] { position: fixed; inset: 0; z-index: 40; }
+html:not(.js) .noscript-close { display: inline-flex; align-items: center; gap: 8px; }
+
+/* The story deck is a stack the script deals; here every chapter is read in turn. */
+html:not(.js) .deck { height: auto !important; }
+html:not(.js) .deck-card, html:not(.js) .deck-card[hidden] { position: relative !important; display: flex !important; inset: auto !important; cursor: auto; }
+html:not(.js) .deck-card + .deck-card { margin-top: 16px; }
+html:not(.js) .deck-index, html:not(.js) .deck-controls, html:not(.js) .deck-hint, html:not(.js) .pcard-turn, html:not(.js) .cs-toc { display: none; }
+html:not(.js) .story-layout, html:not(.js) .cs-body { grid-template-columns: minmax(0, 1fr); }

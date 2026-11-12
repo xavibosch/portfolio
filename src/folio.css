@@ -40,6 +40,8 @@ body.wallet-portfolio { --paper: #e5e8e9; --ink: #303a40; --muted: #637078; --li
 .panel[open] { display: block; }
 .panel::backdrop { background: #4c5b6945; backdrop-filter: blur(15px) saturate(.2); }
 .panel-shell { display: flex; flex-direction: column; height: 100%; border-radius: inherit; }
+/* The folio's heading is for screen readers only; it must stay out of the column. */
+.panel-shell > .sr-only { position: absolute; }
 .panel-top { height: 74px; flex: 0 0 74px; padding: 0 28px; display: flex; align-items: center; justify-content: space-between; gap: 22px; border-bottom: 1px solid #78899655; box-shadow: 0 1px 0 #fff9; background: linear-gradient(#ffffff30, #818f9b14); }
 .panel-home { display: flex; align-items: center; gap: 13px; font: 7px/1.8 var(--mono); letter-spacing: .09em; text-shadow: var(--engraved); }
 .folio-mark { font: italic 40px/.8 var(--serif); letter-spacing: -3px; padding-right: 6px; }
