@@ -10,6 +10,7 @@ const errors = [];
 try {
   for (const device of ['iPhone SE', 'iPhone 14 Pro Max']) {
     const page = await (await browser.newContext({ ...devices[device], colorScheme: 'dark' })).newPage();
+    await page.addInitScript(() => { try { localStorage.setItem('mode', 'creative'); } catch {} });
     page.on('pageerror', e => errors.push(e.message));
     await page.route('**/api/chat', route => route.fulfill({ status: 200, contentType: 'text/plain', body: 'Hi.' }));
     await page.goto(base);

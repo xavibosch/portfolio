@@ -10,9 +10,10 @@ const base = process.env.PORTFOLIO_URL || 'http://127.0.0.1:4186';
 const projects = JSON.parse(await readFile(new URL('../src/data/projects.json', import.meta.url)));
 const browser = await chromium.launch();
 const errors = [];
-const open = async () => {
+const open = async (mode = 'creative') => {
   const page = await (await browser.newContext({ viewport: { width: 1440, height: 900 } })).newPage();
   page.on('pageerror', e => errors.push(e.message));
+  if (mode) await page.addInitScript(m => { try { localStorage.setItem('mode', m); } catch {} }, mode);
   await page.route('**/api/chat', route => route.fulfill({ status: 200, contentType: 'text/plain', body: 'Hi.' }));
   return page;
 };
@@ -86,11 +87,40 @@ try {
   assert.equal(await panelOpen(page), false);
   await page.close();
 
-  // Without JavaScript: the whole page is there, with real links.
+  // A first visit lands on the Product view; the switch moves to the
+  // cardholder and the choice survives a reload.
+  page = await open(null);
+  await page.goto(`${base}/`); await page.waitForTimeout(1200);
+  assert.equal(await page.evaluate(() => document.documentElement.dataset.mode), 'product', 'a first visit should land on Product');
+  assert.ok(await page.locator('#product .pm-title').isVisible());
+  assert.equal(await page.locator('#app').isVisible(), false, 'the holder shows in Product');
+  assert.equal(await page.locator('h1:visible').count(), 1, 'Product needs exactly one visible h1');
+  await page.locator('.pm-switch [data-set-mode="creative"]').click(); await page.waitForTimeout(1400);
+  assert.equal(await page.locator('.wallet-card').count(), 5, 'the holder was not built on the switch');
+  await page.reload(); await page.waitForTimeout(1200);
+  assert.equal(await page.evaluate(() => document.documentElement.dataset.mode), 'creative', 'the choice was not remembered');
+  await page.locator('.holder-switch [data-set-mode="product"]').click(); await page.waitForTimeout(1200);
+  assert.ok(await page.locator('#product').isVisible());
+  // Arrow keys and the wheel scroll the Product page instead of moving cards.
+  await page.mouse.wheel(0, 600); await page.waitForTimeout(600);
+  assert.ok(await page.evaluate(() => scrollY) > 200, 'the wheel does not scroll the Product page');
+  // A project opens in the folio from Product too, and closing goes back to it.
+  await page.locator('.pm-row summary').first().click();
+  assert.ok(await page.locator('.pm-row[open] .pm-answers').first().isVisible(), 'an index row does not open');
+  await page.locator('.pm-case h3 a[href="/work/reps"]').click(); await page.waitForTimeout(1200);
+  assert.equal(path(page), '/work/reps');
+  await page.keyboard.press('Escape'); await page.waitForTimeout(900);
+  assert.equal(path(page), '/');
+  assert.ok(await page.locator('#product').isVisible());
+  await page.close();
+
+  // Without JavaScript: the Product view, with every project and real links.
   const plain = await (await browser.newContext({ viewport: { width: 1440, height: 900 }, javaScriptEnabled: false })).newPage();
   await plain.goto(`${base}/`);
-  assert.equal(await plain.locator('.noscript-work a[href^="/work/"]').count(), projects.length, 'no-JS home should list every project');
-  assert.ok(await plain.locator('.noscript-work').isVisible());
+  const links = await plain.locator('#product a[href^="/work/"]').evaluateAll(as => [...new Set(as.map(a => a.getAttribute('href')))]);
+  assert.equal(links.length, projects.length, 'no-JS home should link every project');
+  assert.ok(await plain.locator('#product .pm-title').isVisible());
+  assert.equal(await plain.locator('#app').isVisible(), false);
   await plain.goto(`${base}/work/betsy`);
   assert.ok(await plain.locator('#panel').isVisible(), 'no-JS project page hides its folio');
   assert.ok(await plain.getByText('The Firestore rules are where the truth lives').first().isVisible());
@@ -100,7 +130,7 @@ try {
   await plain.close();
 
   assert.deepEqual(errors, [], 'page errors');
-  console.log('PASS (routes): every page built with its own title, canonical and preview, one h1 each, folio from a real address, links and history without reloading, old hash links, 404, and a complete page without JavaScript.');
+  console.log('PASS (routes): Product by default and the switch remembered, every page built with its own title, canonical and preview, one h1 each, folio from a real address, links and history without reloading, old hash links, 404, and a complete page without JavaScript.');
 } finally {
   await browser.close();
 }

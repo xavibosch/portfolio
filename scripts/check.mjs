@@ -12,6 +12,8 @@ await mkdir(output, { recursive: true });
 const browser = await chromium.launch({ channel: 'chrome', headless: true });
 const errors = [];
 const page = await browser.newPage({ viewport: { width: 1440, height: 900 }, colorScheme: 'light', deviceScaleFactor: 1 });
+// These checks are about the cardholder, the Creative view.
+await page.addInitScript(() => { try { localStorage.setItem('mode', 'creative'); } catch {} });
 page.on('pageerror', error => errors.push(error.message));
 
 async function closePanel() {
@@ -353,6 +355,7 @@ try {
   await closePanel();
 
   const reduced = await browser.newPage({ viewport: {width: 1440, height: 900}, reducedMotion: 'reduce', colorScheme: 'light' });
+  await reduced.addInitScript(() => { try { localStorage.setItem('mode', 'creative'); } catch {} });
   reduced.on('pageerror', error => errors.push(error.message));
   await reduced.goto(base);
   await reduced.locator('.wallet-card').first().waitFor();

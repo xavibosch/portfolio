@@ -5,6 +5,7 @@ import { t, localizeProjects, applyStatic, langSwitch, syncSwitches } from './i1
 import { caseMarkup, collectionMarkup, aboutMarkup, contactMarkup, cvFor, panelLabel, titleFor, headingFor } from './render.js';
 import { email, linkedin, github, pathFor, viewFromPath, pathForHash } from './site.js';
 import projects from './data/projects.json';
+import { productView } from './product-view.js';
 localizeProjects(projects);
 import { createWallet } from './wallet';
 import { icon, hydrateIcons } from './icons';
@@ -50,12 +51,14 @@ function applyTheme(){
      because those all key off this attribute. */
   document.documentElement.dataset.theme = dark ? 'dark' : 'light';
   document.querySelector('meta[name="theme-color"]')?.setAttribute('content', dark ? '#15171a' : '#edece5');
-  const button = $('#theme-button');
-  button.setAttribute('aria-pressed', String(dark));
-  button.setAttribute('aria-label', t(dark ? 'theme.toLight' : 'theme.toDark'));
+  for (const button of document.querySelectorAll('#theme-button, [data-theme-toggle]')) {
+    button.setAttribute('aria-pressed', String(dark));
+    button.setAttribute('aria-label', t(dark ? 'theme.toLight' : 'theme.toDark'));
+  }
     viewer?.setTheme(dark);
 }
-$('#theme-button').addEventListener('click', () => {
+document.addEventListener('click', e => {
+  if (!e.target.closest?.('#theme-button, [data-theme-toggle]')) return;
   themeChoice = isDark() ? 'light' : 'dark';
   try { localStorage.setItem('theme', themeChoice); } catch {}
   applyTheme();
@@ -133,7 +136,10 @@ panel.addEventListener('cancel',e=>{if(e.target!==panel)return;e.preventDefault(
 panel.addEventListener('close',()=>{viewer?.setActive(true);viewer?.zoomOut();});
 
 const wheelDirection=createWheelNavigation();
+const creative=()=>document.documentElement.dataset.mode==='creative';
 document.addEventListener('wheel',e=>{
+  // On the Product view the wheel scrolls the page, as on any page.
+  if(!creative()&&!panel.open)return;
   // Vito's chat scrolls itself; the wheel only browses cards outside it.
   if(panel.open||e.ctrlKey||e.metaKey||e.target.closest?.('.vito'))return;
   e.preventDefault();
@@ -145,6 +151,7 @@ document.addEventListener('keydown',e=>{
   if(e.defaultPrevented||e.altKey||e.ctrlKey||e.metaKey||e.target.closest('input,textarea,select,[contenteditable="true"]')||panel.querySelector('.lightbox[open]'))return;
   const space=e.code==='Space'||e.key===' ';
   if(!panel.open){
+    if(!creative())return;
     if(e.key==='ArrowRight'||e.key==='ArrowDown'){e.preventDefault();homeStep(1,e.repeat);}
     if(e.key==='ArrowLeft'||e.key==='ArrowUp'){e.preventDefault();homeStep(-1,e.repeat);}
     if(space){e.preventDefault();if(!e.repeat)openCurrent();}
@@ -838,12 +845,18 @@ addEventListener('hashchange',()=>{
   dispatchEvent(new Event('routechange'));
   route();
 });
-viewer=createWallet($('#scene'),featured,{
-  onSelect: position => {const index=projects.indexOf(featured[position]);select(index,index>current?1:-1);},
-  onOpen: openCurrent,
-  onAbout: () => navigate('about'),
-  onContact: () => navigate('contact'),
-});
+function ensureViewer(){
+  if(viewer)return;
+  viewer=createWallet($('#scene'),featured,{
+    onSelect: position => {const index=projects.indexOf(featured[position]);select(index,index>current?1:-1);},
+    onOpen: openCurrent,
+    onAbout: () => navigate('about'),
+    onContact: () => navigate('contact'),
+  });
+  viewer.setTheme(isDark());
+  if(panel.open){viewer.zoomIn();viewer.setActive(false);}
+}
+if(creative())ensureViewer();
 renderHomeMore();
 select(0,1,false);route();
 
@@ -866,8 +879,12 @@ function clearHeadline(){
   if(!compact.matches)return;
   setTimeout(()=>{
     if(request!==fitRequest)return;
+    // Nothing to fit while the holder is not the view.
+    if(!scene.offsetParent)return;
     const box=scene.getBoundingClientRect(), studio=scene.offsetParent.getBoundingClientRect();
-    const scale=parseFloat(getComputedStyle(scene.querySelector('.wallet-fit')).getPropertyValue('--wallet-scale'));
+    const fit=scene.querySelector('.wallet-fit');
+    if(!fit)return;
+    const scale=parseFloat(getComputedStyle(fit).getPropertyValue('--wallet-scale'));
     if(!scale||!box.height)return;
     const note=$('.studio-note').getBoundingClientRect(), caption=$('.selected-project').getBoundingClientRect();
     const cards=[...scene.querySelectorAll('.wallet-card')].map(card=>card.getBoundingClientRect());
@@ -892,6 +909,47 @@ mountVito({panel});
 /* The language switch lives in the header (its corner on a Mac or iPad, after the navigation on a phone) and in
    the top bar of the open panel, next to the close button, so it is always one tap away. Changing it
    re-renders whatever is on screen in place. */
+/* ── Product and Creative ─────────────────────────────────────────────
+   Two views of the same portfolio, chosen with the switch in either header
+   and remembered for the next visit. The Product view is written by the
+   build; here it is redrawn in the visitor's language. The new view opens
+   as a circle from the switch that was pressed. */
+const productRoot=$('#product');
+const productHeading=productRoot.querySelector('.pm-title')?.tagName==='H1';
+function renderProduct(){
+  const skip=productRoot.querySelector('.skip-link').outerHTML;
+  productRoot.innerHTML=skip+productView(projects,{cv:cvFor(),heading:productHeading});
+  productRoot.querySelectorAll('[data-lang-slot]').forEach(slot=>{slot.innerHTML=langSwitch();});
+  syncModeSwitches();
+}
+function syncModeSwitches(){
+  const mode=document.documentElement.dataset.mode;
+  document.querySelectorAll('[data-set-mode]').forEach(b=>{if(b.closest('.mode-switch'))b.setAttribute('aria-pressed',String(b.dataset.setMode===mode));});
+}
+function setMode(mode,from){
+  const root=document.documentElement;
+  if(root.dataset.mode===mode)return;
+  try{localStorage.setItem('mode',mode);}catch{}
+  const apply=()=>{
+    root.dataset.mode=mode;
+    syncModeSwitches();
+    scrollTo({top:0,behavior:'instant'});
+    if(mode==='creative'){ensureViewer();clearHeadline();}
+  };
+  if(reduced.matches||!document.startViewTransition){apply();return;}
+  const x=from?.x??innerWidth/2, y=from?.y??0;
+  const radius=Math.hypot(Math.max(x,innerWidth-x),Math.max(y,innerHeight-y));
+  document.startViewTransition(apply).ready.then(()=>{
+    root.animate({clipPath:[`circle(0px at ${x}px ${y}px)`,`circle(${radius}px at ${x}px ${y}px)`]},{duration:760,easing:'cubic-bezier(.22,1,.36,1)',pseudoElement:'::view-transition-new(root)'});
+  }).catch(()=>{});
+}
+document.addEventListener('click',e=>{
+  const button=e.target.closest?.('[data-set-mode]');
+  if(!button)return;
+  const box=button.getBoundingClientRect();
+  setMode(button.dataset.setMode,{x:box.left+box.width/2,y:box.top+box.height/2});
+});
+renderProduct();applyTheme();
 document.querySelectorAll('[data-lang-slot]').forEach(slot=>{slot.innerHTML=langSwitch();});
 applyStatic();
 syncCvLink();
@@ -900,7 +958,7 @@ addEventListener('langchange',()=>{
   syncCvLink();
   applyStatic();syncSwitches();applyTheme();renderPicker();
   viewer?.retranslate();select(current,0,false);
-  renderHomeMore();
+  renderHomeMore();renderProduct();applyTheme();
   if(panel.open){
     const scroll=content.scrollTop;
     currentPanel='';
