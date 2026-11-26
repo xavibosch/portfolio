@@ -95,11 +95,11 @@ try {
   assert.ok(await page.locator('#product .pm-title').isVisible());
   assert.equal(await page.locator('#app').isVisible(), false, 'the holder shows in Product');
   assert.equal(await page.locator('h1:visible').count(), 1, 'Product needs exactly one visible h1');
-  await page.locator('.pm-switch [data-set-mode="creative"]').click(); await page.waitForTimeout(1400);
+  await page.locator('.mode-dock [data-set-mode="creative"]').click(); await page.waitForTimeout(1400);
   assert.equal(await page.locator('.wallet-card').count(), 5, 'the holder was not built on the switch');
   await page.reload(); await page.waitForTimeout(1200);
   assert.equal(await page.evaluate(() => document.documentElement.dataset.mode), 'creative', 'the choice was not remembered');
-  await page.locator('.holder-switch [data-set-mode="product"]').click(); await page.waitForTimeout(1200);
+  await page.locator('.mode-dock [data-set-mode="product"]').click(); await page.waitForTimeout(1200);
   assert.ok(await page.locator('#product').isVisible());
   // Arrow keys and the wheel scroll the Product page instead of moving cards.
   await page.mouse.wheel(0, 600); await page.waitForTimeout(600);
@@ -107,11 +107,24 @@ try {
   // A project opens in the folio from Product too, and closing goes back to it.
   await page.locator('.pw-row summary').first().click();
   assert.ok(await page.locator('.pw-row[open] .pw-answers').first().isVisible(), 'an index row does not open');
-  await page.locator('.pw-case-link[href="/work/reps"]').click(); await page.waitForTimeout(1200);
+  await page.locator('.pw-story-head a[href="/work/reps"]').click(); await page.waitForTimeout(1200);
   assert.equal(path(page), '/work/reps');
   await page.keyboard.press('Escape'); await page.waitForTimeout(900);
   assert.equal(path(page), '/');
   assert.ok(await page.locator('#product').isVisible());
+  await page.close();
+
+  // The loading screen plays (asked for with ?intro) and lifts away; the logo
+  // at the bottom of the page brings it back to the top.
+  page = await open(null);
+  await page.goto(`${base}/?intro`); await page.waitForTimeout(500);
+  assert.ok(await page.locator('.loader').isVisible(), 'the loading screen does not show');
+  await page.waitForTimeout(4200);
+  assert.equal(await page.locator('.loader').count(), 0, 'the loading screen does not lift');
+  assert.equal(await page.evaluate(() => document.body.style.overflow || getComputedStyle(document.body).overflow), 'visible', 'the page stays locked after loading');
+  await page.evaluate(() => scrollTo(0, document.body.scrollHeight)); await page.waitForTimeout(300);
+  await page.locator('.pw-brand').click(); await page.waitForTimeout(1800);
+  assert.equal(await page.evaluate(() => Math.round(scrollY)), 0, 'the logo does not bring the page back to the top');
   await page.close();
 
   // Without JavaScript: the Product view, with every project and real links.
@@ -130,7 +143,7 @@ try {
   await plain.close();
 
   assert.deepEqual(errors, [], 'page errors');
-  console.log('PASS (routes): Product by default and the switch remembered, every page built with its own title, canonical and preview, one h1 each, folio from a real address, links and history without reloading, old hash links, 404, and a complete page without JavaScript.');
+  console.log('PASS (routes): loading screen, logo to the top, Product by default and the switch remembered, every page built with its own title, canonical and preview, one h1 each, folio from a real address, links and history without reloading, old hash links, 404, and a complete page without JavaScript.');
 } finally {
   await browser.close();
 }

@@ -7,6 +7,7 @@ import { email, linkedin, github, pathFor, viewFromPath, pathForHash } from './s
 import projects from './data/projects.json';
 import { productView } from './product-view.js';
 import { initProductMotion } from './product-motion.js';
+import { runLoader } from './loader.js';
 localizeProjects(projects);
 import { createWallet } from './wallet';
 import { icon, hydrateIcons } from './icons';
@@ -836,6 +837,7 @@ document.addEventListener('click',e=>{
   const {view,slug}=viewFromPath(legacy||link.pathname);
   if(view===null||(!legacy&&link.hash))return;
   e.preventDefault();
+  if(view===''&&location.pathname==='/'&&!panel.open){scrollTo({top:0,behavior:reduced.matches?'instant':'smooth'});return;}
   navigate(view==='work'?`work/${slug}`:view);
 });
 // Old hash links, followed from inside the page (Vito's answers carried them).
@@ -855,9 +857,13 @@ function ensureViewer(){
     onContact: () => navigate('contact'),
   });
   viewer.setTheme(isDark());
+  const position=featured.indexOf(projects[current]);
+  if(position>0)viewer.select(position,0,false);
   if(panel.open){viewer.zoomIn();viewer.setActive(false);}
 }
-if(creative())ensureViewer();
+// Under the loading screen nothing enters yet; it all starts when the screen lifts.
+const loading=document.documentElement.classList.contains('is-loading');
+if(creative()&&!loading)ensureViewer();
 renderHomeMore();
 select(0,1,false);route();
 
@@ -956,7 +962,10 @@ document.addEventListener('click',e=>{
 });
 renderProduct();applyTheme();
 // A page opened on its folio keeps the first screen still behind it.
-if(!panel.hasAttribute('open')&&!/^\/(work|about|contact)/.test(location.pathname))productMotion.intro();
+runLoader(()=>{
+  if(creative()){ensureViewer();clearHeadline();}
+  else if(!/^\/(work|about|contact)/.test(location.pathname))productMotion.intro();
+});
 document.querySelectorAll('[data-lang-slot]').forEach(slot=>{slot.innerHTML=langSwitch();});
 applyStatic();
 syncCvLink();

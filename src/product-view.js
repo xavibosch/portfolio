@@ -16,7 +16,6 @@ const thumb = src => /\.webp$/.test(src) ? src.replace('/assets/', '/assets/thum
 // Words in their own spans, so the headline can rise and the statement light up word by word.
 const words = text => String(text).split(/\s+/).filter(Boolean).map(w => `<span class="pw-word"><span>${esc(w)}</span></span>`).join(' ');
 
-export const AUDIENCES = ['anyone', 'recruiters', 'designers', 'engineers'];
 const SECTIONS = ['intro', 'work', 'archive', 'principles', 'more', 'contact'];
 
 // The switch between the two views. Two buttons rather than one toggle: the
@@ -24,6 +23,18 @@ const SECTIONS = ['intro', 'work', 'archive', 'principles', 'more', 'contact'];
 export function modeSwitch(className = '') {
   return `<div class="mode-switch ${className}" role="group" aria-label="${esc(t('mode.label'))}" data-i18n-attr="aria-label:mode.label"><span class="mode-thumb" aria-hidden="true"></span><button type="button" data-set-mode="product" aria-pressed="true" data-i18n="mode.product">${esc(t('mode.product'))}</button><button type="button" data-set-mode="creative" aria-pressed="false" data-i18n="mode.creative">${esc(t('mode.creative'))}</button></div>`;
 }
+
+const BRANDS = {
+  linkedin: 'M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z',
+  github: 'M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12',
+};
+const brand = name => `<svg class="pw-brandmark" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="${BRANDS[name]}"/></svg>`;
+
+/* How I think, shown through each case study in four general steps. Each
+   step brings up one real image of the project (the concept images are
+   labelled as such in their captions). */
+const STEPS = 4;
+const SHOTS = { 'jeffrey-desk': [4, 5, 2, 0], reps: [1, 0, 3, 4], betsy: [0, 6, 2, 3] };
 
 const tags = p => String(p.role).split('·').map(s => s.trim()).filter(Boolean).map(s => `<span>${esc(s)}</span>`).join('');
 
@@ -33,16 +44,31 @@ export function productView(projects, { cv, heading = true }) {
   const rest = projects.filter(p => !p.featured);
   const title = heading ? 'h1' : 'p';
 
-  const cases = featured.map((p, i) => `<article class="pw-case${i === 0 ? ' is-wide' : ''}" style="--tint:${esc(p.color)}" data-rise>
-      <a class="pw-case-link" href="/work/${esc(p.slug)}" data-cursor="${esc(t('pw.cursorCase'))}">
-        <span class="pw-case-top"><span class="pw-case-name"><span class="pw-case-num">${pad(i + 1)}</span>${esc(p.name)}</span><span class="pw-tags">${tags(p)}</span></span>
-        <span class="pw-case-media"><img src="${esc(p.images[0])}" alt="${esc(p.imageMeta?.[0]?.caption || p.name)}" loading="${i ? 'lazy' : 'eager'}" decoding="async" width="1600" height="1000" /></span>
-      </a>
-      <div class="pw-case-text"><p class="pw-case-tagline">${esc(p.tagline)}</p>
-        <dl class="pw-case-facts"><div><dt>${t('glance.problem')}</dt><dd>${esc(p.card.problem)}</dd></div><div><dt>${t('glance.outcome')}</dt><dd>${esc(p.card.outcome)}</dd></div></dl></div>
-    </article>`).join('');
+  const cases = featured.map((p, i) => {
+    const shots = (SHOTS[p.slug] || [0, 1, 2, 3]).map(n => ({ src: p.images[n] || p.images[0], caption: p.imageMeta?.[n]?.caption || p.name }));
+    return `<article class="pw-story" id="story-${esc(p.slug)}" style="--tint:${esc(p.color)}">
+      <header class="pw-story-head" data-rise>
+        <p class="pw-story-num">${pad(i + 1)} <span>/ ${pad(featured.length)}</span></p>
+        <h3><a href="/work/${esc(p.slug)}">${esc(p.name)}</a></h3>
+        <p class="pw-story-tagline">${esc(p.tagline)}</p>
+        <span class="pw-tags">${tags(p)}</span>
+      </header>
+      <div class="pw-story-body">
+        <div class="pw-story-media">
+          <a class="pw-story-frame" href="/work/${esc(p.slug)}" data-cursor="${esc(t('pw.cursorCase'))}" tabindex="-1" aria-hidden="true">${shots.map((shot, k) => `<img class="pw-shot${k ? '' : ' is-on'}" data-shot="${k}" src="${esc(shot.src)}" alt="" loading="lazy" decoding="async" />`).join('')}</a>
+          <p class="pw-story-caption" aria-hidden="true">${shots.map((shot, k) => `<span data-caption="${k}"${k ? '' : ' class="is-on"'}>${esc(shot.caption)}</span>`).join('')}</p>
+          <div class="pw-story-progress" aria-hidden="true">${shots.map((_, k) => `<span data-dot="${k}"${k ? '' : ' class="is-on"'}></span>`).join('')}</div>
+        </div>
+        <ol class="pw-steps">${Array.from({ length: STEPS }, (_, k) => `<li class="pw-step${k ? '' : ' is-on'}" data-step="${k}">
+            <p class="pw-step-label"><span>${pad(k + 1)}</span>${t(`pt.s${k + 1}`)}</p>
+            <h4>${t(`pt.q${k + 1}`)}</h4>
+            <p class="pw-step-text">${t(`pt.${p.slug}.${k + 1}`)}</p>
+          </li>`).join('')}</ol>
+      </div>
+      <footer class="pw-story-foot" data-rise><div><span class="pw-story-outcome">${t('glance.outcome')}</span><p>${esc(p.card.outcome)}</p></div><a class="pw-button" href="/work/${esc(p.slug)}">${t('pt.read')} ${icon('arrow-right')}</a></footer>
+    </article>`;
+  }).join('');
 
-  // Every screen of the other projects, dealt into five columns that drift at different speeds.
   // Every column is filled past the wall's height, so no column runs short while it drifts.
   const tiles = rest.flatMap(p => p.images.map((src, i) => ({ p, src, caption: p.imageMeta?.[i]?.caption || p.name })));
   const columns = Array.from({ length: 4 }, () => []);
@@ -69,16 +95,14 @@ export function productView(projects, { cv, heading = true }) {
       <span class="pw-pill-sep" aria-hidden="true"></span>
       <span class="lang-slot pw-lang" data-lang-slot="product"></span>
       <button class="theme-button pw-theme" type="button" data-theme-toggle aria-pressed="false" aria-label="${esc(t('theme.toDark'))}">${icon('theme')}</button>
-      ${modeSwitch('pm-switch')}
     </nav>
     <nav class="pw-index" aria-label="${esc(t('pw.sections'))}"><ol>${SECTIONS.map((id, i) => `<li><a href="#pw-${id}" data-spy="pw-${id}"><span>${pad(i + 1)}</span>${t(`pw.s.${id}`)}</a></li>`).join('')}</ol></nav>
 
     <section class="pw-hero" id="pw-intro" aria-labelledby="pm-title">
       <div class="pw-hero-text">
-        <div class="pw-audience" role="group" aria-label="${esc(t('pw.audienceLabel'))}">${AUDIENCES.map((a, i) => `<button type="button" data-audience="${a}" aria-pressed="${i === 0}">${t(`pw.a.${a}`)}</button>`).join('')}</div>
         <${title} class="pm-title pw-title" id="pm-title" aria-live="polite">${words(t('about.lede'))}</${title}>
         <p class="pw-available"><span class="pw-pulse" aria-hidden="true"></span><b>${t('home.available')}</b><span>${t('home.availableDetail')}</span></p>
-        <div class="pw-quick"><a class="pw-button" href="${esc(cv)}" download>${t('links.cv')} ${icon('arrow-down')}</a><a class="pw-button is-quiet" href="mailto:${esc(email)}">${esc(email)} ${icon('arrow-up-right')}</a></div>
+        <div class="pw-quick"><a class="pw-button" href="${esc(cv)}" download>${t('links.cv')} ${icon('arrow-down')}</a><a class="pw-button is-quiet" href="mailto:${esc(email)}">${esc(email)} ${icon('arrow-up-right')}</a><a class="pw-circle" href="${esc(linkedin)}" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn">${brand('linkedin')}</a><a class="pw-circle" href="${esc(github)}" target="_blank" rel="noopener noreferrer" aria-label="GitHub">${brand('github')}</a></div>
       </div>
       <figure class="pw-portrait"><img src="/assets/xavi-portrait.webp" alt="${esc(t('about.photo'))}" width="900" height="1310" decoding="async" fetchpriority="high" /><figcaption><span>Xavier Bosch</span><span>Barcelona · <span data-clock></span></span></figcaption></figure>
     </section>
@@ -86,8 +110,8 @@ export function productView(projects, { cv, heading = true }) {
     <section class="pw-statement" aria-label="${esc(t('pw.statementLabel'))}"><p class="pw-reveal">${words(t('about.p2'))}</p></section>
 
     <section class="pw-section" id="pw-work" aria-labelledby="pw-work-title">
-      <header class="pw-head" data-rise><h2 id="pw-work-title">${t('pm.cases')}</h2><p>${t('pm.casesNote')}</p></header>
-      <div class="pw-cases">${cases}</div>
+      <header class="pw-head" data-rise><h2 id="pw-work-title">${t('pt.title')}</h2><p>${t('pt.note')}</p></header>
+      <div class="pw-stories">${cases}</div>
     </section>
 
     <section class="pw-section pw-archive" id="pw-archive" aria-labelledby="pw-archive-title">
@@ -118,6 +142,3 @@ export function productView(projects, { cv, heading = true }) {
     </footer>
     <span class="pw-cursor" aria-hidden="true"><span></span></span>`;
 }
-
-// The headline for each reader, as words ready to rise.
-export const audienceHeadline = audience => words(t(audience === 'anyone' ? 'about.lede' : `pw.h.${audience}`));

@@ -38,6 +38,8 @@ const { title, description, path, image, view = '', panelHtml = '', panelLabel =
 const url = `${SITE}${path}`;
 const imageUrl = `${SITE}${image}`;
 const open = Boolean(panelHtml);
+// The loading screen flicks through the portrait and the three case studies.
+const loaderShots = ['/assets/xavi-portrait.webp', ...projects.filter(p => p.featured).flatMap(p => p.images.slice(0, 2)).map(src => src.replace('/assets/', '/assets/thumbs/'))];
 const product = productView(projects, { cv: '/Xavi-Bosch-CV-EN.pdf', heading: !panelHtml });
 const current = (link: string) => (link === view || (view === 'work' && link === 'index') ? 'page' : undefined);
 ---
@@ -78,6 +80,12 @@ const current = (link: string) => (link === view || (view === 'work' && link ===
         var mode = null;
         try { mode = localStorage.getItem('mode'); } catch (e) {}
         document.documentElement.dataset.mode = mode === 'creative' ? 'creative' : 'product';
+        // The loading screen: once per session, on the home page, never with
+        // reduced motion, and not for automated browsers unless asked (?intro).
+        var seen = null;
+        try { seen = sessionStorage.getItem('xb-intro'); } catch (e) {}
+        var asked = /[?&]intro\b/.test(location.search);
+        if (asked || (!seen && location.pathname === '/' && !location.hash && !navigator.webdriver && !matchMedia('(prefers-reduced-motion: reduce)').matches)) document.documentElement.classList.add('is-loading');
       })();
     </script>
     <style is:inline>html.js .panel[data-ssr]{visibility:hidden}</style>
@@ -99,7 +107,6 @@ const current = (link: string) => (link === view || (view === 'work' && link ===
         <nav class="navigation" aria-label="Main navigation" data-i18n-attr="aria-label:nav.main"><button id="index-button"><span data-i18n="nav.collection">The collection</span> <sup>11</sup></button><button id="about-button" data-i18n="nav.about">About me</button><button id="contact-button"><span data-i18n="nav.contact">Get in touch</span> <span aria-hidden="true"><i data-icon="arrow-up-right"></i></span></button></nav>
         <span class="lang-slot header-lang" data-lang-slot="phone"></span>
         <div class="location"><span id="local-time"></span> BARCELONA<span class="lang-slot" data-lang-slot="header"></span><button id="theme-button" class="theme-button" aria-pressed="false" aria-label="Switch to dark mode"><span id="theme-label" aria-hidden="true"><i data-icon="theme"></i></span></button></div>
-        <span class="header-mode"><Fragment set:html={modeSwitch('holder-switch')} /></span>
       </header>
 
       <main class="studio" id="studio"><span class="lang-slot studio-lang" data-lang-slot="studio"></span>
@@ -115,6 +122,17 @@ const current = (link: string) => (link === view || (view === 'work' && link ===
         <div class="transport"><button id="prev-project" class="arrow-button" aria-label="Previous project" data-i18n-attr="aria-label:home.prev"><i data-icon="arrow-left"></i></button><div class="featured-picker" id="featured-picker" role="group" aria-label="Selected case studies" data-i18n-attr="aria-label:home.picker"></div><button id="next-project" class="arrow-button" aria-label="Next project" data-i18n-attr="aria-label:home.next"><i data-icon="arrow-right"></i></button><span class="transport-hint" data-i18n="home.hint">ARROWS OR SCROLL SWITCH CARDS · SPACE OPENS</span></div>
         <a class="footer-cv" href="/Xavi-Bosch-CV-EN.pdf" download><span data-i18n="home.cv">DOWNLOAD CV</span> <i data-icon="arrow-down"></i></a>
       </footer>
+    </div>
+    <div class="mode-dock"><Fragment set:html={modeSwitch('dock-switch')} /></div>
+    <div class="loader" aria-hidden="true">
+      <div class="loader-top"><span>Xavier Bosch · Portfolio</span><span>Barcelona · 2026</span></div>
+      <div class="loader-center">
+        <div class="loader-words"><span>Design the interface</span><span>Question the interaction</span><span>Build the product</span></div>
+        <div class="loader-window">{loaderShots.map(src => <img src={src} alt="" loading="lazy" decoding="async" />)}</div>
+        <span class="loader-mark">xb<sup>®</sup></span>
+      </div>
+      <div class="loader-bottom"><span class="loader-count">000</span><span>Interactive product designer and developer</span></div>
+      <div class="loader-bar"><span></span></div>
     </div>
     <section class="home-more" id="home-more" aria-label="Selected case studies and contact" data-i18n-attr="aria-label:home.more"></section>
     <dialog id="panel" class="panel" aria-label="Portfolio card" data-i18n-attr="aria-label:panel.label" open={open || undefined} data-ssr={open ? '' : undefined} data-view={view || undefined}><div class="panel-shell metal-surface" data-reflect tabindex="-1"><div class="panel-top"><a class="panel-home" href="/" aria-label="Back to the cardholder" data-i18n-attr="aria-label:panel.home"><span class="folio-mark">xb.</span><span><span data-i18n="panel.collection">PERSONAL COLLECTION</span><br /><span class="panel-label" id="panel-label">{panelLabel}</span></span></a><nav class="panel-nav" aria-label="Inside the cardholder" data-i18n-attr="aria-label:panel.nav"><a href="/work" data-view="index" data-i18n="panel.navCollection" aria-current={current('index')}>Collection</a><a href="/about" data-view="about" data-i18n="panel.navAbout" aria-current={current('about')}>About me</a><a href="/contact" data-view="contact" data-i18n="panel.navContact" aria-current={current('contact')}>Contact</a></nav><div class="panel-actions"><span class="lang-slot panel-lang" data-lang-slot="panel"></span><button class="close-panel" id="close-panel" aria-label="Close panel" data-i18n-attr="aria-label:panel.closeLabel"><span data-i18n="panel.close">Put back</span><span class="close-symbol" aria-hidden="true"><i data-icon="close"></i></span></button><noscript><a class="close-panel noscript-close" href="/"><span>Put back</span></a></noscript></div></div>{open ? <h1 class="sr-only" id="panel-title">{heading}</h1> : <h2 class="sr-only" id="panel-title"></h2>}<div id="panel-content" class="panel-content"><Fragment set:html={panelHtml} /></div><div class="folio-rim"><span aria-hidden="true" data-i18n="panel.rim">XAVIER BOSCH / DESIGN + CODE</span><span aria-hidden="true">XB—001</span></div></div></dialog>

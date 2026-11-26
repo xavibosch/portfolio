@@ -1,5 +1,4 @@
 import gsap from 'gsap';
-import { audienceHeadline } from './product-view.js';
 
 /* The motion of the Product view. Everything here starts from markup that
    already reads in full without it, and everything stops when the view is
@@ -18,22 +17,29 @@ export function initProductMotion(root) {
   let frame = 0;
   if (!reduced.matches) root.classList.add('pw-anim');
 
-  // Who is reading. The headline's words drop out, the new ones rise in.
   const title = root.querySelector('.pw-title');
-  let swapping;
+
+  /* How I think: in each case study the step in the middle of the screen is
+     the current one, and its image and caption come up beside it. A step can
+     also be chosen by clicking it. */
+  const stepObserver = new IntersectionObserver(entries => entries.forEach(entry => {
+    if (entry.isIntersecting) showStep(entry.target.closest('.pw-story'), Number(entry.target.dataset.step));
+  }), { rootMargin: '-42% 0px -42% 0px' });
+  observers.push(stepObserver);
+  root.querySelectorAll('.pw-step').forEach(step => stepObserver.observe(step));
+  function showStep(story, n) {
+    if (!story || story.dataset.current === String(n)) return;
+    story.dataset.current = n;
+    story.querySelectorAll('[data-step]').forEach(el => el.classList.toggle('is-on', Number(el.dataset.step) === n));
+    story.querySelectorAll('[data-shot]').forEach(el => el.classList.toggle('is-on', Number(el.dataset.shot) === n));
+    story.querySelectorAll('[data-caption]').forEach(el => el.classList.toggle('is-on', Number(el.dataset.caption) === n));
+    story.querySelectorAll('[data-dot]').forEach(el => el.classList.toggle('is-on', Number(el.dataset.dot) <= n));
+  }
   on(root, 'click', e => {
-    const button = e.target.closest('[data-audience]');
-    if (!button || button.getAttribute('aria-pressed') === 'true') return;
-    root.querySelectorAll('[data-audience]').forEach(b => b.setAttribute('aria-pressed', String(b === button)));
-    const next = audienceHeadline(button.dataset.audience);
-    // A longer sentence is set smaller, so every version stays a headline of three or four lines.
-    const fit = () => { title.innerHTML = next; title.classList.toggle('is-long', title.textContent.length > 90); };
-    swapping?.kill();
-    if (reduced.matches) { fit(); return; }
-    swapping = gsap.timeline()
-      .to(title.querySelectorAll('.pw-word > span'), { yPercent: -105, duration: .28, stagger: .008, ease: 'power2.in' })
-      .add(fit)
-      .fromTo(() => title.querySelectorAll('.pw-word > span'), { yPercent: 105 }, { yPercent: 0, duration: .7, stagger: .018, ease: 'expo.out' });
+    const step = e.target.closest('.pw-step');
+    if (!step || e.target.closest('a')) return;
+    step.scrollIntoView({ behavior: reduced.matches ? 'instant' : 'smooth', block: 'center' });
+    showStep(step.closest('.pw-story'), Number(step.dataset.step));
   });
 
   // Entrances as each part arrives.
@@ -125,7 +131,7 @@ export function initProductMotion(root) {
     if (reduced.matches || !showing()) return;
     gsap.fromTo(title.querySelectorAll('.pw-word > span'), { yPercent: 105 }, { yPercent: 0, duration: 1, stagger: .022, ease: 'expo.out', delay: .1 });
     gsap.fromTo(root.querySelector('.pw-portrait'), { clipPath: 'inset(100% 0% 0% 0% round 22px)' }, { clipPath: 'inset(0% 0% 0% 0% round 22px)', duration: 1.3, ease: 'expo.inOut', clearProps: 'clipPath' });
-    gsap.fromTo(root.querySelectorAll('.pw-audience, .pw-available, .pw-quick'), { opacity: 0, y: 14 }, { opacity: 1, y: 0, duration: .9, stagger: .08, delay: .35, ease: 'expo.out', clearProps: 'transform,opacity' });
+    gsap.fromTo(root.querySelectorAll('.pw-eyebrow, .pw-available, .pw-quick'), { opacity: 0, y: 14 }, { opacity: 1, y: 0, duration: .9, stagger: .08, delay: .35, ease: 'expo.out', clearProps: 'transform,opacity' });
   }
 
   return {
@@ -136,7 +142,6 @@ export function initProductMotion(root) {
       observers.forEach(o => o.disconnect());
       if (frame) cancelAnimationFrame(frame);
       clearInterval(clockTimer);
-      swapping?.kill();
     },
   };
 }
