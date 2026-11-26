@@ -7,7 +7,6 @@ import { email, linkedin, github, pathFor, viewFromPath, pathForHash } from './s
 import projects from './data/projects.json';
 import { productView } from './product-view.js';
 import { initProductMotion } from './product-motion.js';
-import { runLoader } from './loader.js';
 localizeProjects(projects);
 import { createWallet } from './wallet';
 import { icon, hydrateIcons } from './icons';
@@ -861,9 +860,7 @@ function ensureViewer(){
   if(position>0)viewer.select(position,0,false);
   if(panel.open){viewer.zoomIn();viewer.setActive(false);}
 }
-// Under the loading screen nothing enters yet; it all starts when the screen lifts.
-const loading=document.documentElement.classList.contains('is-loading');
-if(creative()&&!loading)ensureViewer();
+if(creative())ensureViewer();
 renderHomeMore();
 select(0,1,false);route();
 
@@ -962,10 +959,7 @@ document.addEventListener('click',e=>{
 });
 renderProduct();applyTheme();
 // A page opened on its folio keeps the first screen still behind it.
-runLoader(()=>{
-  if(creative()){ensureViewer();clearHeadline();}
-  else if(!/^\/(work|about|contact)/.test(location.pathname))productMotion.intro();
-});
+if(!creative()&&!/^\/(work|about|contact)/.test(location.pathname))productMotion.intro();
 document.querySelectorAll('[data-lang-slot]').forEach(slot=>{slot.innerHTML=langSwitch();});
 applyStatic();
 syncCvLink();

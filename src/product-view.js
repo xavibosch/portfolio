@@ -90,12 +90,6 @@ export function productView(projects, { cv, heading = true }) {
   const marquee = Array.from({ length: 4 }, () => `<span>${t('pm.contact')}</span><span aria-hidden="true" class="pw-dot">●</span><span>${esc(email)}</span><span aria-hidden="true" class="pw-dot">●</span>`).join('');
 
   return `<a class="pw-brand" href="/" aria-label="${esc(t('identity'))}"><span class="pw-mark" aria-hidden="true">xb<sup>®</sup></span><span class="pw-brand-text">XAVIER BOSCH<br />DESIGN + CODE</span></a>
-    <nav class="pw-pill" aria-label="${esc(t('nav.main'))}">
-      <a href="#pw-work">${t('pm.navWork')}</a><a href="#pw-more">${t('panel.navAbout')}</a><a href="#pw-contact">${t('panel.navContact')}</a>
-      <span class="pw-pill-sep" aria-hidden="true"></span>
-      <span class="lang-slot pw-lang" data-lang-slot="product"></span>
-      <button class="theme-button pw-theme" type="button" data-theme-toggle aria-pressed="false" aria-label="${esc(t('theme.toDark'))}">${icon('theme')}</button>
-    </nav>
     <nav class="pw-index" aria-label="${esc(t('pw.sections'))}"><ol>${SECTIONS.map((id, i) => `<li><a href="#pw-${id}" data-spy="pw-${id}"><span>${pad(i + 1)}</span>${t(`pw.s.${id}`)}</a></li>`).join('')}</ol></nav>
 
     <section class="pw-hero" id="pw-intro" aria-labelledby="pm-title">

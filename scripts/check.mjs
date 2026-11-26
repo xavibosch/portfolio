@@ -242,13 +242,13 @@ try {
   await page.locator('.vito-chat').evaluate(el => el.querySelector('.vito-grip').dispatchEvent(new MouseEvent('dblclick', { bubbles: true })));
   // One language switch for the whole site: the header, the cards and Vito follow it.
   assert.equal(await page.locator('.vito-langs').count(), 0);
-  await page.locator('.location [data-set-lang="ca"]').click();
+  await page.locator('.mode-dock [data-set-lang="ca"]').click();
   assert.match(await page.locator('#vito-input').getAttribute('placeholder'), /Pregunta sobre/);
   assert.equal(await page.locator('#index-button [data-i18n]').textContent(), 'La col·lecció');
   assert.equal(await page.locator('html').getAttribute('lang'), 'ca');
   assert.equal(await page.getAttribute('.footer-cv', 'href'), '/Xavi-Bosch-CV-CA.pdf', 'the CV link follows the language');
-  assert.equal(await page.locator('.location [data-set-lang="ca"]').getAttribute('aria-pressed'), 'true');
-  await page.locator('.location [data-set-lang="en"]').click();
+  assert.equal(await page.locator('.mode-dock [data-set-lang="ca"]').getAttribute('aria-pressed'), 'true');
+  await page.locator('.mode-dock [data-set-lang="en"]').click();
   assert.equal(await page.locator('#index-button [data-i18n]').textContent(), 'The collection');
   await page.locator('#vito-input').fill('What is Reps?');
   await page.keyboard.press('Enter');
@@ -305,7 +305,7 @@ try {
   }
   await closePanel();
   await page.locator('.featured-chip').first().click();
-  await page.locator('#theme-button').click();
+  await page.locator('.mode-dock [data-theme-toggle]').click();
   await page.mouse.move(1400, 20);
   await page.waitForTimeout(700);
   await page.screenshot({ path: screenshotPath('dark.png'), fullPage: true });
@@ -315,7 +315,7 @@ try {
   await page.waitForTimeout(650);
   await page.screenshot({ path: screenshotPath('contact-dark.png'), fullPage: true });
   await closePanel();
-  await page.locator('#theme-button').click();
+  await page.locator('.mode-dock [data-theme-toggle]').click();
 
   for (const [width, height] of [[1920,1080], [1024,768], [768,1024], [390,844], [360,740]]) {
     await page.setViewportSize({ width, height });

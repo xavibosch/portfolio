@@ -114,17 +114,17 @@ try {
   assert.ok(await page.locator('#product').isVisible());
   await page.close();
 
-  // The loading screen plays (asked for with ?intro) and lifts away; the logo
-  // at the bottom of the page brings it back to the top.
+  // The logo at the bottom of the page brings it back to the top.
   page = await open(null);
-  await page.goto(`${base}/?intro`); await page.waitForTimeout(500);
-  assert.ok(await page.locator('.loader').isVisible(), 'the loading screen does not show');
-  await page.waitForTimeout(4200);
-  assert.equal(await page.locator('.loader').count(), 0, 'the loading screen does not lift');
-  assert.equal(await page.evaluate(() => document.body.style.overflow || getComputedStyle(document.body).overflow), 'visible', 'the page stays locked after loading');
+  await page.goto(`${base}/`); await page.waitForTimeout(1200);
   await page.evaluate(() => scrollTo(0, document.body.scrollHeight)); await page.waitForTimeout(300);
   await page.locator('.pw-brand').click(); await page.waitForTimeout(1800);
   assert.equal(await page.evaluate(() => Math.round(scrollY)), 0, 'the logo does not bring the page back to the top');
+  // Language, theme and the switch stay put across the two views.
+  const box = () => page.evaluate(() => ['.dock-lang', '.dock-theme', '.mode-switch'].map(s => { const r = document.querySelector(`.mode-dock ${s}`).getBoundingClientRect(); return Math.round(r.right) + ',' + Math.round(r.top); }).join(' '));
+  const inProduct = await box();
+  await page.locator('.mode-dock [data-set-mode="creative"]').click(); await page.waitForTimeout(1400);
+  assert.equal(await box(), inProduct, 'the tools in the pill moved between the views');
   await page.close();
 
   // Without JavaScript: the Product view, with every project and real links.
@@ -143,7 +143,7 @@ try {
   await plain.close();
 
   assert.deepEqual(errors, [], 'page errors');
-  console.log('PASS (routes): loading screen, logo to the top, Product by default and the switch remembered, every page built with its own title, canonical and preview, one h1 each, folio from a real address, links and history without reloading, old hash links, 404, and a complete page without JavaScript.');
+  console.log('PASS (routes): logo to the top, pill tools fixed across views, Product by default and the switch remembered, every page built with its own title, canonical and preview, one h1 each, folio from a real address, links and history without reloading, old hash links, 404, and a complete page without JavaScript.');
 } finally {
   await browser.close();
 }

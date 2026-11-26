@@ -18,7 +18,7 @@ try {
     const gap = await page.evaluate(() => Math.min(...[...document.querySelectorAll('.wallet-card')].map(c => c.getBoundingClientRect().top)) - document.querySelector('.studio-note').getBoundingClientRect().bottom);
     assert.ok(gap >= 18, `${device}: headline overlaps the cards (${gap}px)`);
     assert.equal(await page.evaluate(() => document.documentElement.scrollWidth - innerWidth), 0, `${device}: page scrolls sideways`);
-    assert.ok(await page.locator('.header-lang [data-set-lang="ca"]').isVisible(), `${device}: language switch not in the header`);
+    assert.ok(await page.locator('.mode-dock [data-set-lang="ca"]').isVisible(), `${device}: language switch not in the pill`);
 
     // The holder keeps one size whatever the project or the language, and the
     // caption below never reaches it.
@@ -29,7 +29,7 @@ try {
     const first = await holder();
     for (const step of ['next', 'next', 'lang-ca', 'lang-es', 'lang-en']) {
       if (step === 'next') await page.tap('#next-project');
-      else await page.tap(`.header-lang [data-set-lang="${step.slice(5)}"]`);
+      else await page.tap(`.mode-dock [data-set-lang="${step.slice(5)}"]`);
       await page.waitForTimeout(500);
       const now = await holder();
       assert.ok(Math.abs(now.width - first.width) <= 1 && now.gap >= 10, `${device} ${step}: holder ${now.width}px (was ${first.width}), gap ${now.gap}`);
