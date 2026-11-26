@@ -6,6 +6,7 @@ import { caseMarkup, collectionMarkup, aboutMarkup, contactMarkup, cvFor, panelL
 import { email, linkedin, github, pathFor, viewFromPath, pathForHash } from './site.js';
 import projects from './data/projects.json';
 import { productView } from './product-view.js';
+import { initProductMotion } from './product-motion.js';
 localizeProjects(projects);
 import { createWallet } from './wallet';
 import { icon, hydrateIcons } from './icons';
@@ -916,11 +917,14 @@ mountVito({panel});
    as a circle from the switch that was pressed. */
 const productRoot=$('#product');
 const productHeading=productRoot.querySelector('.pm-title')?.tagName==='H1';
+let productMotion;
 function renderProduct(){
   const skip=productRoot.querySelector('.skip-link').outerHTML;
+  productMotion?.destroy();
   productRoot.innerHTML=skip+productView(projects,{cv:cvFor(),heading:productHeading});
   productRoot.querySelectorAll('[data-lang-slot]').forEach(slot=>{slot.innerHTML=langSwitch();});
   syncModeSwitches();
+  productMotion=initProductMotion(productRoot);
 }
 function syncModeSwitches(){
   const mode=document.documentElement.dataset.mode;
@@ -935,6 +939,7 @@ function setMode(mode,from){
     syncModeSwitches();
     scrollTo({top:0,behavior:'instant'});
     if(mode==='creative'){ensureViewer();clearHeadline();}
+    else{productMotion?.update();productMotion?.intro();}
   };
   if(reduced.matches||!document.startViewTransition){apply();return;}
   const x=from?.x??innerWidth/2, y=from?.y??0;
@@ -950,6 +955,8 @@ document.addEventListener('click',e=>{
   setMode(button.dataset.setMode,{x:box.left+box.width/2,y:box.top+box.height/2});
 });
 renderProduct();applyTheme();
+// A page opened on its folio keeps the first screen still behind it.
+if(!panel.hasAttribute('open')&&!/^\/(work|about|contact)/.test(location.pathname))productMotion.intro();
 document.querySelectorAll('[data-lang-slot]').forEach(slot=>{slot.innerHTML=langSwitch();});
 applyStatic();
 syncCvLink();

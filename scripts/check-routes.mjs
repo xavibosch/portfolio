@@ -105,9 +105,9 @@ try {
   await page.mouse.wheel(0, 600); await page.waitForTimeout(600);
   assert.ok(await page.evaluate(() => scrollY) > 200, 'the wheel does not scroll the Product page');
   // A project opens in the folio from Product too, and closing goes back to it.
-  await page.locator('.pm-row summary').first().click();
-  assert.ok(await page.locator('.pm-row[open] .pm-answers').first().isVisible(), 'an index row does not open');
-  await page.locator('.pm-case h3 a[href="/work/reps"]').click(); await page.waitForTimeout(1200);
+  await page.locator('.pw-row summary').first().click();
+  assert.ok(await page.locator('.pw-row[open] .pw-answers').first().isVisible(), 'an index row does not open');
+  await page.locator('.pw-case-link[href="/work/reps"]').click(); await page.waitForTimeout(1200);
   assert.equal(path(page), '/work/reps');
   await page.keyboard.press('Escape'); await page.waitForTimeout(900);
   assert.equal(path(page), '/');
